@@ -1,0 +1,55 @@
+body {
+/*  height: 200px;*/
+  height: 100%;
+  display: block;
+/*  position: relative;*/
+}
+
+body::after {
+  content: "";
+  background: url(../img/krsna.jpg);
+    background-size: cover;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+h2,form{
+  text-align: center;
+}
+h2{
+  margin-top: -20px;
+  margin-bottom: 45px;
+}
+form div{
+/*  width: 22%;*/
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 700;
+}
+form div input{
+/*  width: 65%;*/
+  margin-bottom: 10px;
+}
+#dateinput{
+/*  margin-left: 376px;*/
+}
+#date{
+/*  margin-left: 73px;*/
+}
+.glyphicon.glyphicon-home {
+  font-size: 25px;
+  padding-left: 21px;
+  margin-top: 11px;
+  color: black;
+}
+#addbtn{
+  background-color: #7FFFD4;
+  color: #000;
+  padding: 8px 18px;
+  border-radius: 10px;
+}

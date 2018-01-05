@@ -1,0 +1,45 @@
+body {
+  height: 100%;
+  display: block;
+}
+
+body::after {
+  content: "";
+  background: url(../img/krsna.jpg);
+  background-size: cover;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+h2{
+  text-align: center;
+  margin-top: -20px;
+  margin-bottom: 45px;
+}
+.glyphicon.glyphicon-home {
+  font-size: 25px;
+  padding-left: 21px;
+  margin-top: 11px;
+  color: black;
+}
+#pmt_button{
+  font-weight: bold;
+  margin: 15px 25px 0px 28px;
+/*  border: medium none;*/
+}
+table{
+  margin: 0px 0px 20px 20px;
+}
+.row{
+    margin-left: 0px !important;
+}
+form div{
+  font-weight: 700;
+}
+#followup_btn{
+  font-weight: bold;
+}
