@@ -1,3 +1,8 @@
+<?php
+ob_start();
+require_once("db_connect.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,13 +21,13 @@
         <title>Gift/Prasadam Info Page</title>
     </head>
     <?php
-        session_start(); //starts the session
+//        session_start(); //starts the session
         $user_id = $_SESSION['$user_id'];
-        mysql_connect("localhost", "root","") or die(mysql_error());
-        mysql_select_db("Admin_db") or die("Cannot connect to database");
+//        mysqli_connect("localhost", "root","") or die(mysqli_error());
+//        mysqli_select_db("Admin_db") or die("Cannot connect to database");
         //FETCH FIRST NAME AND LAST NAME OF USER
-        $fetch_user_info_query = mysql_query("SELECT title,first_name,last_name,user_lang FROM Users WHERE user_id='$user_id';");
-        $fetched_row = mysql_fetch_row($fetch_user_info_query);
+        $fetch_user_info_query = mysqli_query($con, "SELECT title,first_name,last_name,user_lang FROM Users WHERE user_id='$user_id';");
+        $fetched_row = mysqli_fetch_row($fetch_user_info_query);
         $title = $fetched_row[0];
         $first_name = $fetched_row[1];
         $last_name = $fetched_row[2];
@@ -93,17 +98,16 @@
 <?php
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-//    $btg_lang = mysql_real_escape_string($_POST['btg_lang']);
     $btg_lang = $user_lang;
-    $type = mysql_real_escape_string($_POST['type']);
-    $details = mysql_real_escape_string($_POST['details']);
-    $is_dispatched = mysql_real_escape_string($_POST['is_dispatched']);
-    $dispatch_date = mysql_real_escape_string($_POST['dispatch_date']);
-    $gp_remarks = mysql_real_escape_string($_POST['gp_remarks']);
+    $type = mysqli_real_escape_string($con, $_POST['type']);
+    $details = mysqli_real_escape_string($con, $_POST['details']);
+    $is_dispatched = mysqli_real_escape_string($con, $_POST['is_dispatched']);
+    $dispatch_date = mysqli_real_escape_string($con, $_POST['dispatch_date']);
+    $gp_remarks = mysqli_real_escape_string($con, $_POST['gp_remarks']);
     $bool = true;
-//    mysql_connect("localhost", "root","") or die(mysql_error());
-//    mysql_select_db("Admin_db") or die("Cannot connect to database");
-//    $query = mysql_query("Select * from User_Payment"); // CHECK TO BE ADDED
+//    mysqli_connect("localhost", "root","") or die(mysqli_error());
+//    mysqli_select_db("Admin_db") or die("Cannot connect to database");
+//    $query = mysqli_query("Select * from User_Payment"); // CHECK TO BE ADDED
 
     if($bool)
     {
@@ -119,7 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //        $formatted_dispatch_date = date_format($dateTime, 'Y-m-d');
         $insert_query = "INSERT INTO User_Gift_Prasadam(user_id,btg_lang,type,details,is_dispatched,dispatch_date,gp_remarks) VALUES('$user_id','$btg_lang','$type','$details','$is_dispatched','$formatted_dispatch_date','$gp_remarks');";
 //        echo($insert_query);
-        mysql_query($insert_query);
+        mysqli_query($con, $insert_query);
 
         Print '<script>alert("Gift/prasadam details entered successfully!");</script>';
         session_destroy();

@@ -1,3 +1,8 @@
+<?php
+ob_start();
+require_once("db_connect.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,9 +20,6 @@
         <link rel="stylesheet" href="css/addAdmin.css">
         <title>Admin</title>
     </head>
-    <?php
-//        session_start();
-    ?>
     <body>
         <a href="home.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>Add New Admin</h2>
@@ -67,22 +69,20 @@
 <?php
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $title = mysql_real_escape_string($_POST['title']);
-    $first_name = mysql_real_escape_string($_POST['first_name']);
-    $last_name = mysql_real_escape_string($_POST['last_name']);
-    $username = mysql_real_escape_string($_POST['username']);
-    $password = mysql_real_escape_string($_POST['password']);
-    $phone_no = mysql_real_escape_string($_POST['phone_no']);
-    $email_id = mysql_real_escape_string($_POST['email_id']);
-    $start_date = mysql_real_escape_string($_POST['date']);
+    $title = mysqli_real_escape_string($con, $_POST['title']);
+    $first_name = mysqli_real_escape_string($con, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($con, $_POST['last_name']);
+    $username = mysqli_real_escape_string($con, $_POST['username']);
+    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $phone_no = mysqli_real_escape_string($con, $_POST['phone_no']);
+    $email_id = mysqli_real_escape_string($con, $_POST['email_id']);
+    $start_date = mysqli_real_escape_string($con, $_POST['date']);
     $is_superAdmin = "N";
     $bool = true;
 
-    mysql_connect("localhost", "root","") or die(mysql_error());
-    mysql_select_db("Admin_db") or die("Cannot connect to database");
-    $query = mysql_query("Select * from Admin");
+    $query = mysqli_query($con, "Select * from Admin");
 
-    while($row = mysql_fetch_array($query))
+    while($row = mysqli_fetch_array($query))
     {
         $table_admins = $row['username'];
         if($username == $table_admins)
@@ -99,8 +99,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $formatted_date = date_format($dateTime, 'Y-m-d');
         $insert_query = "INSERT INTO Admin(title,first_name,last_name,username,pwd,phone_no,email_id,start_date,is_superAdmin) VALUES('$title','$first_name','$last_name','$username','$password','$phone_no','$email_id','$formatted_date','$is_superAdmin');";
 //        echo($insert_query);
-//        mysql_query($insert_query);
-        if(mysql_query($insert_query))
+        if(mysqli_query($con, $insert_query))
         {
             Print '<script>alert("Successfully Added!");</script>';
             Print '<script>window.location.assign("home.php");</script>';

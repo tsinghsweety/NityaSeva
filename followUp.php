@@ -1,3 +1,8 @@
+<?php
+ob_start();
+require_once("db_connect.php");
+session_start();
+?>
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
@@ -15,12 +20,12 @@
     <title>Payment Info Page</title>
 </head>
 <?php
-    session_start(); //starts the session
+//    session_start(); //starts the session
 
  if($_SERVER["REQUEST_METHOD"] == "POST")
  {
-    mysql_connect("localhost", "root","") or die(mysql_error());
-    mysql_select_db("Admin_db") or die("Cannot connect to database");
+//    mysqli_connect("localhost", "root","") or die(mysqli_error());
+//    mysqli_select_db("Admin_db") or die("Cannot connect to database");
     $query_hsRun =false;
     if(isset($_POST['user_id']))
     {
@@ -37,8 +42,8 @@
  }
 
 
-//    mysql_connect("localhost", "root","") or die(mysql_error());
-//    mysql_select_db("Admin_db") or die("Cannot connect to database");
+//    mysqli_connect("localhost", "root","") or die(mysqli_error());
+//    mysqli_select_db("Admin_db") or die("Cannot connect to database");
  //FETCH FIRST NAME AND LAST NAME OF USER
 //    $chk_query = "SELECT first_name,last_name FROM Users WHERE user_id='$user_id';";
 //    echo($chk_query);
@@ -48,38 +53,38 @@
         $first_name = $_SESSION['$first_name'];
         $last_name = $_SESSION['$last_name'];
     }else{
-        $fetch_user_info_query = mysql_query("SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
+        $fetch_user_info_query = mysqli_query($con, "SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
         $query_hsRun = true;
-        $fetched_row = mysql_fetch_row($fetch_user_info_query);
+        $fetched_row = mysqli_fetch_row($fetch_user_info_query);
         $title = $fetched_row[0];
         $first_name = $fetched_row[1];
         $last_name = $fetched_row[2];
     }
-//    $fetch_user_info_query = mysql_query("SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
-//    $fetched_row = mysql_fetch_row($fetch_user_info_query);
+//    $fetch_user_info_query = mysqli_query("SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
+//    $fetched_row = mysqli_fetch_row($fetch_user_info_query);
 //    $title = $_SESSION['$title'];
 //    $first_name = $_SESSION['$first_name'];
 //    $last_name = $_SESSION['$last_name'];
 //FETCH FOLLOWUP DATE, REMARKS, NEXT DATE
-//        $fetch_user_info_query = mysql_query("SELECT followup_date,followup_remark,nxt_followup_date FROM Follow_Up WHERE user_id='$user_id';");
-//        $fetched_row = mysql_fetch_row($fetch_user_info_query);
+//        $fetch_user_info_query = mysqli_query("SELECT followup_date,followup_remark,nxt_followup_date FROM Follow_Up WHERE user_id='$user_id';");
+//        $fetched_row = mysqli_fetch_row($fetch_user_info_query);
 //        $followup_date = $fetched_row[0];
 //        $followup_remark = $fetched_row[1];
 //        $nxt_followup_date = $fetched_row[2];
 //    }
 
      // FETCH SCHEME_ID
-        $fetch_schemeId_query = mysql_query("SELECT scheme_id FROM User_Donation WHERE user_id='$user_id';");
-        $fetched_schemIdrow = mysql_fetch_row($fetch_schemeId_query);
+        $fetch_schemeId_query = mysqli_query($con, "SELECT scheme_id FROM User_Donation WHERE user_id='$user_id';");
+        $fetched_schemIdrow = mysqli_fetch_row($fetch_schemeId_query);
         $scheme_id = $fetched_schemIdrow[0];
     //FETCH SCHEME INFO
-        $fetch_schemeInfo_query = mysql_query("SELECT scheme_name,scheme_value FROM Scheme WHERE scheme_id='$scheme_id';");
-        $fetched_schemeRow = mysql_fetch_row($fetch_schemeInfo_query);
+        $fetch_schemeInfo_query = mysqli_query($con, "SELECT scheme_name,scheme_value FROM Scheme WHERE scheme_id='$scheme_id';");
+        $fetched_schemeRow = mysqli_fetch_row($fetch_schemeInfo_query);
         $scheme_name = $fetched_schemeRow[0];
         $scheme_value = $fetched_schemeRow[1];
      $net_amt_paid=0;
-     $fetch_amtpaid_query = mysql_query("SELECT amt_paid FROM User_Payment WHERE user_id='$user_id';");
-            while($fetched_amtRow = mysql_fetch_array($fetch_amtpaid_query))
+     $fetch_amtpaid_query = mysqli_query($con, "SELECT amt_paid FROM User_Payment WHERE user_id='$user_id';");
+            while($fetched_amtRow = mysqli_fetch_array($fetch_amtpaid_query))
             {
                 $net_amt_paid = $net_amt_paid + $fetched_amtRow[0];
             }
@@ -143,22 +148,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //        $user_id = $_SESSION['$user_id'];
 //        echo($user_id);
 //    }
-//    $followup_date = mysql_real_escape_string($_POST['followup_date']);
     if(isset($_POST['followup_date']))
     {
-        $followup_date = mysql_real_escape_string($_POST['followup_date']);
+        $followup_date = mysqli_real_escape_string($con, $_POST['followup_date']);
         $dateTime = date_create_from_format('d/m/Y',$followup_date);
         $formatted_followup_date = date_format($dateTime, 'Y-m-d');
     }
     if(isset($_POST['followup_remark']))
     {
 //        echo("followup_remark");
-        $followup_remark = mysql_real_escape_string($_POST['followup_remark']);
+        $followup_remark = mysqli_real_escape_string($con, $_POST['followup_remark']);
         $bool = true;
     }
     if(isset($_POST['nxt_followup_date']))
     {
-        $nxt_followup_date = mysql_real_escape_string($_POST['nxt_followup_date']);
+        $nxt_followup_date = mysqli_real_escape_string($con, $_POST['nxt_followup_date']);
         $dateTime = date_create_from_format('d/m/Y',$nxt_followup_date);
         $formatted_nxt_followup_date = date_format($dateTime, 'Y-m-d');
     }
@@ -170,7 +174,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         $insert_query = "INSERT INTO Follow_Up(user_id,followup_date,followup_remark,nxt_followup_date) VALUES('$user_id','$formatted_followup_date','$followup_remark','$formatted_nxt_followup_date');";
 //        echo($insert_query);
-        mysql_query($insert_query);
+        mysqli_query($con, $insert_query);
 
 //        Print '<script>alert("Follow Up Remarks added");</script>';
 //        $_SESSION['$user_id'] = $user_id;
