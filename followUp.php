@@ -24,12 +24,12 @@
     $query_hsRun =false;
     if(isset($_POST['user_id']))
     {
-        echo $_POST['user_id'];
+//        echo $_POST['user_id'];
         $user_id = $_POST['user_id'];
         $_SESSION['$user_id'] = $user_id;
     }else if(isset($_SESSION['$user_id'])){
         $user_id = $_SESSION['$user_id'];
-        echo("user id:".$user_id);
+//        echo("user id:".$user_id);
     } else {
         echo("please enter user id!");
     }
@@ -136,7 +136,7 @@
 //session_start();
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    echo("FOR");
+//    echo("FOR");
     $bool = false;
 //    if($_SESSION['$user_id']!= NULL)
 //    {
@@ -152,7 +152,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
     if(isset($_POST['followup_remark']))
     {
-        echo("followup_remark");
+//        echo("followup_remark");
         $followup_remark = mysql_real_escape_string($_POST['followup_remark']);
         $bool = true;
     }
@@ -165,11 +165,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if($bool)
     {
-        echo("CHECK");
-        echo($user_id);
+//        echo("CHECK");
+//        echo($user_id);
 
         $insert_query = "INSERT INTO Follow_Up(user_id,followup_date,followup_remark,nxt_followup_date) VALUES('$user_id','$formatted_followup_date','$followup_remark','$formatted_nxt_followup_date');";
-        echo($insert_query);
+//        echo($insert_query);
         mysql_query($insert_query);
 
 //        Print '<script>alert("Follow Up Remarks added");</script>';

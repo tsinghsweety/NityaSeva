@@ -154,7 +154,7 @@
         }
         $result_query = mysql_query("SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';");
         $query_check = "SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';";
-        echo($query_check);
+//        echo($query_check);
         $result_row = array();
 
         while($row =  mysql_fetch_assoc($result_query)) {
@@ -165,12 +165,12 @@
             echo 'No matching record found ' . mysql_error();
             exit;
         }else{
-            echo "user id<br>";
+//            echo "user id<br>";
                 //m=NUMBER OF ROWS  n =NUMBER OF COLUMNS
                 $m =0;
                 $value_array = array();
                 foreach ($result_row as $value) {
-                    echo "$value <br>";
+//                    echo "$value <br>";
                     $record_query= mysql_query("SELECT * FROM Users WHERE user_id = '$value';");
                     $records = mysql_fetch_assoc($record_query);
                     $records_array = (array)$records;
@@ -192,15 +192,15 @@
 //                            echo("$record_value: ");
                             array_push($value_array,$record_value);
                         }else{
-                            echo("User Info corresponding to user_id: ".$value."  does not exist! <br> ");
+//                            echo("User Info corresponding to user_id: ".$value."  does not exist! <br> ");
                             $m--;
                         }
                     }
                 }
-                    echo("m:");
-                    echo($m);
-                    echo("n:");
-                    echo($n);
+//                    echo("m:");
+//                    echo($m);
+//                    echo("n:");
+//                    echo($n);
                          echo "<table border='1'><tr>";
                     $splittedstring_key=explode(" ",implode(" ",$key_array));
                     foreach ($splittedstring_key as $key => $value) {
