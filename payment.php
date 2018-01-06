@@ -1,8 +1,3 @@
-<?php
-ob_start();
-require_once("db_connect.php");
-session_start();
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,25 +16,25 @@ session_start();
         <title>Payment Info Page</title>
     </head>
     <?php
-//        session_start(); //starts the session
+        session_start(); //starts the session
         $user_id = $_SESSION['$user_id'];
         $first_time_payment = $_SESSION['$first_time_payment'];
 //        echo ($user_id);
-//        mysqli_connect("localhost", "root","") or die(mysqli_error());
-//        mysqli_select_db("Admin_db") or die("Cannot connect to database");
+        mysql_connect("localhost", "root","") or die(mysql_error());
+        mysql_select_db("Admin_db") or die("Cannot connect to database");
     //FETCH FIRST NAME AND LAST NAME OF USER
-        $fetch_user_info_query = mysqli_query($con, "SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
-        $fetched_row = mysqli_fetch_row($fetch_user_info_query);
+        $fetch_user_info_query = mysql_query("SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
+        $fetched_row = mysql_fetch_row($fetch_user_info_query);
         $title = $fetched_row[0];
         $first_name = $fetched_row[1];
         $last_name = $fetched_row[2];
     // FETCH SCHEME_ID
-        $fetch_schemeId_query = mysqli_query($con, "SELECT scheme_id FROM User_Donation WHERE user_id='$user_id';");
-        $fetched_schemIdrow = mysqli_fetch_row($fetch_schemeId_query);
+        $fetch_schemeId_query = mysql_query("SELECT scheme_id FROM User_Donation WHERE user_id='$user_id';");
+        $fetched_schemIdrow = mysql_fetch_row($fetch_schemeId_query);
         $scheme_id = $fetched_schemIdrow[0];
     //FETCH SCHEME INFO
-        $fetch_schemeInfo_query = mysqli_query($con, "SELECT scheme_name,scheme_value FROM Scheme WHERE scheme_id='$scheme_id';");
-        $fetched_schemeRow = mysqli_fetch_row($fetch_schemeInfo_query);
+        $fetch_schemeInfo_query = mysql_query("SELECT scheme_name,scheme_value FROM Scheme WHERE scheme_id='$scheme_id';");
+        $fetched_schemeRow = mysql_fetch_row($fetch_schemeInfo_query);
         $scheme_name = $fetched_schemeRow[0];
         $scheme_value = $fetched_schemeRow[1];
     //FETCH DUE INFO
@@ -49,8 +44,8 @@ session_start();
             $net_amt_paid = 0;
         }else
         {
-            $fetch_amtpaid_query = mysqli_query($con, "SELECT amt_paid FROM User_Payment WHERE user_id='$user_id';");
-            while($fetched_amtRow = mysqli_fetch_array($fetch_amtpaid_query))
+            $fetch_amtpaid_query = mysql_query("SELECT amt_paid FROM User_Payment WHERE user_id='$user_id';");
+            while($fetched_amtRow = mysql_fetch_array($fetch_amtpaid_query))
             {
                 $net_amt_paid = $net_amt_paid + $fetched_amtRow[0];
             }
@@ -140,17 +135,17 @@ session_start();
 //echo ($user_id);
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $payment_type = mysqli_real_escape_string($con, $_POST['payment_type']);
-    $payment_details = mysqli_real_escape_string($con, $_POST['payment_details']);
-    $amt_paid = mysqli_real_escape_string($con, $_POST['amt_paid']);
-//    $due_amt = mysqli_real_escape_string($_POST['due_amt']);
-    $payment_date = mysqli_real_escape_string($con, $_POST['payment_date']);
-    $payment_remarks = mysqli_real_escape_string($con, $_POST['payment_remarks']);
+    $payment_type = mysql_real_escape_string($_POST['payment_type']);
+    $payment_details = mysql_real_escape_string($_POST['payment_details']);
+    $amt_paid = mysql_real_escape_string($_POST['amt_paid']);
+//    $due_amt = mysql_real_escape_string($_POST['due_amt']);
+    $payment_date = mysql_real_escape_string($_POST['payment_date']);
+    $payment_remarks = mysql_real_escape_string($_POST['payment_remarks']);
     $bool = true;
 
-//    mysqli_connect("localhost", "root","") or die(mysqli_error());
-//    mysqli_select_db("Admin_db") or die("Cannot connect to database");
-    $query = mysqli_query($con, "Select * from User_Payment"); // CHECK TO BE ADDED
+    mysql_connect("localhost", "root","") or die(mysql_error());
+    mysql_select_db("Admin_db") or die("Cannot connect to database");
+    $query = mysql_query("Select * from User_Payment"); // CHECK TO BE ADDED
 
     if($bool)
     {
@@ -165,9 +160,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $is_due = "Y";
         }
         $insert_query = "INSERT INTO User_Payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) VALUES('$user_id','$payment_type','$formatted_date','$amt_paid','$payment_details','$payment_remarks');";
-        mysqli_query($con, $insert_query);
-        $sel_query =mysqli_query($con, "SELECT * FROM User_Due WHERE user_id='$user_id';");
-        $count_rows = mysqli_num_rows($sel_query);
+        mysql_query($insert_query);
+        $sel_query =mysql_query("SELECT * FROM User_Due WHERE user_id='$user_id';");
+        $count_rows = mysql_num_rows($sel_query);
 //        echo($count_rows);
         if($count_rows>0)
         {
@@ -176,7 +171,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         else{
            $query_due ="INSERT INTO User_Due(user_id,is_due) VALUES('$user_id','$is_due');";
         }
-        mysqli_query($con, $query_due);
+        mysql_query($query_due);
         echo($is_due);
 
         Print '<script>alert("Payment Details taken successfully!");</script>';

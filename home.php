@@ -1,9 +1,4 @@
-<?php
-ob_start();
-require_once("db_connect.php");
-session_start();
-?>
-   <html>
+<html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +14,7 @@ session_start();
     </head>
     <body>
         <?php
-//            session_start(); //starts the session
+            session_start(); //starts the session
             if($_SESSION['user']){ //checks if user is logged in
             }
             else{
@@ -27,10 +22,10 @@ session_start();
             }
             $user = $_SESSION['user']; //assigns user value
 
-//            mysqli_connect("localhost", "root","") or die(mysqli_error());
-//            mysqli_select_db("Admin_db") or die("Cannot connect to database");
-            $query = mysqli_query($con, "SELECT is_superAdmin FROM Admin WHERE username='$user';");
-            $fetched_row = mysqli_fetch_row($query);
+            mysql_connect("localhost", "root","") or die(mysql_error());
+            mysql_select_db("Admin_db") or die("Cannot connect to database");
+            $query = mysql_query("SELECT is_superAdmin FROM Admin WHERE username='$user';");
+            $fetched_row = mysql_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
         ?>
         <div id="implinks">

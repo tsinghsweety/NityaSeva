@@ -1,8 +1,3 @@
-<?php
-ob_start();
-require_once("db_connect.php");
-session_start();
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,6 +12,9 @@ session_start();
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="css/searchUser.css">
     </head>
+    <?php
+        session_start();
+    ?>
     <body>
       <a href="home.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
 <!--      <a href="home.php">Click here to go back</a><br/><br/>-->
@@ -40,14 +38,14 @@ session_start();
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        $phone_no = mysqli_real_escape_string($con, $_POST['phone_no']);
-//        mysqli_connect("localhost", "root","") or die(mysqli_error());
-//        mysqli_select_db("Admin_db") or die("Cannot connect to database");
-        $result_query = mysqli_query($con, "SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
-        $result_row = mysqli_fetch_row($result_query);
+        $phone_no = mysql_real_escape_string($_POST['phone_no']);
+        mysql_connect("localhost", "root","") or die(mysql_error());
+        mysql_select_db("Admin_db") or die("Cannot connect to database");
+        $result_query = mysql_query("SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
+        $result_row = mysql_fetch_row($result_query);
         $result = $result_row[0];
         if (!$result_row) {
-            echo 'Could not run query: ' . mysqli_connect_error();
+            echo 'Could not run query: ' . mysql_error();
             exit;
         }else{
 //                var_dump($result_row);
