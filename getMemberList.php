@@ -18,6 +18,8 @@
     <body>
       <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
       <h2>Member List</h2>
+      <?php require 'logout_modal.php';
+      ?>
       <form action="getMemberList.php" method="POST">
        <div class="container-fluid">
         <div class="form-group">

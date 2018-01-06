@@ -13,23 +13,16 @@
         <title>Dashboard</title>
     </head>
     <body>
-        <?php
+        <?php require 'dbConnect.php';
             session_start(); //starts the session
             if($_SESSION['user']){ //checks if user is logged in
             }
             else{
+                mysqli_close($con);
                 header("location:login.php"); // redirects if user is not logged in
             }
             $user = $_SESSION['user']; //assigns user value
             
-            $con=mysqli_connect("localhost","root","","Admin_db");
-
-            // Check connection
-            if (mysqli_connect_errno()) {
-              echo "Failed to connect to MySQL: " . mysqli_connect_error();
-            }
-//            mysqli_connect("localhost", "root","") or die(mysqli_error());
-//            mysqli_select_db("Admin_db") or die("Cannot connect to database");
             $query = mysqli_query($con,"SELECT is_superAdmin FROM Admin WHERE username='$user';");
             $fetched_row = mysqli_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
@@ -42,7 +35,10 @@
             <a href="getMemberList.php"> Get Member List</a>
 <!--            <a href="logout.php">Click here to logout</a><br/><br/>    -->
         </div>
+        <?php require 'logout_modal.php';
+        ?>
         <!-- Logout modal -->
+<!--
         <button type="button" class="btn btn-default btn-sm" id="logoutbtn" data-toggle="modal" data-target=".bs-example-modal-sm">
           <span class="glyphicon glyphicon-log-out"></span>
         </button>
@@ -59,6 +55,7 @@
             </div>
           </div>
         </div>
+-->
         <script type="text/javascript">
             var logged_user='<?php echo $user;?>';
             var is_superAdmin='<?php echo $is_superAdmin;?>';

@@ -181,6 +181,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         mysqli_close($con);
         Print '<script>window.location.assign("getMemberList.php");</script>';
     }
+    mysqli_close($con);
 
 }
 ?>

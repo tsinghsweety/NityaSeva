@@ -24,6 +24,12 @@ h3{
   margin-top: -20px;
   margin-bottom: 45px;
 }
+#logoutbtn{
+  float: right;
+  margin: -99px 15px 0px 0px;
+  color: black;
+  font-size: 25px;
+}
 .glyphicon.glyphicon-home {
   font-size: 25px;
   padding-left: 21px;

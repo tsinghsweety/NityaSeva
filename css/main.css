@@ -34,7 +34,7 @@ h2,form{
 }
 #implinks{
   text-align: center;
-    padding-top: 25px;
+  padding-top: 25px;
 }
 #implinks a{
   padding-right: 30px;
@@ -43,8 +43,11 @@ h2,form{
 }
 #logoutbtn{
   float: right;
-  margin: -30px 15px 0px 0px;
-  border: none;
+  margin: -40px 15px 0px 0px;
+/*  border: none;*/
+/*  padding: 4px 12px!important;*/
+  color: black;  
+  font-size: 25px;
 }
 
 

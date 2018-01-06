@@ -21,6 +21,8 @@
     <body>
         <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>New Member</h2>
+        <?php require 'logout_modal.php';
+        ?>
         <form action="addMember.php" method="POST">
           <div class="container-fluid">
            <div class="row">
@@ -156,6 +158,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         {
             $bool = false;
             Print '<script>alert("Phone Number has been taken");</script>';
+            mysqli_close($con);
             Print '<<script>window.location.assign("addMember.php");</script>';
         }
     }
@@ -209,8 +212,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION['$user_id'] = $user_id;
         $_SESSION['$first_time_payment'] = "Y";
         Print '<script>alert("Successfully Registered!");</script>';
+        mysqli_close($con);
         Print '<script>window.location.assign("payment.php");</script>';
 
     }
+    mysqli_close($con);
 }
 ?>

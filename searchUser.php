@@ -18,7 +18,9 @@
     <body>
       <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
 <!--      <a href="dashboard.php">Click here to go back</a><br/><br/>-->
-        <h3>Search member by:</h3>
+      <h3>Search member by:</h3>
+      <?php require 'logout_modal.php';
+      ?>
       <form action="searchUser.php" method="POST">
           <div class="container-fluid">
               <div class="row">

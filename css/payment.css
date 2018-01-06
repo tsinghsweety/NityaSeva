@@ -24,6 +24,12 @@ h2{
   margin-top: -20px;
   margin-bottom: 45px;
 }
+#logoutbtn{
+  float: right;
+  margin: -106px 15px 0px 0px;
+  color: black; 
+  font-size: 25px;
+}
 form div{
   font-weight: 700;
 }

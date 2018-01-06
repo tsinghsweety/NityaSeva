@@ -55,6 +55,8 @@
     <body>
         <a href="searchUser.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>Payment Info</h2>
+        <?php require 'logout_modal.php';
+        ?>
         <form action="payment.php" method="POST">
            <div class="container-fluid">
                <div class="row">
@@ -128,7 +130,7 @@
         </form>
     </body>
 </html>
-<?php require 'dbConnect.php';
+<?php 
 //session_start();
 //$user_id = $_SESSION['$user_id'];
 //echo ($user_id);
@@ -178,9 +180,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         mysqli_query($con,$query_due);
 //        echo($is_due);
-        mysqli_close($con);
+        
         Print '<script>alert("Payment Details taken successfully!");</script>';
-        session_destroy();
+        mysqli_close($con);
+        $_SESSION['$user_id'] = "";
+//        session_destroy();
         Print '<script>window.location.assign("searchUser.php");</script>';
     }
 

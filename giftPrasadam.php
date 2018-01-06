@@ -32,6 +32,8 @@
 <!--        <a href="searchUser.php">Click here to go back</a><br/><br/>-->
         <a href="searchUser.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>Gift/Prasadam Info Page</h2>
+        <?php require 'logout_modal.php';
+        ?>
         <form action="giftPrasadam.php" method="POST">
             <div class="container-fluid">
                 <div class="row">
@@ -121,10 +123,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         mysqli_query($con,$insert_query);
 
         Print '<script>alert("Gift/prasadam details entered successfully!");</script>';
-        session_destroy();
+//        session_destroy();
         mysqli_close($con);
+        $_SESSION['$user_id'] = "";
         Print '<script>window.location.assign("searchUser.php");</script>';
     }
+    mysqli_close($con);
 
 }
 ?>

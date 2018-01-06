@@ -15,12 +15,11 @@
         <link rel="stylesheet" href="css/addAdmin.css">
         <title>Admin</title>
     </head>
-    <?php
-//        session_start();
-    ?>
     <body>
-        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
+        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a>
         <h2>Add New Admin</h2>
+        <?php require 'logout_modal.php';
+        ?>
         <form action="addAdmin.php" method="POST">
           <div class="container-fluid">
               <div class="row">
@@ -90,6 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         {
             $bool = false;
             Print '<script>alert("Username has been taken");</script>';
+            mysqli_close($con);
             Print '<<script>window.location.assign("addAdmin.php");</script>';
         }
     }
@@ -115,5 +115,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //        Print '<script>window.location.assign("login.php");</script>';
 
     }
+    mysqli_close($con);
 }
 ?>

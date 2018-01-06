@@ -26,6 +26,12 @@ h2{
   margin-top: 11px;
   color: black;
 }
+#logoutbtn{
+  float: right;
+  margin: -106px 15px 0px 0px;
+  color: black;
+  font-size: 25px;
+}
 #pmt_button{
   font-weight: bold;
   margin: 15px 25px 0px 28px;
