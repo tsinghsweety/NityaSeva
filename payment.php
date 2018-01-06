@@ -183,7 +183,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         mysqli_query($con,$query_due);
 //        echo($is_due);
-
+        mysqli_close($con);
         Print '<script>alert("Payment Details taken successfully!");</script>';
         session_destroy();
         Print '<script>window.location.assign("searchUser.php");</script>';

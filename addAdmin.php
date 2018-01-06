@@ -110,6 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         if(mysqli_query($con,$insert_query))
         {
             Print '<script>alert("Successfully Added!");</script>';
+            mysqli_close($con);
             Print '<script>window.location.assign("home.php");</script>';
         }else{
             Print '<script>alert("NOT ADDED YET");</script>';

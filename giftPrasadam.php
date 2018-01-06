@@ -127,6 +127,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         Print '<script>alert("Gift/prasadam details entered successfully!");</script>';
         session_destroy();
+        mysqli_close($con);
         Print '<script>window.location.assign("searchUser.php");</script>';
     }
 

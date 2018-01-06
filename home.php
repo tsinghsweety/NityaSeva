@@ -33,6 +33,7 @@
             $query = mysqli_query($con,"SELECT is_superAdmin FROM Admin WHERE username='$user';");
             $fetched_row = mysqli_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
+            mysqli_close($con);
         ?>
         <div id="implinks">
             <a id="addadmin" href="addAdmin.php"> Add Admin</a>
