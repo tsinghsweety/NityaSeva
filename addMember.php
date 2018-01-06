@@ -125,31 +125,37 @@
 //session_start();
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $title = mysql_real_escape_string($_POST['title']);
-    $first_name = mysql_real_escape_string($_POST['first_name']);
-    $last_name = mysql_real_escape_string($_POST['last_name']);
-    $address = mysql_real_escape_string($_POST['address']);
-    $phone_no = mysql_real_escape_string($_POST['phone_no']);
-    $whatsapp = mysql_real_escape_string($_POST['whatsapp']);
-    $email_id = mysql_real_escape_string($_POST['email_id']);
-    $start_date = mysql_real_escape_string($_POST['date']);
-    $is_corresponder = mysql_real_escape_string($_POST['is_corresponder']);
-    $is_active = mysql_real_escape_string($_POST['is_active']);
-    $connected_to = mysql_real_escape_string($_POST['connected_to']);
-    $scheme_name = mysql_real_escape_string($_POST['scheme_name']);
-    $payment_type = mysql_real_escape_string($_POST['payment_type']);
-    $corresponder = mysql_real_escape_string($_POST['corresponder']);
-    $user_lang = mysql_real_escape_string($_POST['user_lang']);
-    $remarks = mysql_real_escape_string($_POST['remarks']);
+    $con=mysqli_connect("localhost","root","","Admin_db");
+
+    // Check connection
+    if (mysqli_connect_errno()) {
+      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+    $title = mysqli_real_escape_string($con,$_POST['title']);
+    $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
+    $last_name = mysqli_real_escape_string($con,$_POST['last_name']);
+    $address = mysqli_real_escape_string($con,$_POST['address']);
+    $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
+    $whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
+    $email_id = mysqli_real_escape_string($con,$_POST['email_id']);
+    $start_date = mysqli_real_escape_string($con,$_POST['date']);
+    $is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
+    $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
+    $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
+    $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
+    $payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
+    $corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
+    $user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
+    $remarks = mysqli_real_escape_string($con,$_POST['remarks']);
     $bool = true;
     $bool2 = true;
 
-    mysql_connect("localhost", "root","") or die(mysql_error());
-    mysql_select_db("Admin_db") or die("Cannot connect to database");
-    $query = mysql_query("Select * from Users");
-    $query2 = mysql_query("Select * from User_Donation");
+//    mysql_connect("localhost", "root","") or die(mysql_error());
+//    mysql_select_db("Admin_db") or die("Cannot connect to database");
+    $query = mysqli_query($con,"Select * from Users");
+    $query2 = mysqli_query($con,"Select * from User_Donation");
 
-    while($row = mysql_fetch_array($query))
+    while($row = mysqli_fetch_array($query))
     {
         $table_users = $row['phone_no'];
         if($phone_no == $table_users)
@@ -171,16 +177,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //        echo "FORMATTED DATE";
 //        echo $formatted_date;
         $insert_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_corresponder,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_corresponder','$is_active','$connected_to','$user_lang');";
-        mysql_query($insert_query);
+        mysqli_query($con,$insert_query);
 
-        $result_query = mysql_query("SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
+        $result_query = mysqli_query($con,"SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
 //        $check_query = "SELECT user_id FROM Users WHERE phone_no = '$phone_no';";
 //        echo ($check_query);
 //        echo ("above query");
-        $result_row = mysql_fetch_row($result_query);
+        $result_row = mysqli_fetch_row($result_query);
         $result = $result_row[0];
         if (!$result_row) {
-            echo 'Could not run query: ' . mysql_error();
+            echo 'Could not run query: ' . mysqli_error();
             exit;
         }else{
 //                var_dump($result_row);
@@ -188,14 +194,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //                var_dump($result);
                 $user_id = $result;
         }
-        $searchSchemeId_query = mysql_query("SELECT scheme_id FROM Scheme WHERE scheme_name = '$scheme_name';");
+        $searchSchemeId_query = mysqli_query($con,"SELECT scheme_id FROM Scheme WHERE scheme_name = '$scheme_name';");
 //        $check_query = "SELECT scheme_id FROM Scheme WHERE scheme_name = '$scheme_name';";
 //        echo ($check_query);
 //        echo ("above query");
-        $searched_row = mysql_fetch_row($searchSchemeId_query);
+        $searched_row = mysqli_fetch_row($searchSchemeId_query);
         $schemeId_result = $searched_row[0];
         if (!$result_row) {
-            echo 'Could not run query: ' . mysql_error();
+            echo 'Could not run query: ' . mysqli_error();
             exit;
         }else{
 //                var_dump($searched_row);
@@ -205,7 +211,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
 
         $insert_query2 = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
-        mysql_query($insert_query2);
+        mysqli_query($con,$insert_query2);
         $_SESSION['$user_id'] = $user_id;
         $_SESSION['$first_time_payment'] = "Y";
         Print '<script>alert("Successfully Registered!");</script>';

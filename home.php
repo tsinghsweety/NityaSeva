@@ -21,11 +21,17 @@
                 header("location:login.php"); // redirects if user is not logged in
             }
             $user = $_SESSION['user']; //assigns user value
+            
+            $con=mysqli_connect("localhost","root","","Admin_db");
 
-            mysql_connect("localhost", "root","") or die(mysql_error());
-            mysql_select_db("Admin_db") or die("Cannot connect to database");
-            $query = mysql_query("SELECT is_superAdmin FROM Admin WHERE username='$user';");
-            $fetched_row = mysql_fetch_row($query);
+            // Check connection
+            if (mysqli_connect_errno()) {
+              echo "Failed to connect to MySQL: " . mysqli_connect_error();
+            }
+//            mysqli_connect("localhost", "root","") or die(mysqli_error());
+//            mysqli_select_db("Admin_db") or die("Cannot connect to database");
+            $query = mysqli_query($con,"SELECT is_superAdmin FROM Admin WHERE username='$user';");
+            $fetched_row = mysqli_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
         ?>
         <div id="implinks">

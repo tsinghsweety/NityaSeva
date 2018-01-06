@@ -93,14 +93,19 @@
 </html>
 
 <?php
+    $con=mysqli_connect("localhost","root","","Admin_db");
 
+    // Check connection
+    if (mysqli_connect_errno()) {
+      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
          if(isset($_POST['scheme_name']))
             {
                 if($_POST['scheme_name']!=NULL)
                 {
-                    $scheme_name = mysql_real_escape_string($_POST['scheme_name']);
+                    $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
                     $selected_opt = "scheme_name";
                     $selected_val = $scheme_name;
                     $table_name = "User_Donation";
@@ -110,7 +115,7 @@
             {
                 if($_POST['is_active']!=NULL)
                 {
-                    $is_active = mysql_real_escape_string($_POST['is_active']);
+                    $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
                     $selected_opt = "is_active";
                     $selected_val = $is_active;
                     $table_name = "Users";
@@ -120,7 +125,7 @@
         {
             if($_POST['is_due']!=NULL)
             {
-                $is_due = mysql_real_escape_string($_POST['is_due']);
+                $is_due = mysqli_real_escape_string($con,$_POST['is_due']);
                 $selected_opt = "is_due";
                 $selected_val = $is_due;
                 $table_name = "User_Due";
@@ -130,7 +135,7 @@
         {
             if($_POST['corresponder']!=NULL)
             {
-                $corresponder = mysql_real_escape_string($_POST['corresponder']);
+                $corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
                 $selected_opt = "corresponder";
                 $selected_val = $corresponder;
                 $table_name = "User_Donation";
@@ -140,29 +145,29 @@
         {
             if($_POST['connected_to']!=NULL)
             {
-                $connected_to = mysql_real_escape_string($_POST['connected_to']);
+                $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
                 $selected_opt = "connected_to";
                 $selected_val = $connected_to;
                 $table_name = "Users";
             }
         }
-        mysql_connect("localhost", "root","") or die(mysql_error());
-        mysql_select_db("Admin_db") or die("Cannot connect to database");
+//        mysql_connect("localhost", "root","") or die(mysql_error());
+//        mysql_select_db("Admin_db") or die("Cannot connect to database");
         if($selected_val==NULL){
             Print '<script>alert("Select an option!");</script>';
-            Print '<script>window.location.assign("index.php");</script>';
+            Print '<script>window.location.assign("getMemberList.php");</script>';
         }
-        $result_query = mysql_query("SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';");
+        $result_query = mysqli_query($con,"SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';");
         $query_check = "SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';";
 //        echo($query_check);
         $result_row = array();
 
-        while($row =  mysql_fetch_assoc($result_query)) {
+        while($row =  mysqli_fetch_assoc($result_query)) {
             $result_row[] = $row['user_id'];
         }
 //        var_dump($result_row);
         if (!$result_row) {
-            echo 'No matching record found ' . mysql_error();
+            echo 'No matching record found ' . mysqli_error($con);
             exit;
         }else{
 //            echo "user id<br>";
@@ -171,8 +176,8 @@
                 $value_array = array();
                 foreach ($result_row as $value) {
 //                    echo "$value <br>";
-                    $record_query= mysql_query("SELECT * FROM Users WHERE user_id = '$value';");
-                    $records = mysql_fetch_assoc($record_query);
+                    $record_query= mysqli_query($con,"SELECT * FROM Users WHERE user_id = '$value';");
+                    $records = mysqli_fetch_assoc($record_query);
                     $records_array = (array)$records;
                     $records_keys = array_keys($records_array);
                     $records_values = array_values($records_array);

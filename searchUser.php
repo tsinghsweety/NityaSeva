@@ -38,14 +38,18 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        $phone_no = mysql_real_escape_string($_POST['phone_no']);
-        mysql_connect("localhost", "root","") or die(mysql_error());
-        mysql_select_db("Admin_db") or die("Cannot connect to database");
-        $result_query = mysql_query("SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
-        $result_row = mysql_fetch_row($result_query);
+        $con=mysqli_connect("localhost","root","","Admin_db");
+
+        // Check connection
+        if (mysqli_connect_errno()) {
+          echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+        $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
+        $result_query = mysqli_query($con,"SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
+        $result_row = mysqli_fetch_row($result_query);
         $result = $result_row[0];
         if (!$result_row) {
-            echo 'Could not run query: ' . mysql_error();
+            echo 'Could not run query: ' . mysqli_error($con);
             exit;
         }else{
 //                var_dump($result_row);
