@@ -16,7 +16,7 @@
         session_start();
     ?>
     <body>
-      <a href="home.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
+      <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
       <h2>Member List</h2>
       <form action="getMemberList.php" method="POST">
        <div class="container-fluid">
@@ -92,13 +92,13 @@
     </body>
 </html>
 
-<?php
-    $con=mysqli_connect("localhost","root","","Admin_db");
-
-    // Check connection
-    if (mysqli_connect_errno()) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
+<?php require 'dbConnect.php';
+//    $con=mysqli_connect("localhost","root","","Admin_db");
+//
+//    // Check connection
+//    if (mysqli_connect_errno()) {
+//      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+//    }
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
          if(isset($_POST['scheme_name']))

@@ -12,12 +12,12 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="css/searchUser.css">
     </head>
-    <?php
+    <?php 
         session_start();
     ?>
     <body>
-      <a href="home.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
-<!--      <a href="home.php">Click here to go back</a><br/><br/>-->
+      <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
+<!--      <a href="dashboard.php">Click here to go back</a><br/><br/>-->
         <h3>Search member by:</h3>
       <form action="searchUser.php" method="POST">
           <div class="container-fluid">
@@ -35,15 +35,15 @@
     </body>
 </html>
 
-<?php
+<?php require 'dbConnect.php';
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        $con=mysqli_connect("localhost","root","","Admin_db");
-
-        // Check connection
-        if (mysqli_connect_errno()) {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
+//        $con=mysqli_connect("localhost","root","","Admin_db");
+//
+//        // Check connection
+//        if (mysqli_connect_errno()) {
+//          echo "Failed to connect to MySQL: " . mysqli_connect_error();
+//        }
         $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
         $result_query = mysqli_query($con,"SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
         $result_row = mysqli_fetch_row($result_query);

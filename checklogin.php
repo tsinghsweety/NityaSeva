@@ -1,11 +1,5 @@
-<?php
+<?php require 'dbConnect.php';
     session_start();
-    $con=mysqli_connect("localhost","root","","Admin_db");
-
-    // Check connection
-    if (mysqli_connect_errno()) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
     $username = mysqli_real_escape_string($con,$_POST['username']);
     $password = mysqli_real_escape_string($con,$_POST['password']);
     $bool = true;
@@ -28,7 +22,7 @@
           if($password == $table_password)
           {
              $_SESSION['user'] = $username; //set the username in a session. This serves as a global variable
-             header("location: home.php"); // redirects the user to the authenticated home page
+             header("location: dashboard.php"); // redirects the user to the authenticated dashboard page
           }
        }
        else

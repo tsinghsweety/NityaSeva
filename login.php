@@ -15,7 +15,7 @@
     </body>
 </html>
 
-<?php
+<?php require 'dbConnect.php';
 //if(isset($_SESSION['user'])) {
 //     header("Location: /home.php"); // redirects them to homepage
 //     exit;
@@ -27,8 +27,8 @@
     //}
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $username = mysqli_real_escape_string($_POST['username']);
-    $password = mysqli_real_escape_string($_POST['password']);
+    $username = mysqli_real_escape_string($con,$_POST['username']);
+    $password = mysqli_real_escape_string($con,$_POST['password']);
 
     echo "Username entered is: ". $username . "<br/>";
     echo "Password entered is: ". $password;

@@ -19,7 +19,7 @@
 //        session_start();
     ?>
     <body>
-        <a href="home.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
+        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>Add New Admin</h2>
         <form action="addAdmin.php" method="POST">
           <div class="container-fluid">
@@ -64,15 +64,9 @@
         </form>
     </body>
 </html>
-<?php
+<?php require 'dbConnect.php';
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $con=mysqli_connect("localhost","root","","Admin_db");
-
-    // Check connection
-    if (mysqli_connect_errno()) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
     $title = mysqli_real_escape_string($con,$_POST['title']);
     $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
     $last_name = mysqli_real_escape_string($con,$_POST['last_name']);
@@ -111,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         {
             Print '<script>alert("Successfully Added!");</script>';
             mysqli_close($con);
-            Print '<script>window.location.assign("home.php");</script>';
+            Print '<script>window.location.assign("dashboard.php");</script>';
         }else{
             Print '<script>alert("NOT ADDED YET");</script>';
         }

@@ -14,17 +14,11 @@
     <link rel="stylesheet" href="css/followUp.css">
     <title>Payment Info Page</title>
 </head>
-<?php
+<?php require 'dbConnect.php';
     session_start(); //starts the session
    
     if($_SERVER["REQUEST_METHOD"] == "POST")
      {
-         $con=mysqli_connect("localhost","root","","Admin_db");
-
-        // Check connection
-        if (mysqli_connect_errno()) {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
 //        mysql_connect("localhost", "root","") or die(mysql_error());
 //        mysql_select_db("Admin_db") or die("Cannot connect to database");
         $query_hsRun =false;

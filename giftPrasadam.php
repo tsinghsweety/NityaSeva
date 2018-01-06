@@ -15,15 +15,10 @@
         <link rel="stylesheet" href="css/giftPrasadam.css">
         <title>Gift/Prasadam Info Page</title>
     </head>
-    <?php
+    <?php require 'dbConnect.php';
         session_start(); //starts the session
         $user_id = $_SESSION['$user_id'];
-        $con=mysqli_connect("localhost","root","","Admin_db");
-
-        // Check connection
-        if (mysqli_connect_errno()) {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
+        
         //FETCH FIRST NAME AND LAST NAME OF USER
         $fetch_user_info_query = mysqli_query($con,"SELECT title,first_name,last_name,user_lang FROM Users WHERE user_id='$user_id';");
         $fetched_row = mysqli_fetch_row($fetch_user_info_query);

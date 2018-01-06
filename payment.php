@@ -15,17 +15,12 @@
         <link rel="stylesheet" href="css/payment.css">
         <title>Payment Info Page</title>
     </head>
-    <?php
+    <?php require 'dbConnect.php';
         session_start(); //starts the session
         $user_id = $_SESSION['$user_id'];
         $first_time_payment = $_SESSION['$first_time_payment'];
 //        echo ($user_id);
-        $con=mysqli_connect("localhost","root","","Admin_db");
-
-        // Check connection
-        if (mysqli_connect_errno()) {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
+        
     //FETCH FIRST NAME AND LAST NAME OF USER
         $fetch_user_info_query = mysqli_query($con,"SELECT title,first_name,last_name FROM Users WHERE user_id='$user_id';");
         $fetched_row = mysqli_fetch_row($fetch_user_info_query);
@@ -133,7 +128,7 @@
         </form>
     </body>
 </html>
-<?php
+<?php require 'dbConnect.php';
 //session_start();
 //$user_id = $_SESSION['$user_id'];
 //echo ($user_id);
@@ -147,12 +142,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $payment_remarks = mysqli_real_escape_string($con,$_POST['payment_remarks']);
     $bool = true;
 
-    $con=mysqli_connect("localhost","root","","Admin_db");
-
-    // Check connection
-    if (mysqli_connect_errno()) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
+//    $con=mysqli_connect("localhost","root","","Admin_db");
+//
+//    // Check connection
+//    if (mysqli_connect_errno()) {
+//      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+//    }
 //    mysql_connect("localhost", "root","") or die(mysql_error());
 //    mysql_select_db("Admin_db") or die("Cannot connect to database");
     $query = mysqli_query($con,"Select * from User_Payment"); // CHECK TO BE ADDED
