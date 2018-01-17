@@ -27,9 +27,6 @@ class MemberRestHandler extends SimpleRest {
 			$response = $this->encodeJson($result);
 			echo $response;
 		}
-
-        $response = $this->encodeJson($result);
-        echo $response;
 	}
 
 	function add() {
