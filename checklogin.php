@@ -10,7 +10,7 @@
     $exists = mysqli_num_rows($query); //Checks if username exists
     $table_users = "";
     $table_password = "";
-    if($exists > 0) 
+    if($exists > 0)
     {
        while($row = mysqli_fetch_assoc($query)) // display all rows from query
        {
@@ -23,9 +23,11 @@
           if($password == $table_password)
           {
              $_SESSION['user'] = $username; //set the username in a session. This serves as a global variable
+             $_SESSION['logged_in'] = true; //set the username in a session. This serves as a global variable
+             $_SESSION['logged_in_user'] = $username; //set the username in a session. This serves as a global variable
              header("location: dashboard.php"); // redirects the user to the authenticated dashboard page
           }
-           
+
        }
        else
        {
