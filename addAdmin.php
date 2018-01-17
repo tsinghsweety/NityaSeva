@@ -77,7 +77,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $is_superAdmin = "N";
     $bool = true;
 
-    
+
 //    mysql_connect("localhost", "root","") or die(mysql_error());
 //    mysql_select_db("Admin_db") or die("Cannot connect to database");
     $query = mysqli_query($con,"Select * from Admin");
@@ -88,7 +88,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         if($username == $table_admins)
         {
             $bool = false;
-            Print '<script>alert("Username has been taken");</script>';
+            Print '<script>alert("Username already exists! Please choose another username!");</script>';
             mysqli_close($con);
             Print '<<script>window.location.assign("addAdmin.php");</script>';
         }

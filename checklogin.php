@@ -23,8 +23,8 @@
           if($password == $table_password)
           {
              $_SESSION['user'] = $username; //set the username in a session. This serves as a global variable
-             $_SESSION['logged_in'] = true; //set the username in a session. This serves as a global variable
-             $_SESSION['logged_in_user'] = $username; //set the username in a session. This serves as a global variable
+              $_SESSION['logged_in'] = true;
+              $_SESSION['logged_in_user'] = $username;
              header("location: dashboard.php"); // redirects the user to the authenticated dashboard page
           }
 

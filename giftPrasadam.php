@@ -18,7 +18,7 @@
     <?php require 'dbConnect.php';
         session_start(); //starts the session
         $user_id = $_SESSION['$user_id'];
-        
+
         //FETCH FIRST NAME AND LAST NAME OF USER
         $fetch_user_info_query = mysqli_query($con,"SELECT title,first_name,last_name,user_lang FROM Users WHERE user_id='$user_id';");
         $fetched_row = mysqli_fetch_row($fetch_user_info_query);

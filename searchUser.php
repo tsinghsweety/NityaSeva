@@ -12,7 +12,7 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="css/searchUser.css">
     </head>
-    <?php 
+    <?php
         session_start();
     ?>
     <body>

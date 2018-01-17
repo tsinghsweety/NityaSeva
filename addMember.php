@@ -46,11 +46,6 @@
                <div class="col-md-2"><input type="email" name="email_id" required="required" /></div>
                <div class="col-md-2"><label class="control-label" for="date">Start Date:</label></div>
                <div class="col-md-2"><input id="date" name="date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
-               <div class="col-md-1"> Corresponder:</div>
-               <div class="col-md-1">
-                   <input type="radio" name="is_corresponder" id="cy" required="required" value="Y"/><label for="cy">Yes</label>
-                   <input type="radio" name="is_corresponder" id="cn" required="required" value="N"/><label for="cn">No</label>
-               </div>
                <div class="col-md-1">Active:</div>
                <div class="col-md-1">
                    <input type="radio" name="is_active" id="ay" required="required" value="Y"/><label for="ay">Yes</label>
@@ -135,7 +130,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
     $email_id = mysqli_real_escape_string($con,$_POST['email_id']);
     $start_date = mysqli_real_escape_string($con,$_POST['date']);
-    $is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
     $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
     $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
     $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
@@ -173,17 +167,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $formatted_date = date_format($dateTime, 'Y-m-d');
 //        echo "FORMATTED DATE";
 //        echo $formatted_date;
-        $insert_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_corresponder,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_corresponder','$is_active','$connected_to','$user_lang');";
+
+        $insert_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
         mysqli_query($con,$insert_query);
 
         $result_query = mysqli_query($con,"SELECT user_id FROM Users WHERE phone_no = '$phone_no';");
-//        $check_query = "SELECT user_id FROM Users WHERE phone_no = '$phone_no';";
-//        echo ($check_query);
-//        echo ("above query");
         $result_row = mysqli_fetch_row($result_query);
         $result = $result_row[0];
         if (!$result_row) {
-            echo 'Could not run query: ' . mysqli_error();
+            echo 'Could not run query: ' . mysqli_error($con);
             exit;
         }else{
 //                var_dump($result_row);
@@ -191,12 +183,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //                var_dump($result);
                 $user_id = $result;
         }
-        $searchSchemeId_query = mysqli_query($con,"SELECT scheme_id FROM Scheme WHERE scheme_name = '$scheme_name';");
+        $searchSchemeId_query = mysqli_query($con,"SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';");
 //        $check_query = "SELECT scheme_id FROM Scheme WHERE scheme_name = '$scheme_name';";
 //        echo ($check_query);
 //        echo ("above query");
         $searched_row = mysqli_fetch_row($searchSchemeId_query);
         $schemeId_result = $searched_row[0];
+        $scheme_value = $searched_row[1];
         if (!$result_row) {
             echo 'Could not run query: ' . mysqli_error();
             exit;
@@ -206,15 +199,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 //                var_dump($schemeId_result);
                 $scheme_id = $schemeId_result;
         }
-
-        $insert_query2 = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
-        mysqli_query($con,$insert_query2);
+        $insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
+        mysqli_query($con,$insert_ud_query);
         $_SESSION['$user_id'] = $user_id;
         $_SESSION['$first_time_payment'] = "Y";
         Print '<script>alert("Successfully Registered!");</script>';
         mysqli_close($con);
         Print '<script>window.location.assign("payment.php");</script>';
-
     }
     mysqli_close($con);
 }

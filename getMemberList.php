@@ -29,6 +29,7 @@
                 var donation_category = ['Prabhupada Sevak', 'Jagannath Sevak', 'Govind Sevak'];
                 var is_active = ['Y', 'N'];
                 var is_due = ['Y', 'N'];
+                var cp = ['Y', 'N'];
                 var corresponder = ['Prashant', 'HG Sevyagovind Pr','Devajyoti'];
                 var connected_to = ['BV1', 'BV2','BV3', 'BV4','BV5', 'BV6','BV7', 'BV8','Nitai'];
 
@@ -49,6 +50,12 @@
                         ddl2.options.length = 0;
                         for (i = 0; i < is_due.length; i++) {
                             createOption(ddl2, is_due[i], is_due[i], "is_due");
+                        }
+                        break;
+                    case 'Monthly(Current) Payment Done':
+                        ddl2.options.length = 0;
+                        for (i = 0; i < cp.length; i++) {
+                            createOption(ddl2, cp[i], cp[i], "cp");
                         }
                         break;
                     case 'Corresponder':
@@ -77,13 +84,15 @@
               </script>
         <div class="col-md-2">
         <select id="ddl" onchange="configureDropDownLists(this,document.getElementById('ddl2'))">
-        <option value="">Select</option>
+        <option value="" selected>Select</option>
         <option value="Donation Category" name="scheme_name">Donation Category</option>
         <option value="Active" name="is_active">Active</option>
         <option value="Payment Due" name="is_due">Payment Due</option>
+        <option value="Monthly(Current) Payment Done" name="cp">Current Payment Done</option>
         <option value="Corresponder" name="corresponder">Corresponder</option>
         <option value="Connected To" name="connected_to">Connected To</option>
-        </select></div>
+        </select>
+        </div>
         <div class="col-md-2">
         <select id="ddl2">
         </select></div>
@@ -95,12 +104,6 @@
 </html>
 
 <?php require 'dbConnect.php';
-//    $con=mysqli_connect("localhost","root","","Admin_db");
-//
-//    // Check connection
-//    if (mysqli_connect_errno()) {
-//      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-//    }
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
          if(isset($_POST['scheme_name']))
@@ -133,6 +136,16 @@
                 $table_name = "User_Due";
             }
         }
+        if(isset($_POST['cp']))
+        {
+            if($_POST['cp']!=NULL)
+            {
+                $cp = mysqli_real_escape_string($con,$_POST['cp']);
+                $selected_opt = "cp";
+                $selected_val = $cp;
+                $table_name = "User_Due";
+            }
+        }
         if(isset($_POST['corresponder']))
         {
             if($_POST['corresponder']!=NULL)
@@ -159,8 +172,14 @@
             Print '<script>alert("Select an option!");</script>';
             Print '<script>window.location.assign("getMemberList.php");</script>';
         }
+
+//$doc = new DOMDocument("1.0");
+//$node = $doc->getElementById("ddl");
+//$node->setAttribute("selected", "selected");
+
         $result_query = mysqli_query($con,"SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';");
         $query_check = "SELECT user_id FROM $table_name WHERE $selected_opt = '$selected_val';";
+        echo " $selected_opt: "."$selected_val";
 //        echo($query_check);
         $result_row = array();
 
@@ -178,7 +197,8 @@
                 $value_array = array();
                 foreach ($result_row as $value) {
 //                    echo "$value <br>";
-                    $record_query= mysqli_query($con,"SELECT * FROM Users WHERE user_id = '$value';");
+//                    $record_query= mysqli_query($con,"SELECT * FROM Users WHERE user_id = '$value';");
+                    $record_query= mysqli_query($con,"SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE user_id = '$value';");
                     $records = mysqli_fetch_assoc($record_query);
                     $records_array = (array)$records;
                     $records_keys = array_keys($records_array);
@@ -208,7 +228,7 @@
 //                    echo($m);
 //                    echo("n:");
 //                    echo($n);
-                         echo "<table border='1'><tr>";
+                    echo "<table border='1'><tr>";
                     $splittedstring_key=explode(" ",implode(" ",$key_array));
                     foreach ($splittedstring_key as $key => $value) {
                         echo "<th>$value</th>";
@@ -224,7 +244,14 @@
                             echo "<td>$val</td>";
                             echo "</tr><tr>";
                         }else{
-                            echo "<td>$val</td>";
+                            if($count==1){
+                                echo "<td>";
+                                echo('<a href="test.php?action&user_id_clicked='.$val.'">'.$val.'</a>');
+                                echo "</td>";
+                            }else{
+                                echo "<td>$val</td>";
+                            }
+//                            echo "<td>$val</td>";
                         }
                     }
                     echo "</tr><br>";

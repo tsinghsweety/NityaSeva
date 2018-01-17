@@ -16,7 +16,7 @@
 </head>
 <?php require 'dbConnect.php';
     session_start(); //starts the session
-   
+
     if($_SERVER["REQUEST_METHOD"] == "POST")
      {
 //        mysql_connect("localhost", "root","") or die(mysql_error());

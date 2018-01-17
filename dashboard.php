@@ -14,6 +14,7 @@
     </head>
     <body>
         <?php require 'dbConnect.php';
+//            ob_start();
             session_start(); //starts the session
             if($_SESSION['user']){ //checks if user is logged in
             }
@@ -22,7 +23,7 @@
                 header("location:login.php"); // redirects if user is not logged in
             }
             $user = $_SESSION['user']; //assigns user value
-            
+
             $query = mysqli_query($con,"SELECT is_superAdmin FROM Admin WHERE username='$user';");
             $fetched_row = mysqli_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
