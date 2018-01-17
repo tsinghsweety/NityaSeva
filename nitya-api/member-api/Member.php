@@ -17,19 +17,47 @@ Class Member {
 		return $this->members;
 	}
 
+	$title = mysqli_real_escape_string($con,$_POST['title']);
+	$first_name = mysqli_real_escape_string($con,$_POST['first_name']);
+	$last_name = mysqli_real_escape_string($con,$_POST['last_name']);
+	$address = mysqli_real_escape_string($con,$_POST['address']);
+	$phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
+	$whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
+	$email_id = mysqli_real_escape_string($con,$_POST['email_id']);
+	$start_date = mysqli_real_escape_string($con,$_POST['date']);
+	$is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
+	$is_active = mysqli_real_escape_string($con,$_POST['is_active']);
+	$connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
+	$scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
+	$payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
+	$corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
+	$user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
+	$remarks = mysqli_real_escape_string($con,$_POST['remarks']);
+
 	public function addMember(){
-		if(isset($_POST['name'])){
-			$name = $_POST['name'];
-				$model = '';
-				$color = '';
-			if(isset($_POST['model'])){
-				$model = $_POST['model'];
-			}
-			if(isset($_POST['color'])){
-				$color = $_POST['color'];
-			}
-			$query = "insert into tbl_mobile (name,model,color) values ('" . $name ."','". $model ."','" . $color ."')";
+		if(isset($_POST['title']) && isset($_POST['first_name']) && isset($_POST['last_name'])){
 			$dbcontroller = new DBController();
+			$con = $dbcontroller->$conn;
+
+			$title = mysqli_real_escape_string($con,$_POST['title']);
+			$first_name = mysqli_real_escape_string($con,$_POST['first_name']);
+			$last_name = mysqli_real_escape_string($con,$_POST['last_name']);
+			$address = mysqli_real_escape_string($con,$_POST['address']);
+			$phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
+			$whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
+			$email_id = mysqli_real_escape_string($con,$_POST['email_id']);
+			$start_date = mysqli_real_escape_string($con,$_POST['date']);
+			$is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
+			$is_active = mysqli_real_escape_string($con,$_POST['is_active']);
+			$connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
+			$scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
+			$payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
+			$corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
+			$user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
+			$remarks = mysqli_real_escape_string($con,$_POST['remarks']);
+
+			$query = "insert into Users (title,first_name,last_name, address,phone_no,whatsapp,email_id,date,is_corresponder,is_active,connected_to,scheme_name,payment_type,corresponder,user_lang,remarks) values ('$name','$model','$color')";
+
 			$result = $dbcontroller->executeQuery($query);
 			if($result != 0){
 				$result = array('success'=>1);
