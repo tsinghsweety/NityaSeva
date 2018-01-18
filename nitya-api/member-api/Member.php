@@ -17,22 +17,22 @@ Class Member {
 		return $this->members;
 	}
 
-	$title = mysqli_real_escape_string($con,$_POST['title']);
-	$first_name = mysqli_real_escape_string($con,$_POST['first_name']);
-	$last_name = mysqli_real_escape_string($con,$_POST['last_name']);
-	$address = mysqli_real_escape_string($con,$_POST['address']);
-	$phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
-	$whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
-	$email_id = mysqli_real_escape_string($con,$_POST['email_id']);
-	$start_date = mysqli_real_escape_string($con,$_POST['date']);
-	$is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
-	$is_active = mysqli_real_escape_string($con,$_POST['is_active']);
-	$connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
-	$scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
-	$payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
-	$corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
-	$user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
-	$remarks = mysqli_real_escape_string($con,$_POST['remarks']);
+	// $title = mysqli_real_escape_string($con,$_POST['title']);
+	// $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
+	// $last_name = mysqli_real_escape_string($con,$_POST['last_name']);
+	// $address = mysqli_real_escape_string($con,$_POST['address']);
+	// $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
+	// $whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
+	// $email_id = mysqli_real_escape_string($con,$_POST['email_id']);
+	// $start_date = mysqli_real_escape_string($con,$_POST['date']);
+	// $is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
+	// $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
+	// $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
+	// $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
+	// $payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
+	// $corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
+	// $user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
+	// $remarks = mysqli_real_escape_string($con,$_POST['remarks']);
 
 	public function addMember(){
 		if(isset($_POST['title']) && isset($_POST['first_name']) && isset($_POST['last_name'])){

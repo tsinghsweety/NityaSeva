@@ -15,7 +15,9 @@ var MEMBER = {
         var corresponder = $("[name=corresponder]").val();
         var user_lang = $("[name=user_lang]").val();
         var remarks = $("[name=remarks]").val();
-        
+
+        // alert("hi");
+
         var data = {
             title: title,
             first_name: first_name,
@@ -33,9 +35,12 @@ var MEMBER = {
             user_lang: user_lang,
             remarks: remarks
         };
-        
+
+        var serverAddr = location.origin;
+        var apiPath = serverAddr + "/NityaSeva/nitya-api/";
+
         $.ajax({
-            url: "nitya-api/member-api/create",
+            url: apiPath + "member-api/member/create",
             method: "POST",
             data: JSON.stringify(data),
             dataType: "json",
