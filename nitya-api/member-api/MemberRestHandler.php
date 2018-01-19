@@ -39,7 +39,8 @@ class MemberRestHandler extends SimpleRest {
 			$statusCode = 200;
 		}
 
-		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		// $requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$requestContentType = 'application/json';
 		$this ->setHttpHeaders($requestContentType, $statusCode);
 		$result = $rawData;
 

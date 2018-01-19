@@ -35,34 +35,78 @@ Class Member {
 	// $remarks = mysqli_real_escape_string($con,$_POST['remarks']);
 
 	public function addMember(){
-		if(isset($_POST['title']) && isset($_POST['first_name']) && isset($_POST['last_name'])){
+		$data = json_decode(file_get_contents('php://input'), true);
+		// print_r($data);
+		if(isset($data['title']) && isset($data['first_name']) && isset($data['last_name'])){
 			$dbcontroller = new DBController();
-			$con = $dbcontroller->$conn;
+			$con = $dbcontroller->connectDB();
 
-			$title = mysqli_real_escape_string($con,$_POST['title']);
-			$first_name = mysqli_real_escape_string($con,$_POST['first_name']);
-			$last_name = mysqli_real_escape_string($con,$_POST['last_name']);
-			$address = mysqli_real_escape_string($con,$_POST['address']);
-			$phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
-			$whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
-			$email_id = mysqli_real_escape_string($con,$_POST['email_id']);
-			$start_date = mysqli_real_escape_string($con,$_POST['date']);
-			$is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
-			$is_active = mysqli_real_escape_string($con,$_POST['is_active']);
-			$connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
-			$scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
-			$payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
-			$corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
-			$user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
-			$remarks = mysqli_real_escape_string($con,$_POST['remarks']);
+			$title = mysqli_real_escape_string($con,$data['title']);
+			$first_name = mysqli_real_escape_string($con,$data['first_name']);
+			$last_name = mysqli_real_escape_string($con,$data['last_name']);
+			$address = mysqli_real_escape_string($con,$data['address']);
+			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
+			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
+			$email_id = mysqli_real_escape_string($con,$data['email_id']);
+			$start_date = mysqli_real_escape_string($con,$data['start_date']);
+			// $is_corresponder = mysqli_real_escape_string($con,$data['is_corresponder']);
+			$is_active = mysqli_real_escape_string($con,$data['is_active']);
+			$connected_to = mysqli_real_escape_string($con,$data['connected_to']);
+			$scheme_name = mysqli_real_escape_string($con,$data['scheme_name']);
+			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
+			$corresponder = mysqli_real_escape_string($con,$data['corresponder']);
+			$user_lang = mysqli_real_escape_string($con,$data['user_lang']);
+			$remarks = mysqli_real_escape_string($con,$data['remarks']);
 
-			$query = "insert into Users (title,first_name,last_name, address,phone_no,whatsapp,email_id,date,is_corresponder,is_active,connected_to,scheme_name,payment_type,corresponder,user_lang,remarks) values ('$name','$model','$color')";
+			$dateTime = date_create_from_format('d/m/Y',$start_date);
+			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$result = $dbcontroller->executeQuery($query);
-			if($result != 0){
-				$result = array('success'=>1);
-				return $result;
+			$query = mysqli_query($con,"Select * from Users");
+	    $query2 = mysqli_query($con,"Select * from User_Donation");
+
+			$user_already_ex_q = "SELECT user_id FROM Users WHERE phone_no = '$phone_no';";
+
+			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
+
+			$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
+
+			$result = array('success'=>0, "msg"=>"method not run");
+			//check if phone no already exists
+			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+			if(count($alreadyExistingUserRes) > 0){
+				//If yes then send already existing message
+				$result = array('success'=>0, "msg"=>"phone number already taken");
+			} else {
+				//If No, then insert user into Users table
+				$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
+				if($insertUserResult > 0){
+					$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+					if(count($newUserRes) > 0){
+						$user_id = $newUserRes[0]['user_id'];
+						$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
+						if(count($schemeQueryRes) > 0){
+							$scheme_id = $schemeQueryRes[0]["scheme_id"];
+
+							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
+
+							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
+
+							if($insertUserDonationRes > 0){
+								$result = array('success'=>1, 'status'=>'created', 'msg'=>'member added successfully');
+							}
+						}
+					}
+				}
+				// echo($insertUserResult);
 			}
+
+			// $result = $dbcontroller->executeQuery($query);
+			// if($result != 0){
+			// 	$result = array('success'=>1);
+			// 	return $result;
+			// }
+
+			return $result;
 		}
 	}
 
