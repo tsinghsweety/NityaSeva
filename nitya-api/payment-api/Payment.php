@@ -6,11 +6,11 @@ A domain Class to demonstrate RESTful web services
 Class Payment {
 	private $payments = array();
 	public function getAllPayment(){
-		if(isset($_GET['id'])){
-			$id = $_GET['id'];
-			$query = 'SELECT * FROM User_Payment WHERE user_id=' .$id;
+		if(isset($_GET['user_id'])){
+			$user_id = $_GET['user_id'];
+			$query = 'SELECT * FROM User_Payment WHERE user_id=' .$user_id. ' ORDER BY payment_date DESC';
 		} else {
-			$query = 'SELECT * FROM User_Payment';
+			$query = 'SELECT * FROM User_Payment ORDER BY payment_date DESC';
 		}
 		$dbcontroller = new DBController();
 		$this->payments = $dbcontroller->executeSelectQuery($query);

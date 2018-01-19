@@ -10,6 +10,21 @@ $(document).ready(function(){
     };
     date_input.datepicker(options);
     $("#addMember").off("click").on("click", MEMBER.addMember);
+    $("#showPaymentHistory").off("click").on("click", function(){
+      sessionStorage.setItem('historyType', 'payment');
+    });
+    $("#showBTGHistory").off("click").on("click", function(){
+      sessionStorage.setItem('historyType', 'btg');
+    });
+    $("#showGiftHistory").off("click").on("click", function(){
+      sessionStorage.setItem('historyType', 'gift');
+    });
+    $("#showPrasadamHistory").off("click").on("click", function(){
+      sessionStorage.setItem('historyType', 'prasadam');
+    });
+    $("#showFollowupHistory").off("click").on("click", function(){
+      sessionStorage.setItem('historyType', 'followup');
+    });
 
     $("section:gt(0)").hide();
     $("section#member-section").show();

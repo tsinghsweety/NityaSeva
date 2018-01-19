@@ -17,7 +17,7 @@ RewriteRule ^member/update/([0-9]+)/$   member-api/RestController.php?page_key=u
 RewriteRule ^member/update/([0-9]+)$    member/update/$1/ [L]
 
 #Payment APIs
-RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&id=$1 [nc,qsa]
+RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
 RewriteRule ^payment/list$   payment-api/RestController.php?page_key=list [nc,qsa]
 
 RewriteRule ^payment/create/$   payment-api/RestController.php?page_key=create [L]
