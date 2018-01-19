@@ -38,14 +38,35 @@ var MEMBER = {
 
         var serverAddr = location.origin;
         var apiPath = serverAddr + "/NityaSeva/nitya-api/";
+        console.log(apiPath);
 
         $.ajax({
             url: apiPath + "member-api/member/create",
+            // url: apiPath + "member-api/RestController.php?page_key=create",
             method: "POST",
             data: JSON.stringify(data),
-            dataType: "json",
+            // dataType: "json",
             success: function(data, statusTxt){
                 console.log(data, statusTxt);
+                if(data.success === 1){
+                  var userData = data.userData;
+                  COMMON.disableInnerEls("section:eq(0)");
+
+                  //Fill Various Field Values
+                  $('[name=payment_scheme_name]').val(userData['scheme_name']);
+                  $('[name=payment_scheme_value]').val(userData['scheme_value']);
+                  $('[name=btg_lang]').val(userData['user_lang']);
+                  $('[name=due_amt]').val(userData['scheme_value']);
+
+                  $("section:gt(0)").show();
+                  COMMON.showModal("myModal", "Yay!", data.msg);
+                } else if(data.success === 0) {
+                  if(data.msg === "API issue"){
+                    COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+                  } else {
+                    COMMON.showModal("myModal", "Sorry", data.msg);
+                  }
+                }
             },
             error: function(xhr, status){
                 console.log(xhr, status);

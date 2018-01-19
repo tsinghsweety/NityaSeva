@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var date_input=$('input[name="date"]'); //our date input has the name "date"
+    var date_input=$('input[name="start_date"]'); //our date input has the name "date"
     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
     var options={
     format: 'dd/mm/yyyy',
@@ -10,4 +10,7 @@ $(document).ready(function(){
     };
     date_input.datepicker(options);
     $("#addMember").off("click").on("click", MEMBER.addMember);
+
+    $("section:gt(0)").hide();
+    $("section#member-section").show();
 });

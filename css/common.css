@@ -3,5 +3,28 @@
   margin: -40px 15px 0px 0px;
 /*  border: none;*/
 /*  padding: 4px 12px!important;*/
-  color: black;    
+  color: black;
+}
+
+.modal .modal-title {
+  float: left;
+}
+
+.sprite {
+  background-image: url(../img/Sprite.png);
+  background-repeat: no-repeat;
+  background-position: -240px -233px;
+  background-color: transparent;
+  height: 33px;
+  width: 32px;
+  z-index: 999;
+  border: 0;
+  padding: 0;
+  float: right;
+  cursor: pointer;
+  outline: 0;
+}
+
+.disabled * {
+  disabled: disabled;
 }
