@@ -10,4 +10,7 @@ $(document).ready(function(){
     };
     date_input.datepicker(options);
     $("#addMember").off("click").on("click", MEMBER.addMember);
+
+    $("section:gt(0)").hide();
+    $("section#member-section").show();
 });

@@ -33,12 +33,12 @@
         </div>
     </div>
         <a href="searchUser.php"><span class="glyphicon glyphicon-home"></span></a>
-        <section>
+        <section id="member-section">
             <header class="clearfix">
                 <h2>Member Details</h2>
                 <a href="javascript:void(0);">Member Detail History</a>
             </header>
-            <div>
+            <div class="content">
               <div class="container-fluid">
                <div class="row">
                    <div class="col-md-2">Title:</div>
@@ -110,19 +110,18 @@
             </div>
         </section>
 
-        <section>
+        <section id="payment-section">
             <header class="clearfix">
                 <h2>Payment Details</h2>
                 <a href="javascript:void(0);">Payment History</a>
             </header>
-
-            <form action="payment.php" method="POST" class="clearfix">
+            <div class="content">
                <div class="container-fluid">
                    <div class="row">
                        <div class="col-md-2">Donation Category Name:</div>
-                       <div class="col-md-2"><input type="text" name="scheme_name" value="<?=$scheme_name?>"disabled/></div>
+                       <div class="col-md-2"><input type="text" name="payment_scheme_name" value="<?=$scheme_name?>"disabled/></div>
                        <div class="col-md-2">Donation Value in INR:</div>
-                       <div class="col-md-2"><input type="text" name="scheme_value" value="<?=$scheme_value?>" disabled/></div>
+                       <div class="col-md-2"><input type="text" name="payment_scheme_value" value="<?=$scheme_value?>" disabled/></div>
                        <div class="form-group">
                            <div class="col-md-2"><label for="sel1_pt">Payment Type:</label></div>
                            <div class="col-md-2"><select class="form-control" id="sel1_pt"  name="payment_type" width="10%">
@@ -149,91 +148,111 @@
                    <div class="col-md-2"><input type="text" name="payment_remarks" required="required" /></div>
                    </div>
                 </div>
-               <input type="submit" id="addpayment" value="Add Entry"/>
-            </form>
+               <input type="submit" id="addpayment" value="Add Payment"/>
+            </div>
         </section>
-        <h2>BTG Details</h2>
-        <form action="giftPrasadam.php" method="POST">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">BTG Language:</div>
-                    <div class="col-md-2"><input type="text" name="btg_lang" value="<?=$user_lang?>" disabled/></div>
+        <section id="btg-section">
+            <header class="clearfix">
+                <h2>BTG Details</h2>
+                <a href="javascript:void(0);">BTG History</a>
+            </header>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2">BTG Language:</div>
+                        <div class="col-md-2"><input type="text" name="btg_lang" value="<?=$user_lang?>" disabled/></div>
 
-                    <div class="col-md-2">BTG Description:</div>
-                    <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">Dispatched:</div>
-                    <div class="col-md-2">
-                       <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
-                       <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                        <div class="col-md-2">BTG Description:</div>
+                        <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
                     </div>
-                    <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                    <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
+                    <div class="row">
+                        <div class="col-md-2">Dispatched:</div>
+                        <div class="col-md-2">
+                           <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
+                           <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                        </div>
+                        <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
+                        <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
 
-                    <div class="col-md-2">Remarks: </div>
-                    <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
-                </div>
-            </div>
-            <input type="submit" id="gp" value="Add Entry"/>
-        </form>
-        <h2>Gift Details</h2>
-        <form action="giftPrasadam.php" method="POST">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">Gift Description:</div>
-                    <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">Dispatched:</div>
-                    <div class="col-md-2">
-                       <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
-                       <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                        <div class="col-md-2">Remarks: </div>
+                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
                     </div>
-                    <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                    <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
-
-                    <div class="col-md-2">Remarks: </div>
-                    <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
                 </div>
+                <input type="submit" id="gp" value="Add BTG"/>
             </div>
-            <input type="submit" id="gp" value="Add Entry"/>
-        </form>
-        <h2>Prasadam Details</h2>
-        <form action="giftPrasadam.php" method="POST">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">Prasadam Description:</div>
-                    <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">Dispatched:</div>
-                    <div class="col-md-2">
-                       <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
-                       <input type="radio" name="is_dispatched" required="required" value="N"/> No
+        </section>
+        <section id="gift-section">
+            <header class="clearfix">
+                <h2>Gift Details</h2>
+                <a href="javascript:void(0);">Gift History</a>
+            </header>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2">Gift Description:</div>
+                        <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
                     </div>
-                    <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                    <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
+                    <div class="row">
+                        <div class="col-md-2">Dispatched:</div>
+                        <div class="col-md-2">
+                           <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
+                           <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                        </div>
+                        <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
+                        <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
 
-                    <div class="col-md-2">Remarks: </div>
-                    <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                        <div class="col-md-2">Remarks: </div>
+                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                    </div>
                 </div>
+                <input type="submit" id="gp" value="Add Gift"/>
             </div>
-            <input type="submit" id="gp" value="Add Entry"/>
-        </form>
-        <h2>Follow-up Details</h2>
-    <form action="followUp.php" method="POST">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2"><label class="control-label" for="date">FollowUp Date: </label></div>
-                <div class="col-md-2"><input id="date" name="followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
-                <div class="col-md-2">FollowUp Remarks:</div>
-                <div class="col-md-2"><input type="text" name="followup_remark" required="required"/></div>
-                <div class="col-md-2"><label class="control-label" for="date">Next FollowUp Date:</label></div>
-                <div class="col-md-2"><input id="date" name="nxt_followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+        </section>
+        <section id="prasadam-section">
+            <header class="clearfix">
+                <h2>Prasadam Details</h2>
+                <a href="javascript:void(0);">Prasadam History</a>
+            </header>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2">Prasadam Description:</div>
+                        <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">Dispatched:</div>
+                        <div class="col-md-2">
+                           <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
+                           <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                        </div>
+                        <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
+                        <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
+
+                        <div class="col-md-2">Remarks: </div>
+                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                    </div>
+                </div>
+                <input type="submit" id="gp" value="Add Prasadam"/>
             </div>
-        </div>
-        <input type="submit" id="followupbtn" value="Add Details"/>
-    </form>
+        </section>
+        <section id="followup-section">
+            <header class="clearfix">
+                <h2>Follow-up Details</h2>
+                <a href="javascript:void(0);">Follow-up History</a>
+            </header>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2"><label class="control-label" for="date">FollowUp Date: </label></div>
+                        <div class="col-md-2"><input id="date" name="followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                        <div class="col-md-2">FollowUp Remarks:</div>
+                        <div class="col-md-2"><input type="text" name="followup_remark" required="required"/></div>
+                        <div class="col-md-2"><label class="control-label" for="date">Next FollowUp Date:</label></div>
+                        <div class="col-md-2"><input id="date" name="nxt_followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                    </div>
+                </div>
+                <input type="submit" id="followupbtn" value="Add Followup"/>
+            </div>
+        </section>
     </body>
 </html>

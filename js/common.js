@@ -4,5 +4,9 @@ var COMMON = {
       $(this).find(".modal-title").text(headerTxt);
       $(this).find(".modal-body").html(bodyHtml);
     }).modal("show");
+  },
+  disableInnerEls: function(selector){
+    var elsToDisable = $(selector).find("input, textarea, select, button");
+    elsToDisable.attr("disabled", "disabled");
   }
 };

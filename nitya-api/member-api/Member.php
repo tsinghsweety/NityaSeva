@@ -36,6 +36,7 @@ Class Member {
 
 	public function addMember(){
 		$data = json_decode(file_get_contents('php://input'), true);
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
 		// print_r($data);
 		if(isset($data['title']) && isset($data['first_name']) && isset($data['last_name'])){
 			$dbcontroller = new DBController();
@@ -64,60 +65,58 @@ Class Member {
 			$query = mysqli_query($con,"Select * from Users");
 	    $query2 = mysqli_query($con,"Select * from User_Donation");
 
-			$user_already_ex_q = "SELECT user_id FROM Users WHERE phone_no = '$phone_no';";
+			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE phone_no = '$phone_no';";
 
 			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
 
 			$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
 
-			$result = array('success'=>0, "msg"=>"method not run");
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already taken", "Code"=>'901');
+				$result = array('success'=>0, "msg"=>"Phone number already taken", "code"=>'901');
 			} else {
 				//If No, check scheme table if scheme exists
 				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
 				if(count($schemeQueryRes) > 0){
-					$scheme_id = $schemeQueryRes[0]["scheme_id"];
+					$scheme_data = $schemeQueryRes[0];
+					$scheme_id = $scheme_data["scheme_id"];
+					$scheme_value = $scheme_data["scheme_value"];
 
 					//insert user into Users table
 					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
 					if($insertUserResult > 0){
 						$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 						if(count($newUserRes) > 0){
-							$user_id = $newUserRes[0]['user_id'];
+							$userData = $newUserRes[0];
+							$user_id = $userData['user_id'];
 
 							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
 
 							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
 
 							if($insertUserDonationRes > 0){
-								$result = array('success'=>1, 'msg'=>'Member added successfully', "Code"=>'200');
+								$userData['scheme_id'] = $scheme_id;
+								$userData['scheme_name'] = $scheme_name;
+								$userData['scheme_value'] = $scheme_value;
+								$result = array('success'=>1, 'msg'=>'Member added successfully', "code"=>'200', 'userData'=>$userData);
 							} else {
-								$result = array('success'=>0, "msg"=>"API issue", "Code"=>'904');
+								$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
 							}
 						}
 					} else {
-						$result = array('success'=>0, "msg"=>"API issue", "Code"=>'903');
+						$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
 					}
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "Code"=>'902');
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'902');
 				}
-
-
-				// echo($insertUserResult);
 			}
-
-			// $result = $dbcontroller->executeQuery($query);
-			// if($result != 0){
-			// 	$result = array('success'=>1);
-			// 	return $result;
-			// }
-
-			return $result;
+		} else {
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'906');
 		}
+
+		return $result;
 	}
 
 	public function deleteMember(){
