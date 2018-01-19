@@ -75,28 +75,38 @@ Class Member {
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"phone number already taken");
+				$result = array('success'=>0, "msg"=>"Phone number already taken", "Code"=>'901');
 			} else {
-				//If No, then insert user into Users table
-				$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
-				if($insertUserResult > 0){
-					$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
-					if(count($newUserRes) > 0){
-						$user_id = $newUserRes[0]['user_id'];
-						$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
-						if(count($schemeQueryRes) > 0){
-							$scheme_id = $schemeQueryRes[0]["scheme_id"];
+				//If No, check scheme table if scheme exists
+				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
+				if(count($schemeQueryRes) > 0){
+					$scheme_id = $schemeQueryRes[0]["scheme_id"];
+
+					//insert user into Users table
+					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
+					if($insertUserResult > 0){
+						$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+						if(count($newUserRes) > 0){
+							$user_id = $newUserRes[0]['user_id'];
 
 							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
 
 							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
 
 							if($insertUserDonationRes > 0){
-								$result = array('success'=>1, 'status'=>'created', 'msg'=>'member added successfully');
+								$result = array('success'=>1, 'msg'=>'Member added successfully', "Code"=>'200');
+							} else {
+								$result = array('success'=>0, "msg"=>"API issue", "Code"=>'904');
 							}
 						}
+					} else {
+						$result = array('success'=>0, "msg"=>"API issue", "Code"=>'903');
 					}
+				} else {
+					$result = array('success'=>0, "msg"=>"API issue", "Code"=>'902');
 				}
+
+
 				// echo($insertUserResult);
 			}
 
