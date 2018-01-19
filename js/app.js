@@ -13,4 +13,6 @@ $(document).ready(function(){
 
     $("section:gt(0)").hide();
     $("section#member-section").show();
+
+    COMMON.initCommonVars();
 });

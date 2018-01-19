@@ -3,61 +3,36 @@ require_once("../common/dbcontroller.php");
 /*
 A domain Class to demonstrate RESTful web services
 */
-Class Member {
-	private $members = array();
-	public function getAllMember(){
+Class Payment {
+	private $payments = array();
+	public function getAllPayment(){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
-			$query = 'SELECT * FROM Users WHERE user_id=' .$id;
+			$query = 'SELECT * FROM User_Payment WHERE user_id=' .$id;
 		} else {
-			$query = 'SELECT * FROM Users';
+			$query = 'SELECT * FROM User_Payment';
 		}
 		$dbcontroller = new DBController();
-		$this->members = $dbcontroller->executeSelectQuery($query);
-		return $this->members;
+		$this->payments = $dbcontroller->executeSelectQuery($query);
+		return $this->payments;
 	}
 
-	// $title = mysqli_real_escape_string($con,$_POST['title']);
-	// $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
-	// $last_name = mysqli_real_escape_string($con,$_POST['last_name']);
-	// $address = mysqli_real_escape_string($con,$_POST['address']);
-	// $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
-	// $whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
-	// $email_id = mysqli_real_escape_string($con,$_POST['email_id']);
-	// $start_date = mysqli_real_escape_string($con,$_POST['date']);
-	// $is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
-	// $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
-	// $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
-	// $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
-	// $payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
-	// $corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
-	// $user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
-	// $remarks = mysqli_real_escape_string($con,$_POST['remarks']);
-
-	public function addMember(){
+	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
 		// print_r($data);
-		if(isset($data['title']) && isset($data['first_name']) && isset($data['last_name'])){
+		if(isset($data['payment_scheme_name']) && isset($data['payment_scheme_value']) && isset($_SESSION['selected_member_id'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$title = mysqli_real_escape_string($con,$data['title']);
-			$first_name = mysqli_real_escape_string($con,$data['first_name']);
-			$last_name = mysqli_real_escape_string($con,$data['last_name']);
-			$address = mysqli_real_escape_string($con,$data['address']);
-			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
-			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
-			$email_id = mysqli_real_escape_string($con,$data['email_id']);
-			$start_date = mysqli_real_escape_string($con,$data['start_date']);
-			// $is_corresponder = mysqli_real_escape_string($con,$data['is_corresponder']);
-			$is_active = mysqli_real_escape_string($con,$data['is_active']);
-			$connected_to = mysqli_real_escape_string($con,$data['connected_to']);
-			$scheme_name = mysqli_real_escape_string($con,$data['scheme_name']);
 			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
-			$corresponder = mysqli_real_escape_string($con,$data['corresponder']);
-			$user_lang = mysqli_real_escape_string($con,$data['user_lang']);
-			$remarks = mysqli_real_escape_string($con,$data['remarks']);
+	    $payment_details = mysqli_real_escape_string($con,$data['payment_details']);
+	    $amt_paid = mysqli_real_escape_string($con,$data['amt_paid']);
+	    $payment_date = mysqli_real_escape_string($con,$data['payment_date']);
+	    $payment_remarks = mysqli_real_escape_string($con,$data['payment_remarks']);
+			$scheme_name = mysqli_real_escape_string($con,$data['payment_scheme_name']);;
+			$scheme_value = mysqli_real_escape_string($con,$data['payment_scheme_value']);;
+			$member_id = mysqli_real_escape_string($con,$data['payment_scheme_value']);;
 
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
@@ -91,7 +66,6 @@ Class Member {
 						if(count($newUserRes) > 0){
 							$userData = $newUserRes[0];
 							$user_id = $userData['user_id'];
-							$_SESSION['selected_member_id'] = $user_id;
 
 							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
 
@@ -120,7 +94,7 @@ Class Member {
 		return $result;
 	}
 
-	public function deleteMember(){
+	public function deletePayment(){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'DELETE FROM tbl_mobile WHERE id = '.$id;
@@ -133,7 +107,7 @@ Class Member {
 		}
 	}
 
-	public function editMember(){
+	public function editPayment(){
 		if(isset($_POST['name']) && isset($_GET['id'])){
 			$name = $_POST['name'];
 			$model = $_POST['model'];

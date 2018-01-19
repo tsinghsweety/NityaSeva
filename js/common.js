@@ -1,4 +1,9 @@
 var COMMON = {
+  initCommonVars: function(){
+    var serverAddr = location.origin;
+
+    CONSTANTS.API_PATH = serverAddr + "/websites/NityaSeva/nitya-api/";
+  },
   showModal: function(modalId, headerTxt, bodyHtml){
     $("#"+modalId).off("show.bs.modal").on("show.bs.modal", function(){
       $(this).find(".modal-title").text(headerTxt);

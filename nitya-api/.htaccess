@@ -1,0 +1,30 @@
+# Turn rewrite engine on
+Options +FollowSymlinks
+RewriteEngine on
+
+#Member APIs
+# map neat URL to internal URL
+RewriteRule ^member/list/([0-9]+)$   member-api/RestController.php?page_key=list&id=$1 [nc,qsa]
+RewriteRule ^member/list$   member-api/RestController.php?page_key=list [nc,qsa]
+
+RewriteRule ^member/create/$   member-api/RestController.php?page_key=create [L]
+RewriteRule ^member/create$    member/create/ [L]
+
+RewriteRule ^member/delete/([0-9]+)/$   member-api/RestController.php?page_key=delete&id=$1 [L]
+RewriteRule ^member/delete([0-9]+)$     member/delete/$1 [L]
+
+RewriteRule ^member/update/([0-9]+)/$   member-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^member/update/([0-9]+)$    member/update/$1/ [L]
+
+#Payment APIs
+RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&id=$1 [nc,qsa]
+RewriteRule ^payment/list$   payment-api/RestController.php?page_key=list [nc,qsa]
+
+RewriteRule ^payment/create/$   payment-api/RestController.php?page_key=create [L]
+RewriteRule ^payment/create$    payment/create/ [L]
+
+RewriteRule ^payment/delete/([0-9]+)/$   payment-api/RestController.php?page_key=delete&id=$1 [L]
+RewriteRule ^payment/delete([0-9]+)$     payment/delete/$1 [L]
+
+RewriteRule ^payment/update/([0-9]+)/$   payment-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^payment/update/([0-9]+)$    payment/update/$1/ [L]

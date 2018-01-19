@@ -1,13 +1,13 @@
 <?php
 require_once("../common/SimpleRest.php");
-require_once("Member.php");
+require_once("Payment.php");
 
-class MemberRestHandler extends SimpleRest {
+class PaymentRestHandler extends SimpleRest {
 
-	function getAllMembers() {
+	function getAllPayments() {
 
-		$member = new Member();
-		$rawData = $member->getAllMember();
+		$payment = new Payment();
+		$rawData = $payment->getAllPayment();
         //var_dump($rawData);
 
 		if(empty($rawData)) {
@@ -30,8 +30,8 @@ class MemberRestHandler extends SimpleRest {
 	}
 
 	function add() {
-		$member = new Member();
-		$rawData = $member->addMember();
+		$payment = new Payment();
+		$rawData = $payment->addPayment();
 		if(empty($rawData)) {
 			$statusCode = 404;
 			$rawData = array('success' => 0);
@@ -50,9 +50,9 @@ class MemberRestHandler extends SimpleRest {
 		}
 	}
 
-	function deleteMobileById() {
-		$member = new Member();
-		$rawData = $member->deleteMember();
+	function deletePaymentById() {
+		$payment = new Payment();
+		$rawData = $payment->deletePayment();
 
 		if(empty($rawData)) {
 			$statusCode = 404;
@@ -71,9 +71,9 @@ class MemberRestHandler extends SimpleRest {
 		}
 	}
 
-	function editMemberById() {
-		$member = new Member();
-		$rawData = $member->editMember();
+	function editPaymentById() {
+		$payment = new Payment();
+		$rawData = $payment->editPayment();
 		if(empty($rawData)) {
 			$statusCode = 404;
 			$rawData = array('success' => 0);
