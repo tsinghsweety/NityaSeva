@@ -26,8 +26,8 @@ $(document).ready(function(){
       sessionStorage.setItem('historyType', 'followup');
     });
 
-    $("section:gt(0)").hide();
-    $("section#member-section").show();
+    // $("section:gt(0)").hide();
+    // $("section#member-section").show();
 
     COMMON.initCommonVars();
 });

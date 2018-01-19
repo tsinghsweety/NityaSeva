@@ -28,3 +28,42 @@ RewriteRule ^payment/delete([0-9]+)$     payment/delete/$1 [L]
 
 RewriteRule ^payment/update/([0-9]+)/$   payment-api/RestController.php?page_key=update&id=$1 [L]
 RewriteRule ^payment/update/([0-9]+)$    payment/update/$1/ [L]
+
+#BTG APIs
+RewriteRule ^btg/list/([0-9]+)$   btg-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
+RewriteRule ^btg/list$   btg-api/RestController.php?page_key=list [nc,qsa]
+
+RewriteRule ^btg/create/$   btg-api/RestController.php?page_key=create [L]
+RewriteRule ^btg/create$    btg/create/ [L]
+
+RewriteRule ^btg/delete/([0-9]+)/$   btg-api/RestController.php?page_key=delete&id=$1 [L]
+RewriteRule ^btg/delete([0-9]+)$     btg/delete/$1 [L]
+
+RewriteRule ^btg/update/([0-9]+)/$   btg-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^btg/update/([0-9]+)$    btg/update/$1/ [L]
+
+#Gift APIs
+RewriteRule ^gift/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=gift&user_id=$1 [nc,qsa]
+RewriteRule ^gift/list$   gift-prasadam-api/RestController.php?page_key=list&type=gift [nc,qsa]
+
+RewriteRule ^gift/create/$   gift-prasadam-api/RestController.php?page_key=create&type=gift [L]
+RewriteRule ^gift/create$    gift/create/ [L]
+
+RewriteRule ^gift/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=gift&user_id=$1 [L]
+RewriteRule ^gift/delete([0-9]+)$     gift/delete/$1 [L]
+
+RewriteRule ^gift/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=gift&user_id=$1 [L]
+RewriteRule ^gift/update/([0-9]+)$    gift/update/$1/ [L]
+
+#Prasadam APIs
+RewriteRule ^prasadam/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=prasadam&user_id=$1 [nc,qsa]
+RewriteRule ^prasadam/list$   gift-prasadam-api/RestController.php?page_key=list&type=prasadam [nc,qsa]
+
+RewriteRule ^prasadam/create/$   gift-prasadam-api/RestController.php?page_key=create&type=prasadam [L]
+RewriteRule ^prasadam/create$    prasadam/create/ [L]
+
+RewriteRule ^prasadam/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=prasadam&user_id=$1 [L]
+RewriteRule ^prasadam/delete([0-9]+)$     prasadam/delete/$1 [L]
+
+RewriteRule ^prasadam/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=prasadam&user_id=$1 [L]
+RewriteRule ^prasadam/update/([0-9]+)$    prasadam/update/$1/ [L]
