@@ -8,7 +8,10 @@ Class BTG {
 	public function getAllBTG(){
 		if(isset($_GET['user_id'])){
 			$user_id = $_GET['user_id'];
-			$query = 'SELECT * FROM User_BTG WHERE user_id=' .$user_id. ' ORDER BY dispatch_date DESC';
+			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
+			.' ub.description, ub.is_dispatched, ub.dispatch_date, ub.remarks'
+			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id and ub.user_id=' .$user_id
+			. ' ORDER BY ub.dispatch_date DESC';
 		} else {
 			$query = 'SELECT * FROM User_BTG ORDER BY dispatch_date DESC';
 		}

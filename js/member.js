@@ -103,7 +103,104 @@ var MEMBER = {
 
               tableEl += "</tbody></table>";
 
-              $("#paymentHistory").html(tableEl);
+              $('title, h2').text('Payment History');
+              $('#userId').text(payment['user_id']);
+              $('#userName').text(payment['title'] + ' ' + payment['first_name'] + ' ' + payment['last_name']);
+              $("#history").html(tableEl);
+            }
+          },
+          error: function(xhr, statusTxt){
+            console.log(xhr, status);
+          }
+      });
+    },
+    showGiftPrasadamHistory: function(type){
+      var memberId = sessionStorage.getItem('member_id');
+      console.log("memberId", memberId);
+      console.log("CONSTANTS", CONSTANTS);
+      var url = CONSTANTS.API_PATH + type + "/list/"+memberId;
+      console.log("url", url);
+      $.ajax({
+          url: url,
+          // url: apiPath + "member-api/RestController.php?page_key=create",
+          method: "GET",
+          // data: JSON.stringify(data),
+          dataType: "json",
+          success: function(data, statusTxt){
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var gifts = data.output;
+              var tableEl = "<table border='1'><thead><th>Dispatch Date</th><th>Description</th><th>Is Dispatched?</th><th>Remarks</th></thead>";
+              tableEl += "<tbody>";
+
+              for(var i=0; i<gifts.length; i++){
+                var gift = gifts[i];
+                tableEl += "<tr>";
+                tableEl += "<td>"+gift['dispatch_date']+"</td>";
+                tableEl += "<td>"+gift['description']+"</td>";
+                tableEl += "<td>"+(gift['is_dispatched']==="Y"? "Yes" : "No")+"</td>";
+                tableEl += "<td>"+gift['remarks']+"</td>";
+                tableEl += "</tr>";
+              }
+
+              tableEl += "</tbody></table>";
+
+              var fullName = gift['title'] + ' ' + gift['first_name'] + ' ' + gift['last_name'];
+              var title = "Gift History";
+              if(type === "prasadam"){
+                title = "Prasadam History";
+              }
+
+              $('title, h2').text(title);
+              $('#userId').text(gift['user_id']);
+              $('#userName').text(fullName);
+              $("#history").html(tableEl);
+            }
+          },
+          error: function(xhr, statusTxt){
+            console.log(xhr, status);
+          }
+      });
+    },
+    showBTGHistory: function(){
+      var memberId = sessionStorage.getItem('member_id');
+      console.log("memberId", memberId);
+      console.log("CONSTANTS", CONSTANTS);
+      var url = CONSTANTS.API_PATH + "btg/list/"+memberId;
+      console.log("url", url);
+      $.ajax({
+          url: url,
+          // url: apiPath + "member-api/RestController.php?page_key=create",
+          method: "GET",
+          // data: JSON.stringify(data),
+          dataType: "json",
+          success: function(data, statusTxt){
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var btgs = data.output;
+              var tableEl = "<table border='1'><thead><th>Dispatch Date</th><th>Description</th><th>BTG Language</th><th>Is Dispatched?</th><th>Remarks</th></thead>";
+              tableEl += "<tbody>";
+
+              for(var i=0; i<btgs.length; i++){
+                var btg = btgs[i];
+                tableEl += "<tr>";
+                tableEl += "<td>"+btg['dispatch_date']+"</td>";
+                tableEl += "<td>"+btg['description']+"</td>";
+                tableEl += "<td>"+btg['btg_lang']+"</td>";
+                tableEl += "<td>"+(btg['is_dispatched']==="Y"? "Yes" : "No")+"</td>";
+                tableEl += "<td>"+btg['remarks']+"</td>";
+                tableEl += "</tr>";
+              }
+
+              tableEl += "</tbody></table>";
+
+              var fullName = btg['title'] + ' ' + btg['first_name'] + ' ' + btg['last_name'];
+              var title = "Back To Godhead History";
+
+              $('title, h2').text(title);
+              $('#userId').text(btg['user_id']);
+              $('#userName').text(fullName);
+              $("#history").html(tableEl);
             }
           },
           error: function(xhr, statusTxt){

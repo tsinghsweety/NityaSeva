@@ -3,25 +3,25 @@ require_once("../common/dbcontroller.php");
 /*
 A domain Class to demonstrate RESTful web services
 */
-Class Payment {
-	private $payments = array();
-	public function getAllPayment(){
-		if(isset($_GET['user_id'])){
+Class GiftPrasadam {
+	private $btgs = array();
+	public function getAllGiftPrasadam(){
+		if(isset($_GET['user_id']) && isset($_GET['type'])){
 			$user_id = $_GET['user_id'];
-			$query = 'SELECT u.title, u.first_name,'
-			.' u.last_name, u.user_id, up.payment_type, up.payment_date,'
-			.' up.amt_paid, up.payment_details, up.payment_remarks '
-			.'FROM Users u, User_Payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
-			. ' ORDER BY up.payment_date DESC';
+			$type = $_GET['type'];
+			$query = 'SELECT * FROM User_Gift_Prasadam WHERE user_id=' .$user_id. ' and type="'.$type. '" ORDER BY dispatch_date DESC';
+		} else if(isset($_GET['type'])){
+			$type = $_GET['type'];
+			$query = 'SELECT * FROM User_Gift_Prasadam WHERE type="'.$type. '" ORDER BY dispatch_date DESC';
 		} else {
-			$query = 'SELECT * FROM User_Payment ORDER BY payment_date DESC';
+			$query = 'SELECT * FROM User_Gift_Prasadam ORDER BY dispatch_date DESC';
 		}
 		$dbcontroller = new DBController();
-		$this->payments = $dbcontroller->executeSelectQuery($query);
-		return $this->payments;
+		$this->btgs = $dbcontroller->executeSelectQuery($query);
+		return $this->btgs;
 	}
 
-	public function addPayment(){
+	public function addGiftPrasadam(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
 		// print_r($data);
@@ -98,7 +98,7 @@ Class Payment {
 		return $result;
 	}
 
-	public function deletePayment(){
+	public function deleteGiftPrasadam(){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'DELETE FROM tbl_mobile WHERE id = '.$id;
@@ -111,7 +111,7 @@ Class Payment {
 		}
 	}
 
-	public function editPayment(){
+	public function editGiftPrasadam(){
 		if(isset($_POST['name']) && isset($_GET['id'])){
 			$name = $_POST['name'];
 			$model = $_POST['model'];
