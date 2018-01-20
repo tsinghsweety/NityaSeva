@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var date_input=$('input[name="start_date"]'); //our date input has the name "date"
+    var date_input=$('input[name$="date"]'); //our date input has the name "date"
     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
     var options={
     format: 'dd/mm/yyyy',
@@ -26,8 +26,9 @@ $(document).ready(function(){
       sessionStorage.setItem('historyType', 'followup');
     });
 
-    // $("section:gt(0)").hide();
-    // $("section#member-section").show();
+    // sessionStorage.setItem("member_id", 55);
 
     COMMON.initCommonVars();
+
+    MEMBER.initMember();
 });

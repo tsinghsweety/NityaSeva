@@ -67,3 +67,16 @@ RewriteRule ^prasadam/delete([0-9]+)$     prasadam/delete/$1 [L]
 
 RewriteRule ^prasadam/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=prasadam&user_id=$1 [L]
 RewriteRule ^prasadam/update/([0-9]+)$    prasadam/update/$1/ [L]
+
+#Followup APIs
+RewriteRule ^followup/list/([0-9]+)$   followup-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
+RewriteRule ^followup/list$   followup-api/RestController.php?page_key=list [nc,qsa]
+
+RewriteRule ^followup/create/$   followup-api/RestController.php?page_key=create [L]
+RewriteRule ^followup/create$    followup/create/ [L]
+
+RewriteRule ^followup/delete/([0-9]+)/$   followup-api/RestController.php?page_key=delete&user_id=$1 [L]
+RewriteRule ^followup/delete([0-9]+)$     followup/delete/$1 [L]
+
+RewriteRule ^followup/update/([0-9]+)/$   followup-api/RestController.php?page_key=update&user_id=$1 [L]
+RewriteRule ^followup/update/([0-9]+)$    followup/update/$1/ [L]

@@ -1,4 +1,57 @@
 var MEMBER = {
+    initMember: function(){
+      var memberId = sessionStorage.getItem("member_id");
+      if(memberId){
+        $.ajax({
+            url: CONSTANTS.API_PATH + "member/list/" + memberId,
+            // url: apiPath + "member-api/RestController.php?page_key=create",
+            method: "GET",
+            // data: JSON.stringify(data),
+            dataType: "json",
+            success: function(data, statusTxt){
+                console.log(data, statusTxt);
+                if(data.output.length > 0){
+                  var userData = data.output[0];
+                  COMMON.disableInnerEls("section:eq(0)");
+
+                  var userActive = userData['is_active'];
+
+                  //Fill Various Field Values
+                  $('[name=payment_scheme_name]').val(userData['scheme_name']);
+                  $('[name=payment_scheme_value]').val(userData['scheme_value']);
+                  $('[name=btg_lang]').val(userData['user_lang']);
+                  $('[name=due_amt]').val(userData['scheme_value']);
+
+                  $("[name=title]").val(userData['title']);
+                  $("[name=first_name]").val(userData['first_name']);
+                  $("[name=last_name]").val(userData['last_name']);
+                  $("[name=address]").val(userData['address']);
+                  $("[name=phone_no]").val(userData['phone_no']);
+                  $("[name=whatsapp]").val(userData['whatsapp']);
+                  $("[name=email_id]").val(userData['email_id']);
+                  $("[name=start_date]").val(userData['start_date']);
+                  $("[name=is_active][value="+userActive+"]").prop("checked", "true");
+                  $("[name=connected_to]").val(userData['connected_to']);
+                  $("[name=scheme_name]").val(userData['scheme_name']);
+                  $("[name=payment_type]").val(userData['payment_type']);
+                  $("[name=corresponder]").val(userData['corresponder']);
+                  $("[name=user_lang]").val(userData['user_lang']);
+                  $("[name=remarks]").val(userData['remarks']);
+
+                  $("section:gt(0)").show();
+                } else {
+                  COMMON.showModal("myModal", "Sorry", "No member found for member id: " + memberId);
+                }
+            },
+            error: function(xhr, status){
+                console.log(xhr, status);
+            }
+        });
+      } else {
+        $("section:gt(0)").hide();
+        $("section#member-section").show();
+      }
+    },
     addMember: function(){
         var title = $("[name=title]").val();
         var first_name = $("[name=first_name]").val();
@@ -199,6 +252,50 @@ var MEMBER = {
 
               $('title, h2').text(title);
               $('#userId').text(btg['user_id']);
+              $('#userName').text(fullName);
+              $("#history").html(tableEl);
+            }
+          },
+          error: function(xhr, statusTxt){
+            console.log(xhr, status);
+          }
+      });
+    },
+    showFollowupHistory: function(){
+      var memberId = sessionStorage.getItem('member_id');
+      console.log("memberId", memberId);
+      console.log("CONSTANTS", CONSTANTS);
+      var url = CONSTANTS.API_PATH + "followup/list/"+memberId;
+      console.log("url", url);
+      $.ajax({
+          url: url,
+          // url: apiPath + "member-api/RestController.php?page_key=create",
+          method: "GET",
+          // data: JSON.stringify(data),
+          dataType: "json",
+          success: function(data, statusTxt){
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var followups = data.output;
+              var tableEl = "<table border='1'><thead><th>Followup Date</th><th>Remarks</th><th>Next Date</th></thead>";
+              tableEl += "<tbody>";
+
+              for(var i=0; i<followups.length; i++){
+                var followup = followups[i];
+                tableEl += "<tr>";
+                tableEl += "<td>"+followup['followup_date']+"</td>";
+                tableEl += "<td>"+followup['followup_remark']+"</td>";
+                tableEl += "<td>"+followup['nxt_followup_date']+"</td>";
+                tableEl += "</tr>";
+              }
+
+              tableEl += "</tbody></table>";
+
+              var fullName = followup['title'] + ' ' + followup['first_name'] + ' ' + followup['last_name'];
+              var title = "Back To Godhead History";
+
+              $('title, h2').text(title);
+              $('#userId').text(followup['user_id']);
               $('#userName').text(fullName);
               $("#history").html(tableEl);
             }
