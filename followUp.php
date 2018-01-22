@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
@@ -14,9 +18,7 @@
     <link rel="stylesheet" href="css/followUp.css">
     <title>Payment Info Page</title>
 </head>
-<?php require 'dbConnect.php';
-    session_start(); //starts the session
-
+<?php
     if($_SERVER["REQUEST_METHOD"] == "POST")
      {
 //        mysql_connect("localhost", "root","") or die(mysql_error());

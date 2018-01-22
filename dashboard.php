@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -13,9 +17,7 @@
         <title>Dashboard</title>
     </head>
     <body>
-        <?php require 'dbConnect.php';
-//            ob_start();
-            session_start(); //starts the session
+        <?php
             if($_SESSION['user']){ //checks if user is logged in
             }
             else{
@@ -31,7 +33,7 @@
         ?>
         <div id="implinks">
             <a id="addadmin" href="addAdmin.php"> Add Admin</a>
-            <a href="addMember.php"> Add member</a>
+            <a href="test.html" onclick="sessionStorage.clear();"> Add member</a>
             <a href="searchUser.php"> Search User</a>
             <a href="getMemberList.php"> Get Member List</a>
 <!--            <a href="logout.php">Click here to logout</a><br/><br/>    -->

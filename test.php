@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,8 +25,7 @@
 
     </body>
 </html>
-<?php require 'dbConnect.php';
-//        session_start();
+<?php
         $selected_id = $_GET['user_id_clicked'];
         echo "$selected_id";
         $search_query =  mysqli_query($con,"SELECT title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE user_id = '$selected_id';");

@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,9 +19,6 @@
         <link rel="stylesheet" href="css/addMember.css">
         <title>Member Add</title>
     </head>
-    <?php
-        session_start();
-    ?>
     <body>
         <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
         <h2>New Member</h2>

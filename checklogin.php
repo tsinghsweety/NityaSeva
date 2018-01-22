@@ -1,5 +1,6 @@
-<?php require 'dbConnect.php';
-    session_start();
+<?php
+    require 'dbConnect.php';
+    session_start(); //starts the session
     $username = mysqli_real_escape_string($con,$_POST['username']);
     $password = mysqli_real_escape_string($con,$_POST['password']);
     $bool = true;

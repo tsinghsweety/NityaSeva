@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -15,7 +19,7 @@
     </body>
 </html>
 
-<?php require 'dbConnect.php';
+<?php
 //if(isset($_SESSION['user'])) {
 //     header("Location: /home.php"); // redirects them to homepage
 //     exit;
