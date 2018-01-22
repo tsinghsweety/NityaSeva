@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,8 +19,7 @@
         <link rel="stylesheet" href="css/giftPrasadam.css">
         <title>Gift/Prasadam Info Page</title>
     </head>
-    <?php require 'dbConnect.php';
-        session_start(); //starts the session
+    <?php
         $user_id = $_SESSION['$user_id'];
 
         //FETCH FIRST NAME AND LAST NAME OF USER

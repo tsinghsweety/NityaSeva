@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -14,14 +18,13 @@
     </head>
     <body>
         <?php
-            session_start(); //starts the session
             if($_SESSION['user']){ //checks if user is logged in
             }
             else{
                 header("location:login.php"); // redirects if user is not logged in
             }
             $user = $_SESSION['user']; //assigns user value
-            
+
             $con=mysqli_connect("localhost","root","","Admin_db");
 
             // Check connection

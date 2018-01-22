@@ -1,8 +1,9 @@
 var COMMON = {
   initCommonVars: function(){
-    var serverAddr = location.origin;
+    var lastIdx = location.href.lastIndexOf("/");
+    var projectAddr = location.href.substring(0, lastIdx);
 
-    CONSTANTS.API_PATH = serverAddr + "/websites/NityaSeva/nitya-api/";
+    CONSTANTS.API_PATH = projectAddr + "/nitya-api/";
   },
   showModal: function(modalId, headerTxt, bodyHtml){
     $("#"+modalId).off("show.bs.modal").on("show.bs.modal", function(){

@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -13,9 +17,7 @@
         <title>Dashboard</title>
     </head>
     <body>
-        <?php require 'dbConnect.php';
-//            ob_start();
-            session_start(); //starts the session
+        <?php
             if($_SESSION['user']){ //checks if user is logged in
             }
             else{

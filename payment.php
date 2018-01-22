@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,8 +19,7 @@
         <link rel="stylesheet" href="css/payment.css">
         <title>Payment Info Page</title>
     </head>
-    <?php require 'dbConnect.php';
-        session_start(); //starts the session
+    <?php
         function month_diff($start_date, $current_date)
         {
             $begin = new DateTime( $start_date );

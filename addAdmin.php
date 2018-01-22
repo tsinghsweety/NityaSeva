@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -63,7 +67,7 @@
         </form>
     </body>
 </html>
-<?php require 'dbConnect.php';
+<?php
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $title = mysqli_real_escape_string($con,$_POST['title']);

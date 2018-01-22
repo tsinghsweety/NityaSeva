@@ -1,3 +1,7 @@
+<?php
+require 'dbConnect.php';
+session_start(); //starts the session
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,9 +16,6 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="css/getMemberList.css">
     </head>
-    <?php
-        session_start();
-    ?>
     <body>
       <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
       <h2>Member List</h2>
@@ -103,7 +104,7 @@
     </body>
 </html>
 
-<?php require 'dbConnect.php';
+<?php
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
          if(isset($_POST['scheme_name']))
