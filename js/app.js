@@ -10,6 +10,7 @@ $(document).ready(function(){
     };
     date_input.datepicker(options);
     $("#addMember").off("click").on("click", MEMBER.addMember);
+    $("#add_btg").off("click").on("click", MEMBER.addBTG);
     $("#showPaymentHistory").off("click").on("click", function(){
       sessionStorage.setItem('historyType', 'payment');
     });
