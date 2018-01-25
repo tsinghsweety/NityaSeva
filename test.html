@@ -160,26 +160,35 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-2">BTG Language:</div>
-                        <div class="col-md-2"><input type="text" name="btg_lang" value="<?=$user_lang?>" disabled/></div>
+                        <div class="col-md-2">Preferred BTG Language:</div>
+                        <div class="col-md-2"><input type="text" name="btg_lang" value="" disabled/></div>
+
+                        <div class="col-md-2">Sent BTG Language:</div>
+                        <div class="col-md-2">
+                          <select class="form-control" name="sent_btg_lang" width="10%">
+                            <option>English</option>
+                            <option>Hindi</option>
+                            <option>Bengali</option>
+                          </select>
+                        </div>
 
                         <div class="col-md-2">BTG Description:</div>
-                        <div class="col-md-2"><textarea rows="4" cols="50" name="details" required="required"></textarea></div>
+                        <div class="col-md-2"><textarea rows="4" cols="50" name="btg_desc" required="required"></textarea></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">Dispatched:</div>
                         <div class="col-md-2">
-                           <input type="radio" name="is_dispatched" required="required" value="Y"/> Yes
-                           <input type="radio" name="is_dispatched" required="required" value="N"/> No
+                           <input type="radio" name="btg_is_dispatched" required="required" value="Y"/> Yes
+                           <input type="radio" name="btg_is_dispatched" required="required" value="N"/> No
                         </div>
                         <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                        <div class="col-md-2"><input id="date" name="dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
+                        <div class="col-md-2"><input id="date" name="btg_dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
 
                         <div class="col-md-2">Remarks: </div>
-                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                        <div class="col-md-2"><input type="text" name="btg_remarks" required="required" /></div>
                     </div>
                 </div>
-                <input type="submit" id="gp" value="Add BTG"/>
+                <input type="submit" id="add_btg" value="Add BTG"/>
             </div>
         </section>
         <section id="gift-section">
