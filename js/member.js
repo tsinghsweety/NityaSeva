@@ -230,6 +230,32 @@ var MEMBER = {
         }
       });
     },
+    addFollowup: function(){
+      var jsonData = COMMON.createFormDataJson("#followup-section");
+      console.log(jsonData);
+      $.ajax({
+        url: CONSTANTS.API_PATH + "followup/create",
+        // url: apiPath + "member-api/RestController.php?page_key=create",
+        method: "POST",
+        data: JSON.stringify(jsonData),
+        // dataType: "json",
+        success: function(data, statusTxt){
+          console.log(data, statusTxt);
+          if(data.success === 1){
+            COMMON.showModal("myModal", "Yay!", data.msg);
+          } else if(data.success === 0) {
+            if(data.msg === "API issue"){
+              COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+            } else {
+              COMMON.showModal("myModal", "Sorry", data.msg);
+            }
+          }
+        },
+        error: function(xhr, statusTxt){
+          console.log(xhr, status);
+        }
+      });
+    },
     showPaymentHistory: function(){
       var memberId = sessionStorage.getItem('member_id');
       console.log("memberId", memberId);

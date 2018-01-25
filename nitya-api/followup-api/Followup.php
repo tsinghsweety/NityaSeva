@@ -26,76 +26,37 @@ Class Followup {
 
 	public function addFollowup(){
 		$data = json_decode(file_get_contents('php://input'), true);
-		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
-		// print_r($data);
-		if(isset($data['payment_scheme_name']) && isset($data['payment_scheme_value']) && isset($_SESSION['selected_member_id'])){
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'601');
+		// $_SESSION['selected_member_id'] = 55;
+		// print_r($_SESSION);
+		// echo $_SESSION;
+		if(isset($_SESSION['selected_member_id']) && isset($data['followup_date'])
+		&& isset($data['followup_remark']) && isset($data['nxt_followup_date'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
-	    $payment_details = mysqli_real_escape_string($con,$data['payment_details']);
-	    $amt_paid = mysqli_real_escape_string($con,$data['amt_paid']);
-	    $payment_date = mysqli_real_escape_string($con,$data['payment_date']);
-	    $payment_remarks = mysqli_real_escape_string($con,$data['payment_remarks']);
-			$scheme_name = mysqli_real_escape_string($con,$data['payment_scheme_name']);;
-			$scheme_value = mysqli_real_escape_string($con,$data['payment_scheme_value']);;
-			$member_id = mysqli_real_escape_string($con,$data['payment_scheme_value']);;
+			$user_id = mysqli_real_escape_string($con,$_SESSION['selected_member_id']);
+	    $followup_date = mysqli_real_escape_string($con,$data['followup_date']);
+	    $followup_remark = mysqli_real_escape_string($con,$data['followup_remark']);
+	    $nxt_followup_date = mysqli_real_escape_string($con,$data['nxt_followup_date']);
 
-			$dateTime = date_create_from_format('d/m/Y',$start_date);
+			$dateTime = date_create_from_format('d/m/Y',$followup_date);
+			$nxtDateTime = date_create_from_format('d/m/Y',$nxt_followup_date);
+
 			$formatted_date = date_format($dateTime, 'Y-m-d');
+			$nxt_formatted_date = date_format($nxtDateTime, 'Y-m-d');
 
-			$query = mysqli_query($con,"Select * from Users");
-	    $query2 = mysqli_query($con,"Select * from User_Donation");
+			$insert_followup_query = "INSERT INTO Follow_Up(user_id,followup_date,followup_remark,nxt_followup_date) VALUES('$user_id','$formatted_date','$followup_remark','$nxt_formatted_date');";
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE phone_no = '$phone_no';";
-
-			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
-
-			$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
-
-			//check if phone no already exists
-			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
-			if(count($alreadyExistingUserRes) > 0){
-				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already taken", "code"=>'901');
+			//insert user into Follow_Up table
+			$insertFollowupResult = $dbcontroller->executeQuery($insert_followup_query);
+			if($insertFollowupResult > 0){
+				$result = array('success'=>1, 'msg'=>'Followup added successfully', "code"=>'200', 'userData'=>$data);
 			} else {
-				//If No, check scheme table if scheme exists
-				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
-				if(count($schemeQueryRes) > 0){
-					$scheme_data = $schemeQueryRes[0];
-					$scheme_id = $scheme_data["scheme_id"];
-					$scheme_value = $scheme_data["scheme_value"];
-
-					//insert user into Users table
-					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
-					if($insertUserResult > 0){
-						$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
-						if(count($newUserRes) > 0){
-							$userData = $newUserRes[0];
-							$user_id = $userData['user_id'];
-
-							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
-
-							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
-
-							if($insertUserDonationRes > 0){
-								$userData['scheme_id'] = $scheme_id;
-								$userData['scheme_name'] = $scheme_name;
-								$userData['scheme_value'] = $scheme_value;
-								$result = array('success'=>1, 'msg'=>'Member added successfully', "code"=>'200', 'userData'=>$userData);
-							} else {
-								$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
-							}
-						}
-					} else {
-						$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
-					}
-				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'902');
-				}
+				$result = array('success'=>0, "msg"=>"API issue", "code"=>'603');
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'906');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'602');
 		}
 
 		return $result;

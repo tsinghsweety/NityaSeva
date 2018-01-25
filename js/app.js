@@ -13,6 +13,7 @@ $(document).ready(function(){
     $("#add_btg").off("click").on("click", MEMBER.addBTG);
     $("#add_gift").off("click").on("click", {type: 'gift'}, MEMBER.addGiftPrasadam);
     $("#add_prasadam").off("click").on("click", {type: 'prasadam'}, MEMBER.addGiftPrasadam);
+    $("#add_followup").off("click").on("click", MEMBER.addFollowup);
     $("#showPaymentHistory").off("click").on("click", function(){
       sessionStorage.setItem('historyType', 'payment');
     });
