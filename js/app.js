@@ -11,6 +11,8 @@ $(document).ready(function(){
     date_input.datepicker(options);
     $("#addMember").off("click").on("click", MEMBER.addMember);
     $("#add_btg").off("click").on("click", MEMBER.addBTG);
+    $("#add_gift").off("click").on("click", {type: 'gift'}, MEMBER.addGiftPrasadam);
+    $("#add_prasadam").off("click").on("click", {type: 'prasadam'}, MEMBER.addGiftPrasadam);
     $("#showPaymentHistory").off("click").on("click", function(){
       sessionStorage.setItem('historyType', 'payment');
     });

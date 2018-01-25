@@ -27,7 +27,7 @@ Class BTG {
 	public function addBTG(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'801');
-		// $_SESSION['selected_member_id'] = 55;
+		$_SESSION['selected_member_id'] = 55;
 		// print_r($_SESSION);
 		// echo $_SESSION;
 		if(isset($_SESSION['selected_member_id']) && isset($data['btg_lang'])
