@@ -23,7 +23,7 @@ Class GiftPrasadam {
 
 	public function addGiftPrasadam(){
 		$data = json_decode(file_get_contents('php://input'), true);
-		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'901');
 		// print_r($data);
 		if(isset($data['payment_scheme_name']) && isset($data['payment_scheme_value']) && isset($_SESSION['selected_member_id'])){
 			$dbcontroller = new DBController();
@@ -41,20 +41,18 @@ Class GiftPrasadam {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$query = mysqli_query($con,"Select * from Users");
-	    $query2 = mysqli_query($con,"Select * from User_Donation");
+			// $query = mysqli_query($con,"Select * from Users");
+	    // $query2 = mysqli_query($con,"Select * from User_Donation");
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE phone_no = '$phone_no';";
+			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM Users WHERE phone_no = '$phone_no';";
 
 			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
-
-			$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
 
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already taken", "code"=>'901');
+				$result = array('success'=>0, "msg"=>"Phone number already taken", "code"=>'902');
 			} else {
 				//If No, check scheme table if scheme exists
 				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
@@ -62,6 +60,8 @@ Class GiftPrasadam {
 					$scheme_data = $schemeQueryRes[0];
 					$scheme_id = $scheme_data["scheme_id"];
 					$scheme_value = $scheme_data["scheme_value"];
+
+					$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
 
 					//insert user into Users table
 					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
@@ -75,24 +75,24 @@ Class GiftPrasadam {
 
 							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
 
-							if($insertUserDonationRes > 0){
-								$userData['scheme_id'] = $scheme_id;
-								$userData['scheme_name'] = $scheme_name;
-								$userData['scheme_value'] = $scheme_value;
+							// if($insertUserDonationRes > 0){
+								// $userData['scheme_id'] = $scheme_id;
+								// $userData['scheme_name'] = $scheme_name;
+								// $userData['scheme_value'] = $scheme_value;
 								$result = array('success'=>1, 'msg'=>'Member added successfully', "code"=>'200', 'userData'=>$userData);
-							} else {
-								$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
-							}
+							// } else {
+							// 	$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
+							// }
 						}
 					} else {
-						$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
+						$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
 					}
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'902');
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
 				}
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'906');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
 		}
 
 		return $result;

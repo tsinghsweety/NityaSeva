@@ -34,9 +34,33 @@ var MEMBER = {
                   $("[name=connected_to]").val(userData['connected_to']);
                   $("[name=scheme_name]").val(userData['scheme_name']);
                   $("[name=payment_type]").val(userData['payment_type']);
-                  $("[name=corresponder]").val(userData['corresponder']);
                   $("[name=user_lang]").val(userData['user_lang']);
                   $("[name=remarks]").val(userData['remarks']);
+
+                  var optionList = "<option>Select</option>";
+                  $.ajax({
+                    url: CONSTANTS.API_PATH + "member/corresponderlist",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data, statusTxt) {
+                      console.log(data, statusTxt);
+                      if(data.output.length > 0){
+                        var list = data.output;
+                        for(var i=0; i<list.length;i++){
+                          optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+                        }
+                      }
+
+                      optionList += "<option>New</option>";
+                      $("#corresponder_name").html(optionList);
+                      $("[name=corresponder]").val(userData['corresponder']);
+                    },
+                    error: function(xhr, status) {
+                      console.log(xhr, status);
+                      optionList += "<option>New</option>";
+                      $("#corresponder_name").html(optionList);
+                    }
+                  });
 
                   $("section:gt(0)").show();
                 } else {

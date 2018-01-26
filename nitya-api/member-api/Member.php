@@ -11,14 +11,14 @@ Class Member {
 			$id = $_GET['id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
-			.'u.connected_to, u.user_lang, ud.scheme_name, ud.corresponder, ud.remarks, s.scheme_value '
-			.' FROM Users u, User_Donation ud, Scheme s WHERE u.user_id=ud.user_id and s.scheme_id=ud.scheme_id '
+			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
+			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id '
 			.'and u.user_id=' .$id;
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
-			.'u.connected_to, u.user_lang as btg_lang, ud.scheme_name, s.scheme_value '
-			.' FROM Users u, User_Donation ud, Scheme s WHERE u.user_id=ud.user_id and s.scheme_id=ud.scheme_id';
+			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
+			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id';
 		}
 		// echo $query;
 		$dbcontroller = new DBController();
@@ -28,7 +28,7 @@ Class Member {
 
 	public function getAllCorresponder(){
 
-		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM User_Donation WHERE 1';
+		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM Users WHERE 1';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
@@ -54,7 +54,7 @@ Class Member {
 
 	public function addMember(){
 		$data = json_decode(file_get_contents('php://input'), true);
-		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'901');
 		// print_r($data);
 		if(isset($data['title']) && isset($data['first_name']) && isset($data['last_name'])){
 			$dbcontroller = new DBController();
@@ -80,20 +80,20 @@ Class Member {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$query = mysqli_query($con,"Select * from Users");
-	    $query2 = mysqli_query($con,"Select * from User_Donation");
+			// $query = mysqli_query($con,"Select * from Users");
+	    // $query2 = mysqli_query($con,"Select * from User_Donation");
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang FROM Users WHERE phone_no = '$phone_no';";
+			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM Users WHERE phone_no = '$phone_no';";
 
 			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
 
-			$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
+			// $insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
 
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'901');
+				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'902');
 			} else {
 				//If No, check scheme table if scheme exists
 				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
@@ -101,6 +101,8 @@ Class Member {
 					$scheme_data = $schemeQueryRes[0];
 					$scheme_id = $scheme_data["scheme_id"];
 					$scheme_value = $scheme_data["scheme_value"];
+
+					$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
 
 					//insert user into Users table
 					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
@@ -111,28 +113,28 @@ Class Member {
 							$user_id = $userData['user_id'];
 							$_SESSION['selected_member_id'] = $user_id;
 
-							$insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
+							// $insert_ud_query = "INSERT INTO User_Donation(user_id,scheme_id,scheme_name,payment_type,corresponder,remarks) VALUES('$user_id','$scheme_id','$scheme_name','$payment_type','$corresponder','$remarks');";
 
-							$insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
+							// $insertUserDonationRes = $dbcontroller->executeQuery($insert_ud_query);
 
-							if($insertUserDonationRes > 0){
-								$userData['scheme_id'] = $scheme_id;
-								$userData['scheme_name'] = $scheme_name;
+							// if($insertUserDonationRes > 0){
+							// 	$userData['scheme_id'] = $scheme_id;
+							// 	$userData['scheme_name'] = $scheme_name;
 								$userData['scheme_value'] = $scheme_value;
 								$result = array('success'=>1, 'msg'=>'Member added successfully', "code"=>'200', 'userData'=>$userData);
-							} else {
-								$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
-							}
+							// } else {
+							// 	$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
+							// }
 						}
 					} else {
-						$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
+						$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
 					}
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'902');
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'904');
 				}
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'906');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'903');
 		}
 
 		return $result;
