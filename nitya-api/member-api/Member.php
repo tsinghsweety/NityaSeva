@@ -83,7 +83,7 @@ Class Member {
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already taken", "code"=>'901');
+				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'901');
 			} else {
 				//If No, check scheme table if scheme exists
 				$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);

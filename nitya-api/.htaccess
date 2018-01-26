@@ -16,6 +16,19 @@ RewriteRule ^member/delete([0-9]+)$     member/delete/$1 [L]
 RewriteRule ^member/update/([0-9]+)/$   member-api/RestController.php?page_key=update&id=$1 [L]
 RewriteRule ^member/update/([0-9]+)$    member/update/$1/ [L]
 
+#Admin APIs
+RewriteRule ^admin/list/([0-9]+)$   admin-api/RestController.php?page_key=list&id=$1 [nc,qsa]
+RewriteRule ^admin/list$   admin-api/RestController.php?page_key=list [nc,qsa]
+
+RewriteRule ^admin/create/$   admin-api/RestController.php?page_key=create [L]
+RewriteRule ^admin/create$    admin/create/ [L]
+
+RewriteRule ^admin/delete/([0-9]+)/$   admin-api/RestController.php?page_key=delete&id=$1 [L]
+RewriteRule ^admin/delete([0-9]+)$     admin/delete/$1 [L]
+
+RewriteRule ^admin/update/([0-9]+)/$   admin-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^admin/update/([0-9]+)$    admin/update/$1/ [L]
+
 #Payment APIs
 RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
 RewriteRule ^payment/list$   payment-api/RestController.php?page_key=list [nc,qsa]

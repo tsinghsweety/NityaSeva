@@ -32,8 +32,9 @@ session_start(); //starts the session
             mysqli_close($con);
         ?>
         <div id="implinks">
-            <a id="addadmin" href="addAdmin.php"> Add Admin</a>
-            <a href="test.html" onclick="sessionStorage.clear();"> Add member</a>
+            <a id="addadmin" href="addAdmin.html"> Add Admin</a>
+            <a id="showadmins" href="adminsList.html"> Show Admin List</a>
+            <a href="member.html" onclick="sessionStorage.clear();"> Add member</a>
             <a href="searchUser.php"> Search User</a>
             <a href="getMemberList.php"> Get Member List</a>
 <!--            <a href="logout.php">Click here to logout</a><br/><br/>    -->
@@ -66,10 +67,10 @@ session_start(); //starts the session
 //            alert(is_superAdmin);
             if(is_superAdmin === "N")
             {
-//                document.getElementById("adminlogin").removeAttribute('href');
-//                document.getElementById("adminlogin").style.display='none';
                 document.getElementById("addadmin").removeAttribute('href');
                 document.getElementById("addadmin").style.display='none';
+                document.getElementById("showadmins").removeAttribute('href');
+                document.getElementById("showadmins").style.display='none';
             }
         </script>
     </body>

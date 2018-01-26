@@ -187,7 +187,7 @@ var MEMBER = {
         success: function(data, statusTxt){
           console.log(data, statusTxt);
           if(data.success === 1){
-            COMMON.showModal("myModal", "Yay!", data.msg);
+            COMMON.showModal("myModal", "Hari Bol!", data.msg);
           } else if(data.success === 0) {
             if(data.msg === "API issue"){
               COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
@@ -195,7 +195,6 @@ var MEMBER = {
               COMMON.showModal("myModal", "Sorry", data.msg);
             }
           }
-        },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
         }

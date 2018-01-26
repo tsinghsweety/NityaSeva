@@ -5,17 +5,25 @@ var COMMON = {
 
     CONSTANTS.API_PATH = projectAddr + "/nitya-api/";
   },
-  showModal: function(modalId, headerTxt, bodyHtml){
+  showModal: function(modalId, headerTxt, bodyHtml, resetSelector){
     $("#"+modalId).off("show.bs.modal").on("show.bs.modal", function(){
       $(this).find(".modal-title").text(headerTxt);
       $(this).find(".modal-body").html(bodyHtml);
     }).off("shown.bs.modal").on("shown.bs.modal", function(){
       $(this).find(".modal-header button").focus();
+    }).off("hidden.bs.modal").on("hidden.bs.modal", function(){
+      if(resetSelector){
+        COMMON.resetInnerEls(resetSelector);
+      }
     }).modal("show");
   },
   disableInnerEls: function(selector){
     var elsToDisable = $(selector).find("input, textarea, select, button");
     elsToDisable.attr("disabled", "disabled");
+  },
+  resetInnerEls: function(selector){
+    var toReset = $(selector).find("input, textarea, select");
+    toReset.removeAttr("disabled").val("");
   },
   createFormDataJson: function(parentId){
     var els = $(parentId).find("[name]");
