@@ -5,6 +5,7 @@ A domain Class to demonstrate RESTful web services
 */
 Class Member {
 	private $members = array();
+	private $corresponders = array();
 	public function getAllMember(){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
@@ -23,6 +24,15 @@ Class Member {
 		$dbcontroller = new DBController();
 		$this->members = $dbcontroller->executeSelectQuery($query);
 		return $this->members;
+	}
+
+	public function getAllCorresponder(){
+
+		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM User_Donation WHERE 1';
+		// echo $query;
+		$dbcontroller = new DBController();
+		$this->corresponders = $dbcontroller->executeSelectQuery($query);
+		return $this->corresponders;
 	}
 
 	// $title = mysqli_real_escape_string($con,$_POST['title']);

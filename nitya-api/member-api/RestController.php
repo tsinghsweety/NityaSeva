@@ -37,6 +37,11 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] == true) && !empty($
 						$memberRestHandler = new MemberRestHandler();
 						$memberRestHandler->editMemberById();
 					break;
+
+					case "corresponderlist":
+						//to handle REST Url /member/corresponderlist
+						$memberRestHandler = new MemberRestHandler();
+						$memberRestHandler->getAllCorresponders();
 			}
 	}
 } else {

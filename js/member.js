@@ -49,6 +49,29 @@ var MEMBER = {
         });
       } else {
         $("section:gt(0)").hide();
+        var optionList = "<option>Select</option>";
+        $.ajax({
+          url: CONSTANTS.API_PATH + "member/corresponderlist",
+          type: "GET",
+          dataType: "json",
+          success: function(data, statusTxt) {
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var list = data.output;
+              for(var i=0; i<list.length;i++){
+                optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+              }
+            }
+
+            optionList += "<option>New</option>";
+            $("#corresponder_name").html(optionList);
+          },
+          error: function(xhr, status) {
+            console.log(xhr, status);
+            optionList += "<option>New</option>";
+            $("#corresponder_name").html(optionList);
+          }
+        });
         $("section#member-section").show();
       }
     },
@@ -195,6 +218,7 @@ var MEMBER = {
               COMMON.showModal("myModal", "Sorry", data.msg);
             }
           }
+        },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
         }

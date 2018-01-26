@@ -7,6 +7,8 @@ RewriteEngine on
 RewriteRule ^member/list/([0-9]+)$   member-api/RestController.php?page_key=list&id=$1 [nc,qsa]
 RewriteRule ^member/list$   member-api/RestController.php?page_key=list [nc,qsa]
 
+RewriteRule ^member/corresponderlist$   member-api/RestController.php?page_key=corresponderlist [nc,qsa]
+
 RewriteRule ^member/create/$   member-api/RestController.php?page_key=create [L]
 RewriteRule ^member/create$    member/create/ [L]
 

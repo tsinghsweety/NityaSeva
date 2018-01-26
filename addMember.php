@@ -1,6 +1,6 @@
 <?php
 require 'dbConnect.php';
-session_start(); //starP,.da,mdf,.cdcscaasadsasts the session
+session_start(); //starts the session
 ?>
 <!DOCTYPE html>
 <html>
