@@ -42,6 +42,13 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] == true) && !empty($
 						//to handle REST Url /member/corresponderlist
 						$memberRestHandler = new MemberRestHandler();
 						$memberRestHandler->getAllCorresponders();
+					break;
+
+					case "connectedlist":
+						// to handle REST Url /mobile/update/<row_id>
+						$memberRestHandler = new MemberRestHandler();
+						$memberRestHandler->getAllConnectedTo();
+					break;
 			}
 	}
 } else {

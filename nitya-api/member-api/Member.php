@@ -6,6 +6,7 @@ A domain Class to demonstrate RESTful web services
 Class Member {
 	private $members = array();
 	private $corresponders = array();
+	private $connectedTo = array();
 	public function getAllMember(){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
@@ -33,6 +34,15 @@ Class Member {
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
 		return $this->corresponders;
+	}
+
+	public function getAllConnectedTo(){
+
+		$query = 'SELECT DISTINCT connected_to FROM Users WHERE 1';
+		// echo $query;
+		$dbcontroller = new DBController();
+		$this->connectedTo = $dbcontroller->executeSelectQuery($query);
+		return $this->connectedTo;
 	}
 
 	// $title = mysqli_real_escape_string($con,$_POST['title']);

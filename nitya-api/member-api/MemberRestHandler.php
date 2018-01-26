@@ -54,6 +54,31 @@ class MemberRestHandler extends SimpleRest {
 		}
 	}
 
+	function getAllConnectedTo() {
+
+		$member = new Member();
+		$rawData = $member->getAllConnectedTo();
+        //var_dump($rawData);
+
+		if(empty($rawData)) {
+			$statusCode = 404;
+			$rawData = array('success' => 0);
+		} else {
+			$statusCode = 200;
+		}
+
+//		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$requestContentType = 'application/json';
+		$this ->setHttpHeaders($requestContentType, $statusCode);
+
+		$result["output"] = $rawData;
+
+		if(strpos($requestContentType,'application/json') !== false){
+			$response = $this->encodeJson($result);
+			echo $response;
+		}
+	}
+
 	function add() {
 		$member = new Member();
 		$rawData = $member->addMember();

@@ -9,7 +9,7 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
-    $("#add_admin").off("click").on("click", ADMIN.addAdmin);
+    $("#search_category").off("change").on("change", SEARCH.showSubCategory);
 
     COMMON.initCommonVars();
 
