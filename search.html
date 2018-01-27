@@ -10,27 +10,28 @@ session_start(); //starts the session
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-      <link rel="stylesheet" href="css/getMemberList.css">
+      <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
       <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
       <h2>Member List</h2>
-      <form action="getMemberList.php" method="POST">
+      <div id="search_criteria">
        <div class="container-fluid">
         <div class="form-group">
             <div class="col-md-2"><label for="sel1_pt">Search By:</label></div>
         <div class="col-md-2">
-          <select id="category">
+          <select id="category" class="form-control">
 
           </select>
         </div>
         <div class="col-md-2">
-        <select id="sub_category">
+        <select id="sub_category" class="form-control">
         </select></div>
         </div>
        </div>
        <button id="search_btn" class="btn btn-primary">Search</button>
-      </form>
+     </div>
+     <div id="search_result"></div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

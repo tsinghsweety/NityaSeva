@@ -9,6 +9,7 @@ RewriteRule ^member/list$   member-api/RestController.php?page_key=list [nc,qsa]
 
 RewriteRule ^member/corresponderlist$   member-api/RestController.php?page_key=corresponderlist [nc,qsa]
 RewriteRule ^member/connectedlist$   member-api/RestController.php?page_key=connectedlist [nc,qsa]
+RewriteRule ^member/categorySearch$   member-api/RestController.php?page_key=categorySearch [nc,qsa]
 
 RewriteRule ^member/create/$   member-api/RestController.php?page_key=create [L]
 RewriteRule ^member/create$    member/create/ [L]

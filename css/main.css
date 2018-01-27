@@ -46,14 +46,15 @@ h2,form{
   margin: -40px 15px 0px 0px;
 /*  border: none;*/
 /*  padding: 4px 12px!important;*/
-  color: black;  
+  color: black;
   font-size: 25px;
 }
 
+#search_result {
+  margin-top: 20px;
+  margin-left: 20px;
+}
 
-
-
-
-
-
-
+#search_result th, #search_result td {
+  padding: 5px;
+}

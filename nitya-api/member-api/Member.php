@@ -45,6 +45,77 @@ Class Member {
 		return $this->connectedTo;
 	}
 
+	public function getAllByCategory(){
+		$data = json_decode(file_get_contents('php://input'), true);
+		if(isset($data["category"]) && isset($data["sub_category"])){
+			$category = $data["category"];
+			$sub_category = $data["sub_category"];
+			if($category !== "" && $sub_category !== ""){
+				$column_name = "";
+				$column_value = $sub_category;
+				$columns_to_send = "user_id, title, first_name, last_name, "
+				."phone_no, email_id, start_date, user_lang, "
+				."connected_to, scheme_name, corresponder AS corresponder_name";
+				$from_clause = "Users";
+				$where_clause = "";
+
+				// value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
+	      // {idx: 2, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
+	      // {idx: 3, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
+	      // {idx: 4, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
+	      // {idx: 5, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+	      // {idx: 6, name: "Connected To", value:"connected_to"
+				switch($category) {
+					case "donation_category":
+						$column_name = "scheme_name";
+						break;
+					case "active_member":
+						$column_name = "is_active";
+						break;
+					case "payment_due":
+						$column_name = "ud.is_due";
+						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
+						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
+						$from_clause = "Users u, User_Due ud";
+						break;
+					case "current_payment_done":
+						$column_name = "ud.cp";
+						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
+						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
+						$from_clause = "Users u, User_Due ud";
+						break;
+					case "corresponder_name":
+						$column_name = "corresponder";
+						break;
+					case "connected_to":
+						$column_name = "connected_to";
+						break;
+				}
+
+				if($column_name !== ""){
+					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ".$column_name."='".$column_value."'";
+					if($where_clause !== ""){
+						$query .= " AND ".$where_clause;
+					}
+					// echo $query;
+					$dbcontroller = new DBController();
+					$members = $dbcontroller->executeSelectQuery($query);
+					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
+				} else {
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'911');
+				}
+			} else {
+				$result = array('success'=>0, "msg"=>"API issue", "code"=>'910');
+			}
+		} else {
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'909');
+		}
+
+		return $result;
+	}
+
 	// $title = mysqli_real_escape_string($con,$_POST['title']);
 	// $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
 	// $last_name = mysqli_real_escape_string($con,$_POST['last_name']);

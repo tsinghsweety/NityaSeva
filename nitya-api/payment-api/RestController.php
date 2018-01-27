@@ -5,7 +5,7 @@ $view = "";
 session_start();
 // print_r($_SESSION)
 // var_dump($_GET)
-if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] == true) && !empty($_SESSION["logged_in_user"])){
+if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty($_SESSION["logged_in_user"])){
 	if(isset($_GET["page_key"])){
 			$page_key = $_GET["page_key"];
 		/*

@@ -6,7 +6,7 @@ var SEARCH = {
       {idx: 2, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 3, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 4, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 5, name: "Corresponder", value:"corresponder", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+      {idx: 5, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
       {idx: 6, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
     ];
 
@@ -68,15 +68,56 @@ var SEARCH = {
       }
     }
   },
-  // search: function(){
-  //   var category = $("#category").val();
-  //   var sub_category = $("#sub_category").val();
-  //   switch (category) {
-  //     case 'donation_category':
-  //       url = "member/list"
-  //       break;
-  //     default:
-  //
-  //   }
-  // }
+  search: function(){
+    var category = $("#category").val();
+    var sub_category = $("#sub_category").val();
+    var data = {
+      category: category,
+      sub_category: sub_category
+    };
+    $.ajax({
+      url: CONSTANTS.API_PATH + "member/categorySearch",
+      type: "POST",
+      data: JSON.stringify(data),
+      dataType: "json",
+      success: function(data, statusTxt){
+        console.log(data, statusTxt);
+        if(data.output.success === 1){
+          var membersArr = data.output.members;
+          var tableEl = "<table border='2'><thead><th>User ID</th><th>Name</th><th>Phone Number</th><th>Email</th><th>Corresponder Name</th><th>Connected To</th><th>Scheme</th><th>Member Since</th><th>BTG Lang Pref</th></thead><tbody>";
+
+          for (var i = 0; i < membersArr.length; i++) {
+            var memberData = membersArr[i];
+            tableEl += "<tr><td><a href='member.html' class='user_id'>"+memberData['user_id']+"</a></td>";
+            tableEl += "<td>"+memberData['title']+" "+memberData['first_name']+" "+memberData["last_name"]+"</td>";
+            tableEl += "<td>"+memberData['phone_no']+"</td>";
+            tableEl += "<td>"+memberData['email_id']+"</td>";
+            tableEl += "<td>"+memberData['corresponder_name']+"</td>";
+            tableEl += "<td>"+memberData['connected_to']+"</td>";
+            tableEl += "<td>"+memberData['scheme_name']+"</td>";
+            tableEl += "<td>"+memberData['start_date']+"</td>";
+            tableEl += "<td>"+memberData['user_lang']+"</td></tr>";
+          }
+
+          tableEl += "</tbody></table>";
+
+          $("#search_result").html(tableEl);
+
+          $("#search_result .user_id").off("click").on("click", function(){
+            var id = $(this).text();
+            sessionStorage.setItem("member_id", id);
+          });
+        } else if (data.output.success === 0) {
+          if(data.msg === "API issue"){
+            COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+          } else {
+            COMMON.showModal("myModal", "Sorry", data.msg);
+          }
+        }
+      },
+      error: function(xhr, status){
+        console.log(xhr, status);
+      }
+    });
+  }
 };

@@ -23,7 +23,7 @@ class DBController {
         $result = mysqli_query($conn, $query);
         if (!$result) {
             //check for duplicate entry
-            if($conn->errno == 1062) {
+            if($conn->errno === 1062) {
                 return false;
             } else {
                 trigger_error (mysqli_error($conn),E_USER_NOTICE);
