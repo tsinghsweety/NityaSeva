@@ -29,7 +29,7 @@ Class Member {
 
 	public function getAllCorresponder(){
 
-		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM Users WHERE 1';
+		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM Users WHERE corresponder != ""';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
@@ -38,7 +38,7 @@ Class Member {
 
 	public function getAllConnectedTo(){
 
-		$query = 'SELECT DISTINCT connected_to FROM Users WHERE 1';
+		$query = 'SELECT DISTINCT connected_to FROM Users WHERE connected_to != ""';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->connectedTo = $dbcontroller->executeSelectQuery($query);
