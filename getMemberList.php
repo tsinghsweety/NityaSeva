@@ -248,7 +248,7 @@ session_start(); //starts the session
                             if($count==1){
                                 echo "<td>";
                                 // echo('<a href="test.php?action&user_id_clicked='.$val.'">'.$val.'</a>');
-                                echo('<a href="test.html" onclick="sessionStorage.setItem(\''.'member_id'.'\', '.$val.');">'.$val.'</a>');
+                                echo('<a href="member.html" onclick="sessionStorage.setItem(\''.'member_id'.'\', '.$val.');">'.$val.'</a>');
                                 // echo('<a href="test.html" onclick="sessionStorage.setItem('.'"member_id", '.$val.');">'.$val.'</a>');
                                 echo "</td>";
                             }else{

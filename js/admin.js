@@ -15,7 +15,10 @@ var ADMIN = {
                 // COMMON.disableInnerEls("section:eq(0)");
 
                 // var userActive = userData['is_active'];
-
+                $("#editAdmin").html('<a href="javascript:void(0)">Edit Details</a>');
+                // $("#editbtn").html('<button id="editAdminBtn">Save</button>');
+                $("h2").text("Admin Details");
+                $("#add_admin").hide();
                 //Fill Various Field Values
                 $("[name=title]").val(userData['title']);
                 $("[name=first_name]").val(userData['first_name']);
@@ -24,8 +27,16 @@ var ADMIN = {
                 $("[name=email_id]").val(userData['email_id']);
                 $("[name=start_date]").val(userData['start_date']);
                 $("[name=username]").val(userData['username']);
-                $("[name=password]").val(userData['pwd']);
+                $("[name=password]").attr("disabled","disabled");
+                // $("[name=password]").val(userData['pwd']);
+                $("input").attr("disabled","disabled");
+                $("button").attr("disabled","disabled");
 
+                $("#editAdmin").off("click").on("click", function(){
+                  $("input").prop("disabled", false);
+                  $("button").prop("disabled", false);
+                  $("[name=password]").val(userData['pwd']);
+                });
                 // $("section:gt(0)").show();
               } else {
                 COMMON.showModal("myModal", "Sorry", "No admin found for admin id: " + adminId);
@@ -66,6 +77,35 @@ var ADMIN = {
         }
     });
   },
+  editAdmin: function () {
+    var jsonData = COMMON.createFormDataJson("#add-admin");
+    console.log(jsonData);
+    var adminId = sessionStorage.getItem("admin_id");
+    if(adminId){
+      $.ajax({
+          url: CONSTANTS.API_PATH + "admin/update/" + adminId,
+          // url: apiPath + "member-api/RestController.php?page_key=create",
+          method: "POST",
+          data: JSON.stringify(jsonData),
+          // dataType: "json",
+          success: function(data, statusTxt){
+            console.log(data, statusTxt);
+            if(data.success === 1){
+              COMMON.showModal("myModal", "Hari Bol!", data.msg, "#add-admin");
+            } else if(data.success === 0) {
+              if(data.msg === "API issue"){
+                COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+              } else {
+                COMMON.showModal("myModal", "Sorry", data.msg);
+              }
+            }
+          },
+          error: function(xhr, statusTxt){
+            console.log(xhr, status);
+          }
+      });
+    }
+  },
   showAdminList: function(){
     // var memberId = sessionStorage.getItem('member_id');
     // console.log("CONSTANTS", CONSTANTS);
@@ -101,6 +141,11 @@ var ADMIN = {
             tableEl += "</tbody></table>";
 
             $("#adminList").html(tableEl);
+
+            $("#adminList .admin_infoid").off("click").on("click", function(){
+              var id = $(this).text();
+              sessionStorage.setItem("admin_id", id);
+            });
           }
         },
         error: function(xhr, statusTxt){

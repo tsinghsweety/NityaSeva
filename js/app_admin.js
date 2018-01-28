@@ -10,6 +10,7 @@ $(document).ready(function(){
     };
     date_input.datepicker(options);
     $("#add_admin").off("click").on("click", ADMIN.addAdmin);
+    $("#editAdminBtn").off("click").on("click", ADMIN.editAdmin);
 
     COMMON.initCommonVars();
 

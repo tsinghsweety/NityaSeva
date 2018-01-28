@@ -78,6 +78,7 @@ Class Member {
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
 						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
 						$from_clause = "Users u, User_Due ud";
+						$where_clause = "u.user_id=ud.user_id";
 						break;
 					case "current_payment_done":
 						$column_name = "ud.cp";
@@ -85,6 +86,7 @@ Class Member {
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
 						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
 						$from_clause = "Users u, User_Due ud";
+						$where_clause = "u.user_id=ud.user_id";
 						break;
 					case "corresponder_name":
 						$column_name = "corresponder";
