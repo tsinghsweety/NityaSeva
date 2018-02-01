@@ -9,13 +9,13 @@ Class Followup {
 		if(isset($_GET['user_id'])){
 			$user_id = $_GET['user_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'f.followup_date, f.followup_remark, f.nxt_followup_date'
+			.'DATE_FORMAT(f.followup_date, "%d/%m/%Y") as followup_date, f.followup_remark, DATE_FORMAT(f.nxt_followup_date, "%d/%m/%Y") as nxt_followup_date'
 			.' FROM Users u, Follow_Up f WHERE u.user_id=f.user_id and '.
 			' f.user_id="' .$user_id
 			. '" ORDER BY f.followup_date DESC';
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'f.followup_date, f.followup_remark, f.nxt_followup_date'
+			.'DATE_FORMAT(f.followup_date, "%d/%m/%Y") as followup_date, f.followup_remark, DATE_FORMAT(f.nxt_followup_date, "%d/%m/%Y") as nxt_followup_date'
 			.' FROM Users u, Follow_Up f WHERE u.user_id=f.user_id '
 			. ' ORDER BY f.followup_date DESC';
 		}

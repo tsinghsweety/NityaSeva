@@ -29,7 +29,7 @@ var MEMBER = {
                   $("[name=phone_no]").val(userData['phone_no']);
                   $("[name=whatsapp]").val(userData['whatsapp']);
                   $("[name=email_id]").val(userData['email_id']);
-                  $("[name=start_date]").val(userData['start_date']);
+                  $("[name=start_date]").datepicker('update', userData['start_date']);
                   $("[name=is_active][value="+userActive+"]").prop("checked", "true");
                   $("[name=connected_to]").val(userData['connected_to']);
                   $("[name=scheme_name]").val(userData['scheme_name']);

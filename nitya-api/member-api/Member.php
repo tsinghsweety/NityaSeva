@@ -11,13 +11,13 @@ Class Member {
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id '
 			.'and u.user_id=' .$id;
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id';
 		}

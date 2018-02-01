@@ -9,11 +9,11 @@ Class Admin {
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'SELECT admin_id, title, first_name, last_name, '
-			.'username, pwd, phone_no, email_id, start_date, is_superAdmin '
+			.'username, pwd, phone_no, email_id, DATE_FORMAT(start_date, "%d/%m/%Y") as start_date, is_superAdmin '
 			.' FROM Admin WHERE admin_id='.$id;
 		} else {
 			$query = 'SELECT admin_id, title, first_name, last_name, '
-			.'username, pwd, phone_no, email_id, start_date, is_superAdmin '
+			.'username, pwd, phone_no, email_id, DATE_FORMAT(start_date, "%d/%m/%Y") as start_date, is_superAdmin '
 			.' FROM Admin';
 		}
 		// echo $query;
