@@ -13,7 +13,7 @@ body {
 
 body::after {
   content: "";
-  background: url(../img/krsna.jpg);
+  /* background: url(../img/krsna.jpg); */
   background-size: cover;
   opacity: 0.5;
   top: 0;

@@ -4,7 +4,7 @@ body {
 
 body::after {
   content: "";
-  background: url(../img/krsna.jpg);
+  /* background: url(../img/krsna.jpg); */
   background-size: cover;
   opacity: 0.5;
   top: 0;
@@ -22,8 +22,8 @@ h2{
 #logoutbtn{
   float: right;
   margin: -106px 15px 0px 0px;
-  color: black; 
-  font-size: 25px;    
+  color: black;
+  font-size: 25px;
 }
 form div{
   font-weight: 700;
