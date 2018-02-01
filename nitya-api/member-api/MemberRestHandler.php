@@ -124,7 +124,7 @@ class MemberRestHandler extends SimpleRest {
 		}
 	}
 
-	function deleteMobileById() {
+	function deleteMemberById() {
 		$member = new Member();
 		$rawData = $member->deleteMember();
 
@@ -155,7 +155,8 @@ class MemberRestHandler extends SimpleRest {
 			$statusCode = 200;
 		}
 
-		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		// $requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$requestContentType = 'application/json';
 		$this ->setHttpHeaders($requestContentType, $statusCode);
 		$result = $rawData;
 

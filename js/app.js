@@ -9,7 +9,8 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
-    $("#addMember").off("click").on("click", MEMBER.addMember);
+    $("#addMemberBtn").off("click").on("click", MEMBER.addMember);
+    $("#editMemberBtn").off("click").on("click", MEMBER.editMember);
     $("#add_btg").off("click").on("click", MEMBER.addBTG);
     $("#add_gift").off("click").on("click", {type: 'gift'}, MEMBER.addGiftPrasadam);
     $("#add_prasadam").off("click").on("click", {type: 'prasadam'}, MEMBER.addGiftPrasadam);
@@ -28,6 +29,12 @@ $(document).ready(function(){
     });
     $("#showFollowupHistory").off("click").on("click", function(){
       sessionStorage.setItem('historyType', 'followup');
+    });
+
+    $("#cancelEditBtn").off("click").on("click", function(){
+      $("[name=password]").val("");
+      COMMON.disableInnerEls("#member-section");
+      $("#member-section button").hide();
     });
 
     // sessionStorage.setItem("member_id", 55);

@@ -5,7 +5,7 @@ var COMMON = {
 
     CONSTANTS.API_PATH = projectAddr + "/nitya-api/";
   },
-  showModal: function(modalId, headerTxt, bodyHtml, resetSelector){
+  showModal: function(modalId, headerTxt, bodyHtml, resetSelector, disableFlag){
     $("#"+modalId).off("show.bs.modal").on("show.bs.modal", function(){
       $(this).find(".modal-title").text(headerTxt);
       $(this).find(".modal-body").html(bodyHtml);
@@ -13,7 +13,11 @@ var COMMON = {
       $(this).find(".modal-header button").focus();
     }).off("hidden.bs.modal").on("hidden.bs.modal", function(){
       if(resetSelector){
-        COMMON.resetInnerEls(resetSelector);
+        if(disableFlag){
+          COMMON.disableInnerEls(resetSelector);
+        } else {
+          COMMON.resetInnerEls(resetSelector);
+        }
       }
     }).modal("show");
   },

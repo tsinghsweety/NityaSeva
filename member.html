@@ -26,11 +26,11 @@
             </div>
         </div>
     </div>
-        <a href="searchUser.php"><span class="glyphicon glyphicon-home"></span></a>
+        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a>
+        <div id="editMember"><a href="javascript:void(0)">Edit Details</a></div>
         <section id="member-section">
             <header class="clearfix">
                 <h2>Member Details</h2>
-                <a href="javascript:void(0);">Member Detail History</a>
             </header>
             <div class="content">
               <div class="container-fluid">
@@ -100,7 +100,9 @@
                   <div class="col-md-2">Remarks: </div>
                   <div class="col-md-2"><input type="text" name="remarks"/></div>
               </div>
-               <input type="submit" id="addMember" value="Add Member"/>
+               <button id="addMemberBtn">Add Member</button>
+               <button id="editMemberBtn">Save</button>
+               <button id="cancelEditBtn">Cancel</button>
             </div>
         </section>
 

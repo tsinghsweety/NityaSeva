@@ -32,7 +32,7 @@ session_start(); //starts the session
             mysqli_close($con);
         ?>
         <div id="implinks">
-            <a id="addadmin" href="addAdmin.html">Add Admin</a>
+            <a id="addadmin" href="admin.html" onclick="sessionStorage.clear();">Add Admin</a>
             <a id="showadmins" href="adminsList.html">Show Admin List</a>
             <a href="member.html" onclick="sessionStorage.clear();">Add member</a>
             <a href="search.html">Search Members</a>

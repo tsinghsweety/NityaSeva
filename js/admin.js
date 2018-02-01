@@ -15,10 +15,11 @@ var ADMIN = {
                 // COMMON.disableInnerEls("section:eq(0)");
 
                 // var userActive = userData['is_active'];
-                $("#editAdmin").html('<a href="javascript:void(0)">Edit Details</a>');
+                // $("#editAdmin").html('');
                 // $("#editbtn").html('<button id="editAdminBtn">Save</button>');
                 $("h2").text("Admin Details");
-                $("#add_admin").hide();
+                $("button").hide();
+
                 //Fill Various Field Values
                 $("[name=title]").val(userData['title']);
                 $("[name=first_name]").val(userData['first_name']);
@@ -36,6 +37,8 @@ var ADMIN = {
                   $("input").prop("disabled", false);
                   $("button").prop("disabled", false);
                   $("[name=password]").val(userData['pwd']);
+                  $("#editAdminBtn").show();
+                  $("#cancelEditBtn").show();
                 });
                 // $("section:gt(0)").show();
               } else {
@@ -49,6 +52,8 @@ var ADMIN = {
     } else {
       // $("section:gt(0)").hide();
       // $("section#member-section").show();
+      $("#editAdminBtn, #editAdmin, #cancelEditBtn").hide();
+      $("#addAdminBtn").show();
     }
   },
   addAdmin: function () {
@@ -91,7 +96,7 @@ var ADMIN = {
           success: function(data, statusTxt){
             console.log(data, statusTxt);
             if(data.success === 1){
-              COMMON.showModal("myModal", "Hari Bol!", data.msg, "#add-admin");
+              COMMON.showModal("myModal", "Hari Bol!", data.msg, "#add-admin", true);
             } else if(data.success === 0) {
               if(data.msg === "API issue"){
                 COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
@@ -126,7 +131,7 @@ var ADMIN = {
             for(var i=0; i<adminList.length; i++){
               var admin_info = adminList[i];
               tableEl += "<tr>";
-              tableEl += "<td><a href='addAdmin.html' class='admin_infoid'>"+admin_info['admin_id']+"</a></td>";
+              tableEl += "<td><a href='admin.html' class='admin_infoid'>"+admin_info['admin_id']+"</a></td>";
               tableEl += "<td>"+admin_info['title']+"</td>";
               tableEl += "<td>"+admin_info['first_name']+"</td>";
               tableEl += "<td>"+admin_info['last_name']+"</td>";

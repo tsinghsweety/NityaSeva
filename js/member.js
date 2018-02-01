@@ -16,6 +16,8 @@ var MEMBER = {
 
                   var userActive = userData['is_active'];
 
+                  $("#member-section button").hide();
+
                   //Fill Various Field Values
                   $('[name=payment_scheme_name]').val(userData['scheme_name']);
                   $('[name=payment_scheme_value]').val(userData['scheme_value']);
@@ -37,6 +39,13 @@ var MEMBER = {
                   $("[name=user_lang]").val(userData['user_lang']);
                   $("[name=remarks]").val(userData['remarks']);
 
+                  $("#editMember").off("click").on("click", function(){
+                    $("input, button, textarea, select, input").prop("disabled", false);
+                    $("[name=password]").val(userData['pwd']);
+                    $("#editMemberBtn").show();
+                    $("#cancelEditBtn").show();
+                  });
+
                   var optionList = "<option>Select</option>";
                   $.ajax({
                     url: CONSTANTS.API_PATH + "member/corresponderlist",
@@ -53,7 +62,7 @@ var MEMBER = {
 
                       optionList += "<option>New</option>";
                       $("#corresponder_name").html(optionList);
-                      $("[name=corresponder]").val(userData['corresponder']);
+                      $("[name=corresponder]").val(userData['corresponder'].trim());
                     },
                     error: function(xhr, status) {
                       console.log(xhr, status);
@@ -72,6 +81,8 @@ var MEMBER = {
             }
         });
       } else {
+        $("#editMemberBtn, #editMember, #cancelEditBtn").hide();
+        $("#addMemberBtn").show();
         $("section:gt(0)").hide();
         var optionList = "<option>Select</option>";
         $.ajax({
@@ -170,6 +181,35 @@ var MEMBER = {
                 console.log(xhr, status);
             }
         });
+    },
+    editMember: function () {
+      var jsonData = COMMON.createFormDataJson("#member-section");
+      console.log(jsonData);
+      var memberId = sessionStorage.getItem("member_id");
+      if(memberId){
+        $.ajax({
+            url: CONSTANTS.API_PATH + "member/update/" + memberId,
+            // url: apiPath + "member-api/RestController.php?page_key=create",
+            method: "POST",
+            data: JSON.stringify(jsonData),
+            // dataType: "json",
+            success: function(data, statusTxt){
+              console.log(data, statusTxt);
+              if(data.success === 1){
+                COMMON.showModal("myModal", "Hari Bol!", data.msg, "#member-section", true);
+              } else if(data.success === 0) {
+                if(data.msg === "API issue"){
+                  COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+                } else {
+                  COMMON.showModal("myModal", "Sorry", data.msg);
+                }
+              }
+            },
+            error: function(xhr, statusTxt){
+              console.log(xhr, status);
+            }
+        });
+      }
     },
     addPayment: function(){
       var title = $("[name=title]").val();
