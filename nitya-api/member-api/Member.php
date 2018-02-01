@@ -216,12 +216,12 @@ Class Member {
 	public function editMember(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'921');
-		echo $data;
+		// print_r($data);
 		if(isset($_GET['id']) && isset($data['title']) && isset($data['first_name'])
 		&& isset($data['last_name']) && isset($data['address']) && isset($data['phone_no'])
 		&& isset($data['whatsapp']) && isset($data['email_id']) && isset($data['start_date'])
 		&& isset($data['is_active']) && isset($data['connected_to']) && isset($data['scheme_name'])
-		&& isset($data['payment_type']) && isset($data['corresponder']) && isset($data['user_lang'])
+		&& isset($data['corresponder']) && isset($data['user_lang'])
 		&& isset($data['remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
@@ -238,7 +238,6 @@ Class Member {
 			$is_active = mysqli_real_escape_string($con,$data['is_active']);
 			$connected_to = mysqli_real_escape_string($con,$data['connected_to']);
 			$scheme_name = mysqli_real_escape_string($con,$data['scheme_name']);
-			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
 			$corresponder = mysqli_real_escape_string($con,$data['corresponder']);
 			$user_lang = mysqli_real_escape_string($con,$data['user_lang']);
 			$remarks = mysqli_real_escape_string($con,$data['remarks']);
@@ -253,7 +252,7 @@ Class Member {
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
 			if(count($alreadyExistingUserRes) > 0){
-				$userData = $newUserRes[0];
+				$userData = $alreadyExistingUserRes[0];
 				if($userData['scheme_name'] !== $scheme_name){
 					$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
 					if(count($schemeQueryRes) > 0){
@@ -265,14 +264,14 @@ Class Member {
 						." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
 						."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
 						."connected_to='$connected_to',user_lang='$user_lang',scheme_id='$scheme_id',"
-						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks';";
+						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 					}
 				} else {
 					$update_user_query = "UPDATE Users SET title='$title', first_name='$first_name',"
 					." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
 					."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
 					."connected_to='$connected_to',user_lang='$user_lang',"
-					."corresponder='$corresponder',remarks='$remarks';";
+					."corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 				}
 
 				//update user into Users table
@@ -280,7 +279,7 @@ Class Member {
 				if($updateUserResult > 0){
 					$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$userData);
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'924');
+					$result = array('success'=>0, "msg"=>"Member details aready upto-date", "code"=>'924');
 				}
 			} else {
 				$result = array('success'=>0, "msg"=>"User does not exist", "code"=>'923');

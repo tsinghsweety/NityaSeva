@@ -122,7 +122,7 @@ Class Admin {
 			if($updateAdminResult > 0){
 				$result = array('success'=>1, 'msg'=>'Admin details saved successfully', "code"=>'200');
 			}else{
-				$result = array('success'=>0, "msg"=>"Already updated", "code"=>'508');
+				$result = array('success'=>0, "msg"=>"Admin details already upto-date", "code"=>'508');
 			}
 		} else {
 			$result = array('success'=>0, "msg"=>"API issue", "code"=>'507');
