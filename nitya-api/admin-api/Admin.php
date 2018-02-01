@@ -94,14 +94,15 @@ Class Admin {
 	public function editAdmin(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'506');
-		// print_r($data);
-		if(isset($data['title']) && isset($data['first_name'])
+		// print_r($_GET);
+		if(isset($_GET['id']) && isset($data['title']) && isset($data['first_name'])
 			&& isset($data['last_name']) && isset($data['phone_no'])
 			&& isset($data['email_id']) && isset($data['start_date'])
 			&& isset($data['username'])&& isset($data['password'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
+			$admin_id = mysqli_real_escape_string($con,$_GET['id']);
 			$title = mysqli_real_escape_string($con,$data['title']);
 			$first_name = mysqli_real_escape_string($con,$data['first_name']);
 			$last_name = mysqli_real_escape_string($con,$data['last_name']);
@@ -114,13 +115,14 @@ Class Admin {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$update_admin_query = "UPDATE Admin SET title='$title',first_name='$first_name',last_name='$last_name',username='$username',pwd='$password',phone_no='$phone_no',email_id='$email_id',start_date='$formatted_date';";
+			$update_admin_query = "UPDATE Admin SET title='$title',first_name='$first_name',last_name='$last_name',username='$username',pwd='$password',phone_no='$phone_no',email_id='$email_id',start_date='$formatted_date' WHERE admin_id='$admin_id';";
 
 			$updateAdminResult = $dbcontroller->executeQuery($update_admin_query);
+			// echo $updateAdminResult;
 			if($updateAdminResult > 0){
 				$result = array('success'=>1, 'msg'=>'Admin details saved successfully', "code"=>'200');
 			}else{
-				$result = array('success'=>0, "msg"=>"API issue", "code"=>'508');
+				$result = array('success'=>0, "msg"=>"Already updated", "code"=>'508');
 			}
 		} else {
 			$result = array('success'=>0, "msg"=>"API issue", "code"=>'507');
