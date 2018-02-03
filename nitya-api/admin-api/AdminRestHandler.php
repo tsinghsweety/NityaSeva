@@ -81,10 +81,11 @@ class AdminRestHandler extends SimpleRest {
 			$statusCode = 200;
 		}
 
-		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		// $requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$requestContentType = 'application/json';
 		$this ->setHttpHeaders($requestContentType, $statusCode);
 		$result = $rawData;
-
+		// echo $result;
 		if(strpos($requestContentType,'application/json') !== false){
 			$response = $this->encodeJson($result);
 			echo $response;

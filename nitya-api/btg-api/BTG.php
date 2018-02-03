@@ -9,12 +9,12 @@ Class BTG {
 		if(isset($_GET['user_id'])){
 			$user_id = $_GET['user_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
-			.' ub.description, ub.is_dispatched, ub.dispatch_date, ub.remarks'
+			.' ub.description, ub.is_dispatched, DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date, ub.remarks'
 			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id and ub.user_id=' .$user_id
 			.' ORDER BY ub.dispatch_date DESC';
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
-			.' ub.description, ub.is_dispatched, ub.dispatch_date, ub.remarks'
+			.' ub.description, ub.is_dispatched, DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date, ub.remarks'
 			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id '
 			.' ORDER BY ub.dispatch_date DESC';
 		}

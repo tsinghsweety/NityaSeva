@@ -11,13 +11,13 @@ Class Member {
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id '
 			.'and u.user_id=' .$id;
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, u.start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id';
 		}
@@ -59,12 +59,6 @@ Class Member {
 				$from_clause = "Users";
 				$where_clause = "";
 
-				// value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
-	      // {idx: 2, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
-	      // {idx: 3, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
-	      // {idx: 4, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-	      // {idx: 5, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
-	      // {idx: 6, name: "Connected To", value:"connected_to"
 				switch($category) {
 					case "donation_category":
 						$column_name = "scheme_name";
@@ -106,34 +100,17 @@ Class Member {
 					$members = $dbcontroller->executeSelectQuery($query);
 					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'911');
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'913');
 				}
 			} else {
-				$result = array('success'=>0, "msg"=>"API issue", "code"=>'910');
+				$result = array('success'=>0, "msg"=>"API issue", "code"=>'912');
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'909');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'911');
 		}
 
 		return $result;
 	}
-
-	// $title = mysqli_real_escape_string($con,$_POST['title']);
-	// $first_name = mysqli_real_escape_string($con,$_POST['first_name']);
-	// $last_name = mysqli_real_escape_string($con,$_POST['last_name']);
-	// $address = mysqli_real_escape_string($con,$_POST['address']);
-	// $phone_no = mysqli_real_escape_string($con,$_POST['phone_no']);
-	// $whatsapp = mysqli_real_escape_string($con,$_POST['whatsapp']);
-	// $email_id = mysqli_real_escape_string($con,$_POST['email_id']);
-	// $start_date = mysqli_real_escape_string($con,$_POST['date']);
-	// $is_corresponder = mysqli_real_escape_string($con,$_POST['is_corresponder']);
-	// $is_active = mysqli_real_escape_string($con,$_POST['is_active']);
-	// $connected_to = mysqli_real_escape_string($con,$_POST['connected_to']);
-	// $scheme_name = mysqli_real_escape_string($con,$_POST['scheme_name']);
-	// $payment_type = mysqli_real_escape_string($con,$_POST['payment_type']);
-	// $corresponder = mysqli_real_escape_string($con,$_POST['corresponder']);
-	// $user_lang = mysqli_real_escape_string($con,$_POST['user_lang']);
-	// $remarks = mysqli_real_escape_string($con,$_POST['remarks']);
 
 	public function addMember(){
 		$data = json_decode(file_get_contents('php://input'), true);
@@ -237,18 +214,81 @@ Class Member {
 	}
 
 	public function editMember(){
-		if(isset($_POST['name']) && isset($_GET['id'])){
-			$name = $_POST['name'];
-			$model = $_POST['model'];
-			$color = $_POST['color'];
-			$query = "UPDATE tbl_mobile SET name = '".$name."',model ='". $model ."',color = '". $color ."' WHERE id = ".$_GET['id'];
+		$data = json_decode(file_get_contents('php://input'), true);
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'921');
+		// print_r($data);
+		if(isset($_GET['id']) && isset($data['title']) && isset($data['first_name'])
+		&& isset($data['last_name']) && isset($data['address']) && isset($data['phone_no'])
+		&& isset($data['whatsapp']) && isset($data['email_id']) && isset($data['start_date'])
+		&& isset($data['is_active']) && isset($data['connected_to']) && isset($data['scheme_name'])
+		&& isset($data['corresponder']) && isset($data['user_lang'])
+		&& isset($data['remarks'])){
+			$dbcontroller = new DBController();
+			$con = $dbcontroller->connectDB();
+
+			$user_id = mysqli_real_escape_string($con,$_GET['id']);
+			$title = mysqli_real_escape_string($con,$data['title']);
+			$first_name = mysqli_real_escape_string($con,$data['first_name']);
+			$last_name = mysqli_real_escape_string($con,$data['last_name']);
+			$address = mysqli_real_escape_string($con,$data['address']);
+			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
+			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
+			$email_id = mysqli_real_escape_string($con,$data['email_id']);
+			$start_date = mysqli_real_escape_string($con,$data['start_date']);
+			$is_active = mysqli_real_escape_string($con,$data['is_active']);
+			$connected_to = mysqli_real_escape_string($con,$data['connected_to']);
+			$scheme_name = mysqli_real_escape_string($con,$data['scheme_name']);
+			$corresponder = mysqli_real_escape_string($con,$data['corresponder']);
+			$user_lang = mysqli_real_escape_string($con,$data['user_lang']);
+			$remarks = mysqli_real_escape_string($con,$data['remarks']);
+
+			$dateTime = date_create_from_format('d/m/Y',$start_date);
+			$formatted_date = date_format($dateTime, 'Y-m-d');
+
+			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM Users WHERE phone_no = '$phone_no';";
+
+			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
+
+			//check if phone no already exists
+			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+			if(count($alreadyExistingUserRes) > 0){
+				$userData = $alreadyExistingUserRes[0];
+				if($userData['scheme_name'] !== $scheme_name){
+					$schemeQueryRes = $dbcontroller->executeSelectQuery($searchSchemeId_query);
+					if(count($schemeQueryRes) > 0){
+						$scheme_data = $schemeQueryRes[0];
+						$scheme_id = $scheme_data["scheme_id"];
+						$scheme_value = $scheme_data["scheme_value"];
+
+						$update_user_query = "UPDATE Users SET title='$title', first_name='$first_name',"
+						." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
+						."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+						."connected_to='$connected_to',user_lang='$user_lang',scheme_id='$scheme_id',"
+						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
+					}
+				} else {
+					$update_user_query = "UPDATE Users SET title='$title', first_name='$first_name',"
+					." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
+					."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+					."connected_to='$connected_to',user_lang='$user_lang',"
+					."corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
+				}
+
+				//update user into Users table
+				$updateUserResult = $dbcontroller->executeQuery($update_user_query);
+				if($updateUserResult > 0){
+					$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$userData);
+				} else {
+					$result = array('success'=>0, "msg"=>"Member details aready upto-date", "code"=>'924');
+				}
+			} else {
+				$result = array('success'=>0, "msg"=>"User does not exist", "code"=>'923');
+			}
+		} else {
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'922');
 		}
-		$dbcontroller = new DBController();
-		$result= $dbcontroller->executeQuery($query);
-		if($result != 0){
-			$result = array('success'=>1);
-			return $result;
-		}
+
+		return $result;
 	}
 
 }

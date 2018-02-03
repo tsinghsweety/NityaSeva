@@ -7,14 +7,18 @@ Class Payment {
 	private $payments = array();
 	public function getAllPayment(){
 		if(isset($_GET['user_id'])){
-			$user_id = $_GET['user_id'];
+			$user_id = $_GET['user_id'];DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date
 			$query = 'SELECT u.title, u.first_name,'
-			.' u.last_name, u.user_id, up.payment_type, up.payment_date,'
+			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
 			.' up.amt_paid, up.payment_details, up.payment_remarks '
 			.'FROM Users u, User_Payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
 			. ' ORDER BY up.payment_date DESC';
 		} else {
-			$query = 'SELECT * FROM User_Payment ORDER BY payment_date DESC';
+			$query = 'SELECT u.title, u.first_name,'
+			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
+			.' up.amt_paid, up.payment_details, up.payment_remarks '
+			.'FROM Users u, User_Payment up WHERE u.user_id=up.user_id'
+			. ' ORDER BY up.payment_date DESC';
 		}
 		$dbcontroller = new DBController();
 		$this->payments = $dbcontroller->executeSelectQuery($query);

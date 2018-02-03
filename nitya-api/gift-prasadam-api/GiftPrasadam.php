@@ -10,15 +10,22 @@ Class GiftPrasadam {
 			$user_id = $_GET['user_id'];
 			$type = $_GET['type'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'ugp.description, ugp.is_dispatched, ugp.dispatch_date, ugp.remarks'
+			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
 			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id and '.
 			' ugp.user_id=' .$user_id. ' and ugp.type="'.$type
 			. '" ORDER BY ugp.dispatch_date DESC';
 		} else if(isset($_GET['type'])){
 			$type = $_GET['type'];
-			$query = 'SELECT * FROM User_Gift_Prasadam WHERE type="'.$type. '" ORDER BY dispatch_date DESC';
+			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
+			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
+			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id and '.
+			'  ugp.type="'.$type
+			. '" ORDER BY ugp.dispatch_date DESC';
 		} else {
-			$query = 'SELECT * FROM User_Gift_Prasadam ORDER BY dispatch_date DESC';
+			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
+			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
+			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id '
+			. ' ORDER BY ugp.dispatch_date DESC';
 		}
 		$dbcontroller = new DBController();
 		$this->btgs = $dbcontroller->executeSelectQuery($query);
