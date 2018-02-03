@@ -7,7 +7,7 @@ Class Payment {
 	private $payments = array();
 	public function getAllPayment(){
 		if(isset($_GET['user_id'])){
-			$user_id = $_GET['user_id'];DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date
+			$user_id = $_GET['user_id'];
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
 			.' up.amt_paid, up.payment_details, up.payment_remarks '
@@ -27,7 +27,7 @@ Class Payment {
 
 	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);
-		$result = array('success'=>0, "msg"=>"API issue", "code"=>'905');
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'405');
 		// print_r($data);
 		if(isset($data['payment_type']) && isset($data['ref_num']) && isset($data['amount_paid'])
 		 && isset($data['payment_date']) && isset($data['payment_remarks'])
@@ -50,23 +50,23 @@ Class Payment {
 			$insert_user_pmt_query = "INSERT INTO User_Payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) "
 			."VALUES('$user_id','$payment_type','$formatted_date','$amount_paid','$ref_num','$payment_remarks');";
 
-			/check if phone no already exists
+			//check if phone no already exists
 			$userPaymentTotalRes = $dbcontroller->executeSelectQuery($user_pmt_total_query);
 			if(count($userPaymentTotalRes) > 0){
 				// $total_payment_done
 				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'902');
+				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'402');
 			} else {
 				//insert payment into User_Payment table
 				$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
 				if($insertUserPmtResult > 0){
 					$result = array('success'=>1, 'msg'=>'Payment added successfully', "code"=>'200', 'userData'=>$data);
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'803');
+					$result = array('success'=>0, "msg"=>"API issue", "code"=>'403');
 				}
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'906');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'406');
 		}
 
 		return $result;
