@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
         <!-- App CSS -->
         <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/addMember.css">
         <link rel="stylesheet" href="css/payment.css">
         <title>Consolidated Details</title>
     </head>
@@ -49,18 +50,20 @@
                    <div class="col-md-2"><input type="integer" name="whatsapp" required="required" /></div>
                </div>
                <div class="row" id="thirdrow">
+                   <div class="col-md-2">Date of Birth:</div>
+                   <div class="col-md-2"><input id="dob" name="birth_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
                    <div class="col-md-2">Email Id:</div>
                    <div class="col-md-2"><input type="email" name="email_id" required="required" /></div>
-                   <div class="col-md-2"><label class="control-label" for="start_date">Start Date:</label></div>
-                   <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
-                   <div class="col-md-1">Active:</div>
-                   <div class="col-md-1">
-                       <input type="radio" name="is_active" id="ay" required="required" value="Y"/><label for="ay">Yes</label>
-                       <input type="radio" name="is_active" id="an" required="required" value="N"/><label for="an">No</label>
-                   </div>
+                   <div class="col-md-2">Company Name:</div>
+                   <div class="col-md-2"><input type="text" name="company_name" required="required" /></div>
                </div>
               </div>
               <div class="row form-group">
+                  <div class="col-md-1">Active:</div>
+                  <div class="col-md-1">
+                    <input type="radio" name="is_active" id="ay" required="required" value="Y"/><label for="ay">Yes</label>
+                    <input type="radio" name="is_active" id="an" required="required" value="N"/><label for="an">No</label>
+                  </div>
                   <div class="col-md-2"><label for="sel1_bg">Bhakti Vriksha:</label></div>
                   <div class="col-md-2"><select class="form-control" id="sel1_bg"  name="connected_to">
                     <option>None</option>
@@ -95,8 +98,12 @@
                     <option>Bengali</option>
                   </select>
                   </div>
-                  <div class="col-md-2">Remarks: </div>
-                  <div class="col-md-2"><input type="text" name="remarks"/></div>
+                  <div class="col-md-2"><label class="control-label" for="start_date">Start Date:</label></div>
+                  <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+              </div>
+              <div class="row form-group">
+                <div class="col-md-2">Remarks: </div>
+                <div class="col-md-2"><input type="text" name="remarks"/></div>
               </div>
                <button id="addMemberBtn">Add Member</button>
                <button id="editMemberBtn">Save</button>

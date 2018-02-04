@@ -126,19 +126,23 @@ Class Member {
 			$address = mysqli_real_escape_string($con,$data['address']);
 			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
 			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
+			$dob = mysqli_real_escape_string($con,$data['birth_date']);
 			$email_id = mysqli_real_escape_string($con,$data['email_id']);
+			$company_name = mysqli_real_escape_string($con,$data['company_name']);
 			$start_date = mysqli_real_escape_string($con,$data['start_date']);
-			// $is_corresponder = mysqli_real_escape_string($con,$data['is_corresponder']);
 			$is_active = mysqli_real_escape_string($con,$data['is_active']);
 			$connected_to = mysqli_real_escape_string($con,$data['connected_to']);
 			$scheme_name = mysqli_real_escape_string($con,$data['scheme_name']);
-			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
+			// $payment_type = mysqli_real_escape_string($con,$data['payment_type']);
 			$corresponder = mysqli_real_escape_string($con,$data['corresponder']);
 			$user_lang = mysqli_real_escape_string($con,$data['user_lang']);
 			$remarks = mysqli_real_escape_string($con,$data['remarks']);
 
+			$dateTime_dob = date_create_from_format('d/m/Y',$dob);
+			$formatted_dob_date = date_format($dateTime_dob, 'Y-m-d');
+
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
-			$formatted_date = date_format($dateTime, 'Y-m-d');
+			$formatted_start_date = date_format($dateTime, 'Y-m-d');
 
 			// $query = mysqli_query($con,"Select * from Users");
 	    // $query2 = mysqli_query($con,"Select * from User_Donation");
@@ -162,7 +166,7 @@ Class Member {
 					$scheme_id = $scheme_data["scheme_id"];
 					$scheme_value = $scheme_data["scheme_value"];
 
-					$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
+					$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,dob,email_id,company_name,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$formatted_dob_date','$email_id','$company_name','$formatted_start_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
 
 					//insert user into Users table
 					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);

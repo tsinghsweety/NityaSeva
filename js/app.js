@@ -9,6 +9,9 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
+    // $("#dob").datepicker({
+    //    // orientation: 'left'
+    // });
     $("#addMemberBtn").off("click").on("click", MEMBER.addMember);
     $("#editMemberBtn").off("click").on("click", MEMBER.editMember);
     $("#addpayment").off("click").on("click", MEMBER.addPayment);

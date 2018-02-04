@@ -29,9 +29,9 @@ Class Payment {
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'405');
 		// print_r($data);
-		if(isset($data['payment_type']) && isset($data['ref_num']) && isset($data['amount_paid'])
-		 && isset($data['payment_date']) && isset($data['payment_remarks'])
-		&& isset($_SESSION['selected_member_id'])){
+		if(isset($_SESSION['selected_member_id']) && isset($data['payment_type'])
+		&& isset($data['ref_num']) && isset($data['amount_paid'])
+	  && isset($data['payment_date']) && isset($data['payment_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
@@ -45,26 +45,19 @@ Class Payment {
 			$dateTime = date_create_from_format('d/m/Y',$payment_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$user_pmt_total_query = "SELECT SUM(amt_paid) AS total_paid FROM User_Payment WHERE user_id=".$user_id;
+			// $user_pmt_total_query = "SELECT SUM(amt_paid) AS total_paid FROM User_Payment WHERE user_id=".$user_id;
 
 			$insert_user_pmt_query = "INSERT INTO User_Payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) "
 			."VALUES('$user_id','$payment_type','$formatted_date','$amount_paid','$ref_num','$payment_remarks');";
+			//insert payment details into User_Payment table
+			$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
 
-			//check if phone no already exists
-			$userPaymentTotalRes = $dbcontroller->executeSelectQuery($user_pmt_total_query);
-			if(count($userPaymentTotalRes) > 0){
-				// $total_payment_done
-				//If yes then send already existing message
-				$result = array('success'=>0, "msg"=>"Phone number already exists", "code"=>'402');
-			} else {
-				//insert payment into User_Payment table
-				$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
-				if($insertUserPmtResult > 0){
-					$result = array('success'=>1, 'msg'=>'Payment added successfully', "code"=>'200', 'userData'=>$data);
-				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'403');
-				}
+			if($insertUserPmtResult > 0){
+				$result = array('success'=>1, 'msg'=>'Payment details added successfully', "code"=>'200', 'userData'=>$data);
+			} else
+				$result = array('success'=>0, "msg"=>"API issue", "code"=>'403');
 			}
+
 		} else {
 			$result = array('success'=>0, "msg"=>"API issue", "code"=>'406');
 		}
