@@ -137,7 +137,7 @@ var MEMBER = {
                   sessionStorage.setItem("member_id", userData['user_id']);
 
                   $("section:gt(0)").show();
-                  COMMON.showModal("myModal", "Yay!", data.msg);
+                  COMMON.showModal("myModal", "Hari Bol!", data.msg);
                 } else if(data.success === 0) {
                   if(data.msg === "API issue"){
                     COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
@@ -247,7 +247,7 @@ var MEMBER = {
         success: function(data, statusTxt){
           console.log(data, statusTxt);
           if(data.success === 1){
-            COMMON.showModal("myModal", "Yay!", data.msg);
+            COMMON.showModal("myModal", "Hari Bol!", data.msg);
           } else if(data.success === 0) {
             if(data.msg === "API issue"){
               COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
@@ -273,7 +273,7 @@ var MEMBER = {
         success: function(data, statusTxt){
           console.log(data, statusTxt);
           if(data.success === 1){
-            COMMON.showModal("myModal", "Yay!", data.msg);
+            COMMON.showModal("myModal", "Hari Bol!", data.msg);
           } else if(data.success === 0) {
             if(data.msg === "API issue"){
               COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
