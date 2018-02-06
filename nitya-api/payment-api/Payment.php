@@ -28,15 +28,17 @@ Class Payment {
 
 	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);
-		$result = array('success'=>0, "msg"=>"API issue", "code"=>'401');
+		$result = array('success'=>0, "msg"=>"API issue", "code"=>'API401');
 		// print_r($data);
-		if(isset($_SESSION['selected_member_id']) && isset($data['payment_type'])
+		// print_r($_SESSION);
+		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
+		&& isset($_GET['member_id']) && isset($data['payment_type'])
 		&& isset($data['ref_num']) && isset($data['amount_paid'])
 	  && isset($data['payment_date']) && isset($data['payment_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$user_id = mysqli_real_escape_string($con,$_SESSION['selected_member_id']);
+			$user_id = mysqli_real_escape_string($con,$_GET['member_id']);
 			$payment_type = mysqli_real_escape_string($con,$data['payment_type']);
 	    $ref_num = mysqli_real_escape_string($con,$data['ref_num']);
 	    $amount_paid = mysqli_real_escape_string($con,$data['amount_paid']);
@@ -98,21 +100,21 @@ Class Payment {
 				if($query_due_exc > 0){
 					$result = array('success'=>1, 'msg'=>'Payment details added successfully', "code"=>'200', 'userData'=>$data);
 				} else {
-					$result = array('success'=>0, "msg"=>"API issue", "code"=>'402');
+					$result = array('success'=>0, "msg"=>"Payment made recently");
 				}
 			} else{
-				$result = array('success'=>0, "msg"=>"API issue", "code"=>'403');
+				$result = array('success'=>0, "msg"=>"API issue", "code"=>'API403');
 			}
 		} else {
-			$result = array('success'=>0, "msg"=>"API issue", "code"=>'404');
+			$result = array('success'=>0, "msg"=>"API issue", "code"=>'API404');
 		}
 
 		return $result;
 	}
 
 	public function deletePayment(){
-		if(isset($_GET['id'])){
-			$id = $_GET['id'];
+		if(isset($_GET['member_id'])){
+			$id = $_GET['member_id'];
 			$query = 'DELETE FROM tbl_mobile WHERE id = '.$id;
 			$dbcontroller = new DBController();
 			$result = $dbcontroller->executeQuery($query);
@@ -124,11 +126,11 @@ Class Payment {
 	}
 
 	public function editPayment(){
-		if(isset($_POST['name']) && isset($_GET['id'])){
+		if(isset($_POST['name']) && isset($_GET['member_id'])){
 			$name = $_POST['name'];
 			$model = $_POST['model'];
 			$color = $_POST['color'];
-			$query = "UPDATE tbl_mobile SET name = '".$name."',model ='". $model ."',color = '". $color ."' WHERE id = ".$_GET['id'];
+			$query = "UPDATE tbl_mobile SET name = '".$name."',model ='". $model ."',color = '". $color ."' WHERE id = ".$_GET['member_id'];
 		}
 		$dbcontroller = new DBController();
 		$result= $dbcontroller->executeQuery($query);

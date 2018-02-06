@@ -2,12 +2,13 @@ var SEARCH = {
   searchArr: [],
   init: function() {
     SEARCH.searchArr = [
-      {idx: 1, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
-      {idx: 2, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 3, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 4, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 5, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
-      {idx: 6, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
+      {idx: 1, name: "All members", value:"all_members", subCatType: "select", subCatValues: ["All"]},
+      {idx: 2, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
+      {idx: 3, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 4, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 5, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 6, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+      {idx: 7, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
     ];
 
     //Create Category Drop Down
@@ -71,12 +72,16 @@ var SEARCH = {
   search: function(){
     var category = $("#category").val();
     var sub_category = $("#sub_category").val();
+    var url = CONSTANTS.API_PATH + "member/categorySearch";
     var data = {
       category: category,
       sub_category: sub_category
     };
+    // if(category === "all_members"){
+    //   url = CONSTANTS.API_PATH + "member/list";
+    // }
     $.ajax({
-      url: CONSTANTS.API_PATH + "member/categorySearch",
+      url: url,
       type: "POST",
       data: JSON.stringify(data),
       dataType: "json",
@@ -92,7 +97,7 @@ var SEARCH = {
             tableEl += "<td>"+memberData['title']+" "+memberData['first_name']+" "+memberData["last_name"]+"</td>";
             tableEl += "<td>"+memberData['phone_no']+"</td>";
             tableEl += "<td>"+memberData['email_id']+"</td>";
-            tableEl += "<td>"+memberData['corresponder_name']+"</td>";
+            tableEl += "<td>"+memberData['corresponder']+"</td>";
             tableEl += "<td>"+memberData['connected_to']+"</td>";
             tableEl += "<td>"+memberData['scheme_name']+"</td>";
             tableEl += "<td>"+memberData['start_date']+"</td>";
@@ -108,10 +113,10 @@ var SEARCH = {
             sessionStorage.setItem("member_id", id);
           });
         } else if (data.output.success === 0) {
-          if(data.msg === "API issue"){
-            COMMON.showModal("myModal", "Sorry", data.msg + ", Code: " + data.code);
+          if(data.output.msg === "API issue"){
+            COMMON.showModal("myModal", "Sorry", data.output.msg + ", Code: " + data.output.code);
           } else {
-            COMMON.showModal("myModal", "Sorry", data.msg);
+            COMMON.showModal("myModal", "Sorry", data.output.msg);
           }
         }
       },

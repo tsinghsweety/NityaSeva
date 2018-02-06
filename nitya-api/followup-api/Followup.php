@@ -6,8 +6,8 @@ A domain Class to demonstrate RESTful web services
 Class Followup {
 	private $followups = array();
 	public function getAllFollowup(){
-		if(isset($_GET['user_id'])){
-			$user_id = $_GET['user_id'];
+		if(isset($_GET['member_id'])){
+			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'DATE_FORMAT(f.followup_date, "%d/%m/%Y") as followup_date, f.followup_remark, DATE_FORMAT(f.nxt_followup_date, "%d/%m/%Y") as nxt_followup_date'
 			.' FROM Users u, Follow_Up f WHERE u.user_id=f.user_id and '.
@@ -30,12 +30,13 @@ Class Followup {
 		// $_SESSION['selected_member_id'] = 55;
 		// print_r($_SESSION);
 		// echo $_SESSION;
-		if(isset($_SESSION['selected_member_id']) && isset($data['followup_date'])
+		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
+		&& isset($_GET['member_id']) && isset($data['followup_date'])
 		&& isset($data['followup_remark']) && isset($data['nxt_followup_date'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$user_id = mysqli_real_escape_string($con,$_SESSION['selected_member_id']);
+			$user_id = mysqli_real_escape_string($con,$_GET['member_id']);
 	    $followup_date = mysqli_real_escape_string($con,$data['followup_date']);
 	    $followup_remark = mysqli_real_escape_string($con,$data['followup_remark']);
 	    $nxt_followup_date = mysqli_real_escape_string($con,$data['nxt_followup_date']);

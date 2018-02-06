@@ -34,66 +34,66 @@ RewriteRule ^admin/update/([0-9]+)/$   admin-api/RestController.php?page_key=upd
 RewriteRule ^admin/update/([0-9]+)$    admin/update/$1/ [L]
 
 #Payment APIs
-RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
+RewriteRule ^payment/list/([0-9]+)$   payment-api/RestController.php?page_key=list&member_id=$1 [nc,qsa]
 RewriteRule ^payment/list$   payment-api/RestController.php?page_key=list [nc,qsa]
 
-RewriteRule ^payment/create/$   payment-api/RestController.php?page_key=create [L]
-RewriteRule ^payment/create$    payment/create/ [L]
+RewriteRule ^payment/create/([0-9]+)/$   payment-api/RestController.php?page_key=create&member_id=$1 [L]
+RewriteRule ^payment/create/([0-9]+)$    payment/create/$1/ [L]
 
-RewriteRule ^payment/delete/([0-9]+)/$   payment-api/RestController.php?page_key=delete&id=$1 [L]
-RewriteRule ^payment/delete([0-9]+)$     payment/delete/$1 [L]
+RewriteRule ^payment/delete/([0-9]+)/$   payment-api/RestController.php?page_key=delete&member_id=$1 [L]
+RewriteRule ^payment/delete/([0-9]+)$     payment/delete/$1/ [L]
 
-RewriteRule ^payment/update/([0-9]+)/$   payment-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^payment/update/([0-9]+)/$   payment-api/RestController.php?page_key=update&member_id=$1 [L]
 RewriteRule ^payment/update/([0-9]+)$    payment/update/$1/ [L]
 
 #BTG APIs
-RewriteRule ^btg/list/([0-9]+)$   btg-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
+RewriteRule ^btg/list/([0-9]+)$   btg-api/RestController.php?page_key=list&member_id=$1 [nc,qsa]
 RewriteRule ^btg/list$   btg-api/RestController.php?page_key=list [nc,qsa]
 
-RewriteRule ^btg/create/$   btg-api/RestController.php?page_key=create [L]
-RewriteRule ^btg/create$    btg/create/ [L]
+RewriteRule ^btg/create/([0-9]+)/$   btg-api/RestController.php?page_key=create&member_id=$1 [L]
+RewriteRule ^btg/create/([0-9]+)$    btg/create/$1/ [L]
 
-RewriteRule ^btg/delete/([0-9]+)/$   btg-api/RestController.php?page_key=delete&id=$1 [L]
-RewriteRule ^btg/delete([0-9]+)$     btg/delete/$1 [L]
+RewriteRule ^btg/delete/([0-9]+)/$   btg-api/RestController.php?page_key=delete&member_id=$1 [L]
+RewriteRule ^btg/delete/([0-9]+)$     btg/delete/$1/ [L]
 
-RewriteRule ^btg/update/([0-9]+)/$   btg-api/RestController.php?page_key=update&id=$1 [L]
+RewriteRule ^btg/update/([0-9]+)/$   btg-api/RestController.php?page_key=update&member_id=$1 [L]
 RewriteRule ^btg/update/([0-9]+)$    btg/update/$1/ [L]
 
 #Gift APIs
-RewriteRule ^gift/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=gift&user_id=$1 [nc,qsa]
+RewriteRule ^gift/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=gift&member_id=$1 [nc,qsa]
 RewriteRule ^gift/list$   gift-prasadam-api/RestController.php?page_key=list&type=gift [nc,qsa]
 
-RewriteRule ^gift/create/$   gift-prasadam-api/RestController.php?page_key=create&type=gift [L]
-RewriteRule ^gift/create$    gift/create/ [L]
+RewriteRule ^gift/create/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=create&type=gift&member_id=$1 [L]
+RewriteRule ^gift/create/([0-9]+)$    gift/create/$1/ [L]
 
-RewriteRule ^gift/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=gift&user_id=$1 [L]
-RewriteRule ^gift/delete([0-9]+)$     gift/delete/$1 [L]
+RewriteRule ^gift/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=gift&member_id=$1 [L]
+RewriteRule ^gift/delete/([0-9]+)$     gift/delete/$1/ [L]
 
-RewriteRule ^gift/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=gift&user_id=$1 [L]
+RewriteRule ^gift/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=gift&member_id=$1 [L]
 RewriteRule ^gift/update/([0-9]+)$    gift/update/$1/ [L]
 
 #Prasadam APIs
-RewriteRule ^prasadam/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=prasadam&user_id=$1 [nc,qsa]
+RewriteRule ^prasadam/list/([0-9]+)$   gift-prasadam-api/RestController.php?page_key=list&type=prasadam&member_id=$1 [nc,qsa]
 RewriteRule ^prasadam/list$   gift-prasadam-api/RestController.php?page_key=list&type=prasadam [nc,qsa]
 
-RewriteRule ^prasadam/create/$   gift-prasadam-api/RestController.php?page_key=create&type=prasadam [L]
-RewriteRule ^prasadam/create$    prasadam/create/ [L]
+RewriteRule ^prasadam/create/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=create&type=prasadam&member_id=$1 [L]
+RewriteRule ^prasadam/create/([0-9]+)$    prasadam/create/$1/ [L]
 
-RewriteRule ^prasadam/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=prasadam&user_id=$1 [L]
-RewriteRule ^prasadam/delete([0-9]+)$     prasadam/delete/$1 [L]
+RewriteRule ^prasadam/delete/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=delete&type=prasadam&member_id=$1 [L]
+RewriteRule ^prasadam/delete/([0-9]+)$     prasadam/delete/$1/ [L]
 
-RewriteRule ^prasadam/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=prasadam&user_id=$1 [L]
+RewriteRule ^prasadam/update/([0-9]+)/$   gift-prasadam-api/RestController.php?page_key=update&type=prasadam&member_id=$1 [L]
 RewriteRule ^prasadam/update/([0-9]+)$    prasadam/update/$1/ [L]
 
 #Followup APIs
-RewriteRule ^followup/list/([0-9]+)$   followup-api/RestController.php?page_key=list&user_id=$1 [nc,qsa]
+RewriteRule ^followup/list/([0-9]+)$   followup-api/RestController.php?page_key=list&member_id=$1 [nc,qsa]
 RewriteRule ^followup/list$   followup-api/RestController.php?page_key=list [nc,qsa]
 
-RewriteRule ^followup/create/$   followup-api/RestController.php?page_key=create [L]
-RewriteRule ^followup/create$    followup/create/ [L]
+RewriteRule ^followup/create/([0-9]+)/$   followup-api/RestController.php?page_key=create&member_id=$1 [L]
+RewriteRule ^followup/create/([0-9]+)$    followup/create/$1/ [L]
 
-RewriteRule ^followup/delete/([0-9]+)/$   followup-api/RestController.php?page_key=delete&user_id=$1 [L]
-RewriteRule ^followup/delete([0-9]+)$     followup/delete/$1 [L]
+RewriteRule ^followup/delete/([0-9]+)/$   followup-api/RestController.php?page_key=delete&member_id=$1 [L]
+RewriteRule ^followup/delete/([0-9]+)$     followup/delete/$1/ [L]
 
-RewriteRule ^followup/update/([0-9]+)/$   followup-api/RestController.php?page_key=update&user_id=$1 [L]
+RewriteRule ^followup/update/([0-9]+)/$   followup-api/RestController.php?page_key=update&member_id=$1 [L]
 RewriteRule ^followup/update/([0-9]+)$    followup/update/$1/ [L]

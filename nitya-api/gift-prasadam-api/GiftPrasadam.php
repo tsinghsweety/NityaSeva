@@ -6,8 +6,8 @@ A domain Class to demonstrate RESTful web services
 Class GiftPrasadam {
 	private $btgs = array();
 	public function getAllGiftPrasadam(){
-		if(isset($_GET['user_id']) && isset($_GET['type'])){
-			$user_id = $_GET['user_id'];
+		if(isset($_GET['member_id']) && isset($_GET['type'])){
+			$user_id = $_GET['member_id'];
 			$type = $_GET['type'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
@@ -38,13 +38,14 @@ Class GiftPrasadam {
 		// $_SESSION['selected_member_id'] = 55;
 		// print_r($_SESSION);
 		// echo $_SESSION;
-		if(isset($_SESSION['selected_member_id']) && isset($_GET['type']) && isset($data['gp_desc'])
+		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
+		&& isset($_GET['member_id']) && isset($_GET['type']) && isset($data['gp_desc'])
 		&& isset($data['gp_is_dispatched']) && isset($data['gp_dispatch_date'])
 		&& isset($data['gp_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$user_id = mysqli_real_escape_string($con,$_SESSION['selected_member_id']);
+			$user_id = mysqli_real_escape_string($con,$_GET['member_id']);
 	    $gp_desc = mysqli_real_escape_string($con,$data['gp_desc']);
 	    $gp_is_dispatched = mysqli_real_escape_string($con,$data['gp_is_dispatched']);
 	    $gp_dispatch_date = mysqli_real_escape_string($con,$data['gp_dispatch_date']);
@@ -72,8 +73,8 @@ Class GiftPrasadam {
 	}
 
 	public function deleteGiftPrasadam(){
-		if(isset($_GET['id'])){
-			$id = $_GET['id'];
+		if(isset($_GET['member_id'])){
+			$id = $_GET['member_id'];
 			$query = 'DELETE FROM tbl_mobile WHERE id = '.$id;
 			$dbcontroller = new DBController();
 			$result = $dbcontroller->executeQuery($query);
@@ -85,11 +86,11 @@ Class GiftPrasadam {
 	}
 
 	public function editGiftPrasadam(){
-		if(isset($_POST['name']) && isset($_GET['id'])){
+		if(isset($_POST['name']) && isset($_GET['member_id'])){
 			$name = $_POST['name'];
 			$model = $_POST['model'];
 			$color = $_POST['color'];
-			$query = "UPDATE tbl_mobile SET name = '".$name."',model ='". $model ."',color = '". $color ."' WHERE id = ".$_GET['id'];
+			$query = "UPDATE tbl_mobile SET name = '".$name."',model ='". $model ."',color = '". $color ."' WHERE id = ".$_GET['member_id'];
 		}
 		$dbcontroller = new DBController();
 		$result= $dbcontroller->executeQuery($query);
