@@ -48,6 +48,7 @@ Class Member {
 	public function getAllByCategory(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		if(isset($data["category"]) && isset($data["sub_category"])){
+			$members = null;
 			$category = $data["category"];
 			$sub_category = $data["sub_category"];
 			if($category !== "" && $sub_category !== ""){
@@ -55,11 +56,18 @@ Class Member {
 				$column_value = $sub_category;
 				$columns_to_send = "user_id, title, first_name, last_name, "
 				."phone_no, email_id, start_date, user_lang, "
-				."connected_to, scheme_name, corresponder AS corresponder_name";
+				."connected_to, scheme_name, corresponder";
 				$from_clause = "Users";
 				$where_clause = "";
 
 				switch($category) {
+					case "all_members":
+						if(strtolower($sub_category) === "all"){
+							$members = $this->getAllMember();
+						} else {
+							$result = array('success'=>0, "msg"=>"Please select all in sub category");
+						}
+						break;
 					case "donation_category":
 						$column_name = "scheme_name";
 						break;
@@ -70,7 +78,7 @@ Class Member {
 						$column_name = "ud.is_due";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
+						."u.connected_to, u.scheme_name, u.corresponder";
 						$from_clause = "Users u, User_Due ud";
 						$where_clause = "u.user_id=ud.user_id";
 						break;
@@ -78,7 +86,7 @@ Class Member {
 						$column_name = "ud.cp";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder AS corresponder_name";
+						."u.connected_to, u.scheme_name, u.corresponder";
 						$from_clause = "Users u, User_Due ud";
 						$where_clause = "u.user_id=ud.user_id";
 						break;
@@ -90,7 +98,9 @@ Class Member {
 						break;
 				}
 
-				if($column_name !== ""){
+				if(!is_null($members)){
+					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
+				} else if($column_name !== ""){
 					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ".$column_name."='".$column_value."'";
 					if($where_clause !== ""){
 						$query .= " AND ".$where_clause;
@@ -99,7 +109,7 @@ Class Member {
 					$dbcontroller = new DBController();
 					$members = $dbcontroller->executeSelectQuery($query);
 					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
-				} else {
+				} else if(empty($result)){
 					$result = array('success'=>0, "msg"=>"API issue", "code"=>'913');
 				}
 			} else {

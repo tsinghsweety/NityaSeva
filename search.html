@@ -12,9 +12,22 @@ session_start(); //starts the session
       <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
       <!-- App CSS -->
+      <link rel="stylesheet" href="css/common.css">
       <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+      <div class="modal fade" id="myModal" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Attention</h4>
+                      <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                  </div>
+                  <div class="modal-body">
+                  </div>
+              </div>
+          </div>
+      </div>
       <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
       <h2>Member List</h2>
       <div id="search_criteria">

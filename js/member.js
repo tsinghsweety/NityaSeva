@@ -182,9 +182,10 @@ var MEMBER = {
     },
     addPayment: function(){
       var jsonData = COMMON.createFormDataJson("#payment-section");
+      var memberId = sessionStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
-          url: CONSTANTS.API_PATH + "payment/create",
+          url: CONSTANTS.API_PATH + "payment/create/" + memberId,
           // url: apiPath + "member-api/RestController.php?page_key=create",
           method: "POST",
           data: JSON.stringify(jsonData),
@@ -208,9 +209,10 @@ var MEMBER = {
     },
     addBTG: function(){
       var jsonData = COMMON.createFormDataJson("#btg-section");
+      var memberId = sessionStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
-        url: CONSTANTS.API_PATH + "btg/create",
+        url: CONSTANTS.API_PATH + "btg/create/" + memberId,
         // url: apiPath + "member-api/RestController.php?page_key=create",
         method: "POST",
         data: JSON.stringify(jsonData),
@@ -236,7 +238,8 @@ var MEMBER = {
       var giftType = event.data ? event.data.type : '';
       var section = "#" + giftType + "-section";
       var jsonData = COMMON.createFormDataJson(section);
-      var url = CONSTANTS.API_PATH + giftType + "/create";
+      var memberId = sessionStorage.getItem("member_id");
+      var url = CONSTANTS.API_PATH + giftType + "/create/" + memberId;
       console.log(jsonData);
       $.ajax({
         url: url,
@@ -263,9 +266,10 @@ var MEMBER = {
     },
     addFollowup: function(){
       var jsonData = COMMON.createFormDataJson("#followup-section");
+      var memberId = sessionStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
-        url: CONSTANTS.API_PATH + "followup/create",
+        url: CONSTANTS.API_PATH + "followup/create/" + memberId,
         // url: apiPath + "member-api/RestController.php?page_key=create",
         method: "POST",
         data: JSON.stringify(jsonData),

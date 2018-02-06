@@ -6,8 +6,8 @@ A domain Class to demonstrate RESTful web services
 Class BTG {
 	private $btgs = array();
 	public function getAllBTG(){
-		if(isset($_GET['user_id'])){
-			$user_id = $_GET['user_id'];
+		if(isset($_GET['member_id'])){
+			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
 			.' ub.description, ub.is_dispatched, DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date, ub.remarks'
 			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id and ub.user_id=' .$user_id
@@ -29,15 +29,17 @@ Class BTG {
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'801');
 		// $_SESSION['selected_member_id'] = 55;
 		// print_r($_SESSION);
+		// print_r($data);
 		// echo $_SESSION;
-		if(isset($_SESSION['selected_member_id']) && isset($data['btg_lang'])
+		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
+		&& isset($_GET['member_id']) && isset($data['btg_lang'])
 		&& isset($data['sent_btg_lang']) && isset($data['btg_desc'])
 		&& isset($data['btg_is_dispatched']) && isset($data['btg_dispatch_date'])
 		&& isset($data['btg_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
-			$user_id = mysqli_real_escape_string($con,$_SESSION['selected_member_id']);
+			$user_id = mysqli_real_escape_string($con,$_GET['member_id']);
 			$sent_btg_lang = mysqli_real_escape_string($con,$data['sent_btg_lang']);
 	    $btg_desc = mysqli_real_escape_string($con,$data['btg_desc']);
 	    $btg_is_dispatched = mysqli_real_escape_string($con,$data['btg_is_dispatched']);
