@@ -54,56 +54,79 @@ Class Member {
 			if($category !== "" && $sub_category !== ""){
 				$column_name = "";
 				$column_value = $sub_category;
-				$columns_to_send = "user_id, title, first_name, last_name, "
-				."phone_no, email_id, start_date, user_lang, "
-				."connected_to, scheme_name, corresponder";
-				$from_clause = "Users";
-				$where_clause = "";
+				$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
+				."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+				."u.connected_to, u.scheme_name, u.corresponder, "
+				."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
+				."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
+				."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
+				."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
+				."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+				$from_clause = "Users u, last_details_view ldv";
+				$where_clause = "u.user_id=ldv.user_id";
+				$order_by_clause = "u.user_id ASC";
 
 				switch($category) {
 					case "all_members":
-						if(strtolower($sub_category) === "all"){
-							$members = $this->getAllMember();
-						} else {
-							$result = array('success'=>0, "msg"=>"Please select all in sub category");
-						}
+						$column_name = "All Members";
 						break;
 					case "donation_category":
-						$column_name = "scheme_name";
+						$column_name = "u.scheme_name";
 						break;
 					case "active_member":
-						$column_name = "is_active";
+						$column_name = "u.is_active";
 						break;
 					case "payment_due":
 						$column_name = "ud.is_due";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder";
-						$from_clause = "Users u, User_Due ud";
-						$where_clause = "u.user_id=ud.user_id";
+						."u.connected_to, u.scheme_name, u.corresponder, "
+						."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
+						."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
+						."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
+						."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
+						."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+						$from_clause .= ", User_Due ud";
+						$where_clause .= " AND u.user_id=ud.user_id";
 						break;
 					case "current_payment_done":
 						$column_name = "ud.cp";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
 						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder";
-						$from_clause = "Users u, User_Due ud";
-						$where_clause = "u.user_id=ud.user_id";
+						."u.connected_to, u.scheme_name, u.corresponder, "
+						."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
+						."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
+						."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
+						."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
+						."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+						$from_clause .= ", User_Due ud";
+						$where_clause .= " AND u.user_id=ud.user_id";
 						break;
 					case "corresponder_name":
-						$column_name = "corresponder";
+						$column_name = "u.corresponder";
 						break;
 					case "connected_to":
-						$column_name = "connected_to";
+						$column_name = "u.connected_to";
 						break;
 				}
 
 				if(!is_null($members)){
 					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
 				} else if($column_name !== ""){
-					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ".$column_name."='".$column_value."'";
+					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ";
 					if($where_clause !== ""){
-						$query .= " AND ".$where_clause;
+						$query .= $where_clause;
+						if(($column_name !== "") && ($column_name !== "All Members")){
+							$query .= " AND ".$column_name."='".$column_value."'";
+						}
+					} else {
+						if(($column_name !== "All Members") || ($column_name !== "")){
+							$query .= " WHERE ".$column_name."='".$column_value."'";
+						}
+					}
+
+					if($order_by_clause !== ""){
+						$query .= " ORDER BY ".$order_by_clause;
 					}
 					// echo $query;
 					$dbcontroller = new DBController();
