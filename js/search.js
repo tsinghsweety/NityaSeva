@@ -42,7 +42,7 @@ var SEARCH = {
           dataType: "json",
           success: function(data, statusTxt){
             console.log(data, statusTxt);
-            var optionList = "<option>Select</option>";
+            var optionList = "<option value='none'>Select</option>";
             // if(data.success === 1){
               if(data.output.length > 0){
                 var subCatArr = data.output;
@@ -61,7 +61,7 @@ var SEARCH = {
         });
       } else if (subCatValues) {
         inside_conditions = true;
-        var optionList = "<option>Select</option>";
+        var optionList = "<option value='none'>Select</option>";
         for (var i=0; i<subCatValues.length; i++) {
           optionList += "<option>"+subCatValues[i]+"</option>";
         }
@@ -89,7 +89,7 @@ var SEARCH = {
   },
   search: function(){
     var category = $("#category").val();
-    var sub_cat_type = $("#category").data("subtype");
+    var sub_cat_type = $("#category").find("option:selected").data("subtype");
     var sub_category = sub_cat_type === "select" ? $("#sub_category_select").val() : $("#sub_category_input_text").val();
     var url = CONSTANTS.API_PATH + "member/categorySearch";
     var data = {
@@ -153,6 +153,7 @@ var SEARCH = {
             COMMON.showModal("myModal", "Sorry", "No member found for given criteria");
           }
         } else if (data.output.success === 0) {
+          $("#search_result").empty();
           if(data.output.msg === "API issue"){
             COMMON.showModal("myModal", "Sorry", data.output.msg + ", Code: " + data.output.code);
           } else {

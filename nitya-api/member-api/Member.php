@@ -47,6 +47,7 @@ Class Member {
 
 	public function getAllByCategory(){
 		$data = json_decode(file_get_contents('php://input'), true);
+		// print_r($data);
 		if(isset($data["category"]) && isset($data["sub_category"])){
 			$members = null;
 			$category = $data["category"];
@@ -71,6 +72,9 @@ Class Member {
 				switch($category) {
 					case "all_members":
 						$column_name = "All Members";
+						if($sub_category === "none"){
+							$result = array('success'=>0, "msg"=>"Please select all from sub-category drop down");
+						}
 						break;
 					case "member_name":
 						$column_name = "member_name";
@@ -120,9 +124,7 @@ Class Member {
 						break;
 				}
 
-				if(!is_null($members)){
-					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
-				} else if($column_name !== ""){
+				if(empty($result) && $column_name !== ""){
 					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause;
 					$inside_if = false;
 					if($column_name === "member_name"){
