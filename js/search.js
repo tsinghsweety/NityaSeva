@@ -3,7 +3,7 @@ var SEARCH = {
   init: function() {
     SEARCH.searchArr = [
       {idx: 1, name: "All members", value:"all_members", subCatType: "select", subCatValues: ["All"]},
-      {idx: 2, name: "Member Name", value:"members_name", subCatType: "inputText"},
+      {idx: 2, name: "Member Name", value:"member_name", subCatType: "inputText"},
       {idx: 3, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
       {idx: 4, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 5, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
@@ -92,45 +92,50 @@ var SEARCH = {
         console.log(data, statusTxt);
         if(data.output.success === 1){
           var membersArr = data.output.members;
-          var tableEl = "<table border='2'>"
-          +"<thead>"
-          +"<th>Sl No</th><th>User ID</th><th>Name</th><th>Phone Number</th>"
-          +"<th>Email</th><th>Corresponder Name</th><th>Connected To</th>"
-          +"<th>Scheme</th><th>Member Since</th><th>BTG Lang Pref</th>"
-          +"<th>Last Payment</th><th>Last Followup</th><th>Last BTG Sent</th>"
-          +"<th>Last Gift Sent</th><th>Last Prasadam Sent</th>"
-          +"</thead>"
-          +"<tbody>";
+          if(membersArr){
+            var tableEl = "<table border='2'>"
+            +"<thead>"
+            +"<th>Sl No</th><th>User ID</th><th>Name</th><th>Phone Number</th>"
+            +"<th>Email</th><th>Corresponder Name</th><th>Connected To</th>"
+            +"<th>Scheme</th><th>Member Since</th><th>BTG Lang Pref</th>"
+            +"<th>Last Payment</th><th>Last Followup</th><th>Last BTG Sent</th>"
+            +"<th>Last Gift Sent</th><th>Last Prasadam Sent</th>"
+            +"</thead>"
+            +"<tbody>";
 
-          for (var i = 0; i < membersArr.length; i++) {
-            var memberData = membersArr[i];
-            tableEl += "<tr>";
-            tableEl += "<td>"+(i+1)+"</td>";
-            tableEl += "<td><a href='member.html' class='user_id'>"+memberData['user_id']+"</a></td>";
-            tableEl += "<td>"+memberData['title']+" "+memberData['first_name']+" "+memberData["last_name"]+"</td>";
-            tableEl += "<td>"+memberData['phone_no']+"</td>";
-            tableEl += "<td>"+memberData['email_id']+"</td>";
-            tableEl += "<td>"+memberData['corresponder']+"</td>";
-            tableEl += "<td>"+memberData['connected_to']+"</td>";
-            tableEl += "<td>"+memberData['scheme_name']+"</td>";
-            tableEl += "<td>"+memberData['start_date']+"</td>";
-            tableEl += "<td>"+memberData['user_lang']+"</td>";
-            tableEl += "<td>"+memberData['last_payment_date']+"</td>";
-            tableEl += "<td>"+memberData['last_followup_date']+"</td>";
-            tableEl += "<td>"+memberData['last_btg_sent_date']+"</td>";
-            tableEl += "<td>"+memberData['last_gift_sent_date']+"</td>";
-            tableEl += "<td>"+memberData['last_prasadam_sent_date']+"</td>";
-            tableEl += "</tr>";
+            for (var i = 0; i < membersArr.length; i++) {
+              var memberData = membersArr[i];
+              tableEl += "<tr>";
+              tableEl += "<td>"+(i+1)+"</td>";
+              tableEl += "<td><a href='member.html' class='user_id'>"+memberData['user_id']+"</a></td>";
+              tableEl += "<td>"+memberData['title']+" "+memberData['first_name']+" "+memberData["last_name"]+"</td>";
+              tableEl += "<td>"+memberData['phone_no']+"</td>";
+              tableEl += "<td>"+memberData['email_id']+"</td>";
+              tableEl += "<td>"+memberData['corresponder']+"</td>";
+              tableEl += "<td>"+memberData['connected_to']+"</td>";
+              tableEl += "<td>"+memberData['scheme_name']+"</td>";
+              tableEl += "<td>"+memberData['start_date']+"</td>";
+              tableEl += "<td>"+memberData['user_lang']+"</td>";
+              tableEl += "<td>"+memberData['last_payment_date']+"</td>";
+              tableEl += "<td>"+memberData['last_followup_date']+"</td>";
+              tableEl += "<td>"+memberData['last_btg_sent_date']+"</td>";
+              tableEl += "<td>"+memberData['last_gift_sent_date']+"</td>";
+              tableEl += "<td>"+memberData['last_prasadam_sent_date']+"</td>";
+              tableEl += "</tr>";
+            }
+
+            tableEl += "</tbody></table>";
+
+            $("#search_result").html(tableEl);
+
+            $("#search_result .user_id").off("click").on("click", function(){
+              var id = $(this).text();
+              sessionStorage.setItem("member_id", id);
+            });
+          } else {
+            $("#search_result").empty();
+            COMMON.showModal("myModal", "Sorry", "No member found for given criteria");
           }
-
-          tableEl += "</tbody></table>";
-
-          $("#search_result").html(tableEl);
-
-          $("#search_result .user_id").off("click").on("click", function(){
-            var id = $(this).text();
-            sessionStorage.setItem("member_id", id);
-          });
         } else if (data.output.success === 0) {
           if(data.output.msg === "API issue"){
             COMMON.showModal("myModal", "Sorry", data.output.msg + ", Code: " + data.output.code);

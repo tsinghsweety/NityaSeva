@@ -64,11 +64,16 @@ Class Member {
 				."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
 				$from_clause = "Users u, last_details_view ldv";
 				$where_clause = "u.user_id=ldv.user_id";
+				$group_by_clause = "";
 				$order_by_clause = "u.user_id ASC";
 
 				switch($category) {
 					case "all_members":
 						$column_name = "All Members";
+						break;
+					case "member_name":
+						$column_name = "member_name";
+						$group_by_clause = "u.user_id";
 						break;
 					case "donation_category":
 						$column_name = "u.scheme_name";
@@ -113,18 +118,28 @@ Class Member {
 				if(!is_null($members)){
 					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
 				} else if($column_name !== ""){
-					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ";
-					if($where_clause !== ""){
-						$query .= $where_clause;
-						if(($column_name !== "") && ($column_name !== "All Members")){
-							$query .= " AND ".$column_name."='".$column_value."'";
-						}
-					} else {
-						if(($column_name !== "All Members") || ($column_name !== "")){
-							$query .= " WHERE ".$column_name."='".$column_value."'";
-						}
+					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause;
+					$inside_if = false;
+					if($column_name === "member_name"){
+						$query .= " WHERE "."LOWER(u.title) LIKE '%".strtolower($column_value)."%'";
+						$query .= " OR LOWER(u.first_name) LIKE '%".strtolower($column_value)."%'";
+						$query .= " OR LOWER(u.last_name) LIKE '%".strtolower($column_value)."%'";
+						$inside_if = true;
+					} else if($column_name !== "All Members"){
+						$query .= " WHERE ".$column_name."='".$column_value."'";
+						$inside_if = true;
 					}
+					if($where_clause !== ""){
+						if($inside_if){
+							$query .= " AND ".$where_clause;
+						} else {
+							$query .= " WHERE ".$where_clause;
+						}
 
+					}
+					if($group_by_clause !== ""){
+						$query .= " GROUP BY ".$group_by_clause;
+					}
 					if($order_by_clause !== ""){
 						$query .= " ORDER BY ".$order_by_clause;
 					}
