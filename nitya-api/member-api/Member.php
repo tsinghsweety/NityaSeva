@@ -54,6 +54,7 @@ Class Member {
 			if($category !== "" && $sub_category !== ""){
 				$column_name = "";
 				$column_value = $sub_category;
+				$search_type = "full_string";
 				$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
 				."u.phone_no, u.email_id, u.start_date, u.user_lang, "
 				."u.connected_to, u.scheme_name, u.corresponder, "
@@ -74,6 +75,10 @@ Class Member {
 					case "member_name":
 						$column_name = "member_name";
 						$group_by_clause = "u.user_id";
+						break;
+					case "phone_num":
+						$column_name = "u.phone_no";
+						$search_type = "part_string";
 						break;
 					case "donation_category":
 						$column_name = "u.scheme_name";
@@ -121,13 +126,17 @@ Class Member {
 					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause;
 					$inside_if = false;
 					if($column_name === "member_name"){
+						$inside_if = true;
 						$query .= " WHERE "."LOWER(u.title) LIKE '%".strtolower($column_value)."%'";
 						$query .= " OR LOWER(u.first_name) LIKE '%".strtolower($column_value)."%'";
 						$query .= " OR LOWER(u.last_name) LIKE '%".strtolower($column_value)."%'";
-						$inside_if = true;
 					} else if($column_name !== "All Members"){
-						$query .= " WHERE ".$column_name."='".$column_value."'";
 						$inside_if = true;
+						if($search_type === "full_string") {
+							$query .= " WHERE ".$column_name."='".$column_value."'";
+						} elseif ($search_type === "part_string") {
+							$query .= " WHERE ".$column_name." LIKE '%".$column_value."%'";
+						}
 					}
 					if($where_clause !== ""){
 						if($inside_if){

@@ -4,12 +4,13 @@ var SEARCH = {
     SEARCH.searchArr = [
       {idx: 1, name: "All members", value:"all_members", subCatType: "select", subCatValues: ["All"]},
       {idx: 2, name: "Member Name", value:"member_name", subCatType: "inputText"},
-      {idx: 3, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
-      {idx: 4, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 5, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 6, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 7, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
-      {idx: 8, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
+      {idx: 3, name: "Phone Num", value:"phone_num", subCatType: "inputText"},
+      {idx: 4, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
+      {idx: 5, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 6, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 7, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
+      {idx: 8, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+      {idx: 9, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
     ];
 
     //Create Category Drop Down
@@ -31,7 +32,9 @@ var SEARCH = {
       var subCategoryType = selectedOption.subCatType;
       var subCatValues = selectedOption.subCatValues;
       var url = selectedOption.url;
+      var inside_conditions = false;
       if(url){
+        inside_conditions = true;
         var ddKey = selectedOption.ddKey;
         $.ajax({
           url: CONSTANTS.API_PATH + url,
@@ -57,6 +60,7 @@ var SEARCH = {
           }
         });
       } else if (subCatValues) {
+        inside_conditions = true;
         var optionList = "<option>Select</option>";
         for (var i=0; i<subCatValues.length; i++) {
           optionList += "<option>"+subCatValues[i]+"</option>";
@@ -66,8 +70,20 @@ var SEARCH = {
         $("#sub_category_input_text").hide();
         $("#sub_category_select").show();
       } else if (subCategoryType === "inputText") {
+        inside_conditions = true;
         $("#sub_category_select").hide();
+        $("#sub_category_input_text").val("");
         $("#sub_category_input_text").show();
+        $("#sub_category_input_text").off("keydown").on("keydown", function(event){
+          var key = event.which || event.keyCode;
+          if(key === 13){
+            $("#search_btn").click();
+          }
+        });
+      }
+
+      if(inside_conditions){
+        $("#search_result").empty();
       }
     }
   },
