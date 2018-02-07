@@ -57,13 +57,18 @@ Class Member {
 				$column_value = $sub_category;
 				$search_type = "full_string";
 				$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
-				."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+				."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
 				."u.connected_to, u.scheme_name, u.corresponder, "
-				."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
-				."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
-				."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
-				."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
-				."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+				."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+				."  END last_payment_date, "
+				."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+				." END last_btg_sent_date, "
+				."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+				." END last_gift_sent_date, "
+				."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+				." END last_prasadam_sent_date, "
+				."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+				." END last_followup_date";
 				$from_clause = "Users u, last_details_view ldv";
 				$where_clause = "u.user_id=ldv.user_id";
 				$group_by_clause = "";
@@ -93,28 +98,38 @@ Class Member {
 					case "payment_due":
 						$column_name = "ud.is_due";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
-						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+						."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
 						."u.connected_to, u.scheme_name, u.corresponder, "
-						."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
-						."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
-						."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
-						."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
-						."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+						."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+						."  END last_payment_date, "
+						."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+						." END last_btg_sent_date, "
+						."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+						." END last_gift_sent_date, "
+						."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+						." END last_prasadam_sent_date, "
+						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+						." END last_followup_date";
 						$from_clause .= ", User_Due ud";
-						$where_clause .= " AND u.user_id=ud.user_id";
+						$where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "current_payment_done":
 						$column_name = "ud.cp";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
-						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
+						."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
 						."u.connected_to, u.scheme_name, u.corresponder, "
-						."IFNULL(ldv.last_payment_date, 'None') AS last_payment_date, "
-						."IFNULL(ldv.last_btg_sent_date, 'None') AS last_btg_sent_date, "
-						."IFNULL(ldv.last_gift_sent_date, 'None') AS last_gift_sent_date, "
-						."IFNULL(ldv.last_prasadam_sent_date, 'None') AS last_prasadam_sent_date, "
-						."IFNULL(ldv.last_followup_date, 'None') AS last_followup_date";
+						."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+						."  END last_payment_date, "
+						."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+						." END last_btg_sent_date, "
+						."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+						." END last_gift_sent_date, "
+						."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+						." END last_prasadam_sent_date, "
+						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+						." END last_followup_date";
 						$from_clause .= ", User_Due ud";
-						$where_clause .= " AND u.user_id=ud.user_id";
+						$where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "corresponder_name":
 						$column_name = "u.corresponder";

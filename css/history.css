@@ -1,0 +1,12 @@
+#history {
+  margin: 20px 400px;
+  height: 500px;
+  width: 600px;
+  text-align: center;
+  overflow-y: auto;
+  border: 2px solid blue;
+}
+
+#history th, #history td {
+  padding: 5px;
+}

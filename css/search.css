@@ -1,3 +1,12 @@
+#search_result {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+#search_result th, #search_result td {
+  padding: 5px;
+}
+
 #search_btn {
   margin-left: 30px;
 }

@@ -6,7 +6,7 @@ session_start(); //starts the session
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/common.css">
         <title>Admin login Page</title>
     </head>
     <body>
