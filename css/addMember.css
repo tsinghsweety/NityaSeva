@@ -1,55 +1,20 @@
-body {
-  height: 100%;
-  display: block;
-/*  position: relative;*/
+section {
+  padding: 20px;
 }
-
-body::after {
-  content: "";
-  /* background: url(../img/krsna.jpg); */
-  background-size: cover;
-/*  background-attachment: fixed;*/
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
+header {
+  margin-bottom: 20px;
+  border-bottom: 2px dotted black;
 }
 h2{
   text-align: center;
-  margin-top: -20px;
-  margin-bottom: 45px;
 }
-#logoutbtn{
-  float: right;
-  margin: -106px 15px 0px 0px;
-  color: black;
-  font-size: 25px;
-}
-form div{
-/*  width: 22%;*/
-/*  text-align: left;*/
-/*  margin-left: auto;*/
-/*  margin-right: auto;*/
-  font-weight: 700;
-}
-form div input{
-  margin-bottom: 10px;
-}
+
 .form-group{
   margin-left: 0px !important;
   margin-right: 0px !important;
 }
 #thirdrow{
   padding-top:10px;
-}
-.glyphicon.glyphicon-home {
-  font-size: 25px;
-  padding-left: 21px;
-  margin-top: 11px;
-  color: black;
 }
 textarea{
     width: 98%;
@@ -67,6 +32,3 @@ input[type="radio"]{
   float: right;
   margin: 15px 25px 0px 0px;
 }
-/*#dob .datepicker{
-  orientation: 'auto bottom' !important;
-}*/

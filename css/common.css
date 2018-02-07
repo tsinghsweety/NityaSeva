@@ -23,6 +23,16 @@ body::after {
   position: absolute;
   z-index: -1;
 }
+.content {
+  clear: both;
+}
+.content .row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.btn-primary a {
+  color: white;
+}
 h2,form{
   text-align: center;
 }
@@ -45,6 +55,10 @@ h2,form{
 .glyphicon {
   font-size: 20px;
   color: black;
+}
+
+a.glyphicon:hover {
+  text-decoration: none;
 }
 
 #logoutbtn{

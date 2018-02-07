@@ -9,7 +9,6 @@
         <!-- App CSS -->
         <link rel="stylesheet" href="css/common.css">
         <link rel="stylesheet" href="css/addMember.css">
-        <link rel="stylesheet" href="css/payment.css">
         <title>Consolidated Details</title>
     </head>
     <body>
@@ -25,13 +24,14 @@
             </div>
         </div>
     </div>
-        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a>
-        <div id="editMember"><a href="javascript:void(0)">Edit Details</a></div>
         <section id="member-section">
             <header class="clearfix">
+                <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+                <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
                 <h2>Member Details</h2>
             </header>
             <div class="content">
+              <a href="javascript:void(0)" id="editMember" class="glyphicon glyphicon-edit" title="Edit Member"></a>
               <div class="container-fluid">
                <div class="row">
                    <div class="col-md-2">Title:</div>
@@ -45,32 +45,32 @@
                      </select>
                    </div>
                    <div class="col-md-2">First Name:</div>
-                   <div class="col-md-2"><input type="text" name="first_name" required="required" /></div>
+                   <div class="col-md-2"><input type="text" name="first_name" required="required" class="form-control" /></div>
                    <div class="col-md-2">Last Name:</div>
-                   <div class="col-md-2"><input type="text" name="last_name" required="required" /></div>
+                   <div class="col-md-2"><input type="text" name="last_name" required="required" class="form-control" /></div>
                </div>
                <div class="row">
                    <div class="col-md-2">Address:</div>
-                   <div class="col-md-2"><textarea rows="4" cols="50" name="address" resizeable= "false" required="required"></textarea></div>
+                   <div class="col-md-2"><textarea rows="4" cols="50" name="address" resizeable= "false" required="required" class="form-control"></textarea></div>
                    <div class="col-md-2">Phone No.:</div>
-                   <div class="col-md-2"><input type="integer" name="phone_no" required="required" /></div>
+                   <div class="col-md-2"><input type="integer" name="phone_no" required="required" class="form-control" /></div>
                    <div class="col-md-2">Whatsapp No.:</div>
-                   <div class="col-md-2"><input type="integer" name="whatsapp" required="required" /></div>
+                   <div class="col-md-2"><input type="integer" name="whatsapp" required="required" class="form-control" /></div>
                </div>
                <div class="row" id="thirdrow">
                    <div class="col-md-2">Date of Birth:</div>
-                   <div class="col-md-2"><input id="dob" name="birth_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                   <div class="col-md-2"><input id="dob" name="birth_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                    <div class="col-md-2">Email Id:</div>
-                   <div class="col-md-2"><input type="email" name="email_id" required="required" /></div>
+                   <div class="col-md-2"><input type="email" name="email_id" required="required" class="form-control" /></div>
                    <div class="col-md-2">Company Name:</div>
-                   <div class="col-md-2"><input type="text" name="company_name" required="required" /></div>
+                   <div class="col-md-2"><input type="text" name="company_name" required="required" class="form-control" /></div>
                </div>
               </div>
               <div class="row form-group">
                   <div class="col-md-1">Active:</div>
                   <div class="col-md-1">
-                    <input type="radio" name="is_active" id="ay" required="required" value="Y"/><label for="ay">Yes</label>
-                    <input type="radio" name="is_active" id="an" required="required" value="N"/><label for="an">No</label>
+                    <div class="radio-inline"><label for="ay"><input type="radio" name="is_active" id="ay" required="required" value="Y"/>Yes</label></div>
+                    <div class="radio-inline"><label for="an"><input type="radio" name="is_active" id="an" required="required" value="N"/>No</label></div>
                   </div>
                   <div class="col-md-2"><label for="sel1_bg">Bhakti Vriksha:</label></div>
                   <div class="col-md-2"><select class="form-control" id="sel1_bg"  name="connected_to">
@@ -107,30 +107,30 @@
                   </select>
                   </div>
                   <div class="col-md-2"><label class="control-label" for="start_date">Start Date:</label></div>
-                  <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                  <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
               </div>
               <div class="row form-group">
                 <div class="col-md-2">Remarks: </div>
-                <div class="col-md-2"><input type="text" name="remarks"/></div>
+                <div class="col-md-2"><input type="text" name="remarks" class="form-control"/></div>
               </div>
-               <button id="addMemberBtn">Add Member</button>
-               <button id="editMemberBtn">Save</button>
-               <button id="cancelEditBtn">Cancel</button>
+               <button id="addMemberBtn" class="btn btn-primary">Add Member</button>
+               <button id="editMemberBtn" class="btn btn-primary">Save</button>
+               <button id="cancelEditBtn" class="btn btn-primary">Cancel</button>
             </div>
         </section>
 
         <section id="payment-section">
             <header class="clearfix">
                 <h2>Payment Details</h2>
-                <a href="history.html" id="showPaymentHistory">Payment History</a>
             </header>
             <div class="content">
+               <a href="history.html" id="showPaymentHistory" class="glyphicon glyphicon-time" title="Payment History"></a>
                <div class="container-fluid">
                    <div class="row">
                        <div class="col-md-2">Donation Category Name:</div>
-                       <div class="col-md-2"><input type="text" name="payment_scheme_name" value="<?=$scheme_name?>"disabled/></div>
+                       <div class="col-md-2"><input type="text" name="payment_scheme_name" value=""disabled class="form-control"/></div>
                        <div class="col-md-2">Donation Value in INR:</div>
-                       <div class="col-md-2"><input type="text" name="payment_scheme_value" value="<?=$scheme_value?>" disabled/></div>
+                       <div class="col-md-2"><input type="text" name="payment_scheme_value" value="" disabled class="form-control"/></div>
                        <div class="form-group">
                            <div class="col-md-2"><label for="sel1_pt">Payment Type:</label></div>
                            <div class="col-md-2"><select class="form-control" id="sel1_pt"  name="payment_type" width="10%">
@@ -144,32 +144,34 @@
                    </div>
                    <div class="row">
                        <div class="col-md-2">Reference No.: </div>
-                       <div class="col-md-2"><input type="text" name="ref_num" required="required" /></div>
+                       <div class="col-md-2"><input type="text" name="ref_num" required="required"  class="form-control"/></div>
                        <div class="col-md-2">Amount Paid:</div>
-                       <div class="col-md-2"><input type="text" name="amount_paid" required="required" /></div>   <div class="col-md-2">Total Due:</div>
-                       <div class="col-md-2"><input type="text" name="due_amt" value="" disabled/></div>
+                       <div class="col-md-2"><input type="text" name="amount_paid" required="required"  class="form-control"/></div>   <div class="col-md-2">Total Due:</div>
+                       <div class="col-md-2"><input type="text" name="due_amt" value="" disabled class="form-control"/></div>
                    </div>
                    <div class="row">
                        <div class="col-md-2"><label class="control-label" for="date">Date of Payment:</label></div>
-                       <div class="col-md-2"><input id="date" name="payment_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                       <div class="col-md-2"><input id="date" name="payment_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
 
                    <div class="col-md-2">Remarks:</div>
-                   <div class="col-md-2"><input type="text" name="payment_remarks" required="required" /></div>
+                   <div class="col-md-2"><input type="text" name="payment_remarks" required="required"  class="form-control"/></div>
                    </div>
                 </div>
-               <button id="addpayment">Add Payment</button>
+                <div class="pull-right">
+                 <button id="addpayment" class="btn btn-primary">Add Payment</button>
+               </div>
             </div>
         </section>
         <section id="btg-section">
             <header class="clearfix">
                 <h2>BTG Details</h2>
-                <a href="history.html" id="showBTGHistory">BTG History</a>
             </header>
             <div class="content">
+                <a href="history.html" id="showBTGHistory" class="glyphicon glyphicon-time" title="BTG History"></a>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-2">Preferred BTG Language:</div>
-                        <div class="col-md-2"><input type="text" name="btg_lang" value="" disabled/></div>
+                        <div class="col-md-2"><input type="text" name="btg_lang" value="" disabled class="form-control"/></div>
 
                         <div class="col-md-2">Sent BTG Language:</div>
                         <div class="col-md-2">
@@ -181,95 +183,101 @@
                         </div>
 
                         <div class="col-md-2">BTG Description:</div>
-                        <div class="col-md-2"><textarea rows="4" cols="50" name="btg_desc" required="required"></textarea></div>
+                        <div class="col-md-2"><textarea rows="4" cols="50" name="btg_desc" required="required" class="form-control"></textarea></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">Dispatched:</div>
                         <div class="col-md-2">
-                           <input type="radio" name="btg_is_dispatched" required="required" value="Y"/> Yes
-                           <input type="radio" name="btg_is_dispatched" required="required" value="N"/> No
+                           <div class="radio-inline"><label><input type="radio" name="btg_is_dispatched" required="required" value="Y"/> Yes</label></div>
+                           <div class="radio-inline"><label><input type="radio" name="btg_is_dispatched" required="required" value="N"/> No</label></div>
                         </div>
                         <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                        <div class="col-md-2"><input id="date" name="btg_dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
+                        <div class="col-md-2"><input id="date" name="btg_dispatch_date" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
 
                         <div class="col-md-2">Remarks: </div>
-                        <div class="col-md-2"><input type="text" name="btg_remarks" required="required" /></div>
+                        <div class="col-md-2"><input type="text" name="btg_remarks" required="required"  class="form-control"/></div>
                     </div>
                 </div>
-                <input type="submit" id="add_btg" value="Add BTG"/>
+                <div class="pull-right">
+                  <button id="add_btg" class="btn btn-primary">Add BTG</button>
+                </div>
             </div>
         </section>
         <section id="gift-section">
             <header class="clearfix">
                 <h2>Gift Details</h2>
-                <a href="history.html" id="showGiftHistory">Gift History</a>
             </header>
             <div class="content">
+                <a href="history.html" id="showGiftHistory" class="glyphicon glyphicon-time" title="Gift History"></a>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-2">Gift Description:</div>
-                        <div class="col-md-2"><textarea rows="4" cols="50" name="gp_desc" required="required"></textarea></div>
+                        <div class="col-md-4"><textarea rows="4" cols="50" name="gp_desc" required="required" class="form-control"></textarea></div>
+                        <div class="col-md-2">Dispatched:</div>
+                        <div class="col-md-4">
+                           <div class="radio-inline"><label><input type="radio" name="gp_is_dispatched" required="required" value="Y"/> Yes</label></div>
+                           <div class="radio-inline"><label><input type="radio" name="gp_is_dispatched" required="required" value="N"/> No</label></div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2">Dispatched:</div>
-                        <div class="col-md-2">
-                           <input type="radio" name="gp_is_dispatched" required="required" value="Y"/> Yes
-                           <input type="radio" name="gp_is_dispatched" required="required" value="N"/> No
-                        </div>
                         <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                        <div class="col-md-2"><input id="date" name="gp_dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
-
+                        <div class="col-md-4"><input id="date" name="gp_dispatch_date" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                         <div class="col-md-2">Remarks: </div>
-                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                        <div class="col-md-4"><input type="text" name="gp_remarks" required="required" class="form-control" /></div>
                     </div>
                 </div>
-                <input type="submit" id="add_gift" value="Add Gift"/>
+                <div class="pull-right">
+                  <button id="add_gift" class="btn btn-primary">Add Gift</button>
+                </div>
             </div>
         </section>
         <section id="prasadam-section">
             <header class="clearfix">
                 <h2>Prasadam Details</h2>
-                <a href="history.html" id="showPrasadamHistory">Prasadam History</a>
             </header>
             <div class="content">
+                <a href="history.html" id="showPrasadamHistory" class="glyphicon glyphicon-time" title="Prasadam History"></a>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-2">Prasadam Description:</div>
-                        <div class="col-md-2"><textarea rows="4" cols="50" name="gp_desc" required="required"></textarea></div>
+                        <div class="col-md-4"><textarea rows="4" cols="50" name="gp_desc" required="required" class="form-control"></textarea></div>
+                        <div class="col-md-2">Dispatched:</div>
+                        <div class="col-md-4">
+                           <div class="radio-inline"><label><input type="radio" name="gp_is_dispatched" required="required" value="Y"/> Yes</label></div>
+                           <div class="radio-inline"><label><input type="radio" name="gp_is_dispatched" required="required" value="N"/> No</label></div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2">Dispatched:</div>
-                        <div class="col-md-2">
-                           <input type="radio" name="gp_is_dispatched" required="required" value="Y"/> Yes
-                           <input type="radio" name="gp_is_dispatched" required="required" value="N"/> No
-                        </div>
                         <div class="col-md-2"><label class="control-label" for="date">Date of Dispatch:</label></div>
-                        <div class="col-md-2"><input id="date" name="gp_dispatch_date" placeholder="DD/MM/YYYY" type="text"/></div>
-
+                        <div class="col-md-4"><input id="date" name="gp_dispatch_date" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                         <div class="col-md-2">Remarks: </div>
-                        <div class="col-md-2"><input type="text" name="gp_remarks" required="required" /></div>
+                        <div class="col-md-4"><input type="text" name="gp_remarks" required="required" class="form-control" /></div>
                     </div>
                 </div>
-                <input type="submit" id="add_prasadam" value="Add Prasadam"/>
+                <div class="pull-right">
+                  <button id="add_prasadam" class="btn btn-primary">Add Prasadam</button>
+                </div>
             </div>
         </section>
         <section id="followup-section">
             <header class="clearfix">
                 <h2>Follow-up Details</h2>
-                <a href="history.html" id="showFollowupHistory">Follow-up History</a>
             </header>
             <div class="content">
+                <a href="history.html" id="showFollowupHistory" class="glyphicon glyphicon-time" title="Follow-up History"></a>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-2"><label class="control-label" for="date">FollowUp Date: </label></div>
-                        <div class="col-md-2"><input id="date" name="followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                        <div class="col-md-2"><input id="date" name="followup_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                         <div class="col-md-2">FollowUp Remarks:</div>
-                        <div class="col-md-2"><input type="text" name="followup_remark" required="required"/></div>
+                        <div class="col-md-2"><input type="text" name="followup_remark" required="required" class="form-control"/></div>
                         <div class="col-md-2"><label class="control-label" for="date">Next FollowUp Date:</label></div>
-                        <div class="col-md-2"><input id="date" name="nxt_followup_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                        <div class="col-md-2"><input id="date" name="nxt_followup_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                     </div>
                 </div>
-                <input type="submit" id="add_followup" value="Add Followup"/>
+                <div class="pull-right">
+                  <button id="add_followup" class="btn btn-primary">Add Followup</button>
+                </div>
             </div>
         </section>
         <!-- Lib Scripts -->
