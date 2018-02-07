@@ -13,6 +13,7 @@ session_start(); //starts the session
       <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
       <!-- App CSS -->
       <link rel="stylesheet" href="css/common.css">
+      <link rel="stylesheet" href="css/search.css">
       <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
@@ -40,8 +41,10 @@ session_start(); //starts the session
           </select>
         </div>
         <div class="col-md-2">
-        <select id="sub_category" class="form-control">
-        </select></div>
+          <select id="sub_category_select" class="form-control">
+          </select>
+          <input id="sub_category_input_text" style="display: none;" class="form-control" type="text"/>
+        </div>
         </div>
        </div>
        <button id="search_btn" class="btn btn-primary">Search</button>

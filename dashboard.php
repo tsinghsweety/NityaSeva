@@ -10,7 +10,7 @@ session_start(); //starts the session
         <!-- Lib CSS -->
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
         <!-- App CSS -->
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/common.css">
         <title>Dashboard</title>
     </head>
     <body>

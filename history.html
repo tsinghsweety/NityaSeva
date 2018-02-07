@@ -8,13 +8,17 @@
         <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
         <!-- App CSS -->
         <link rel="stylesheet" href="css/common.css">
-        <link rel="stylesheet" href="css/payment.css">
+        <link rel="stylesheet" href="css/history.css">
         <title>History</title>
     </head>
     <body>
-      <h2>History of</h2>
-      <div><label>User Id :</label><label id="userId"></label></div>
-      <div><label>Name :</label><label id="userName"></label></div>
+      <div>
+        <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
+        <h2>History of</h2>
+      </div>
+      <div class="text-center"><label>User Id :</label><label id="userId"></label></div>
+      <div class="text-center"><label>Name :</label><label id="userName"></label></div>
       <div id="history"></div>
       <!-- Lib Scripts -->
       <script src="lib/jquery.min.js"></script>

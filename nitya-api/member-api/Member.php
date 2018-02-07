@@ -47,6 +47,7 @@ Class Member {
 
 	public function getAllByCategory(){
 		$data = json_decode(file_get_contents('php://input'), true);
+		// print_r($data);
 		if(isset($data["category"]) && isset($data["sub_category"])){
 			$members = null;
 			$category = $data["category"];
@@ -54,56 +55,119 @@ Class Member {
 			if($category !== "" && $sub_category !== ""){
 				$column_name = "";
 				$column_value = $sub_category;
-				$columns_to_send = "user_id, title, first_name, last_name, "
-				."phone_no, email_id, start_date, user_lang, "
-				."connected_to, scheme_name, corresponder";
-				$from_clause = "Users";
-				$where_clause = "";
+				$search_type = "full_string";
+				$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
+				."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
+				."u.connected_to, u.scheme_name, u.corresponder, "
+				."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+				."  END last_payment_date, "
+				."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+				." END last_btg_sent_date, "
+				."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+				." END last_gift_sent_date, "
+				."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+				." END last_prasadam_sent_date, "
+				."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+				." END last_followup_date";
+				$from_clause = "Users u, last_details_view ldv";
+				$where_clause = "u.user_id=ldv.user_id";
+				$group_by_clause = "";
+				$order_by_clause = "u.user_id ASC";
 
 				switch($category) {
 					case "all_members":
-						if(strtolower($sub_category) === "all"){
-							$members = $this->getAllMember();
-						} else {
-							$result = array('success'=>0, "msg"=>"Please select all in sub category");
+						$column_name = "All Members";
+						if($sub_category === "none"){
+							$result = array('success'=>0, "msg"=>"Please select all from sub-category drop down");
 						}
 						break;
+					case "member_name":
+						$column_name = "member_name";
+						$group_by_clause = "u.user_id";
+						break;
+					case "phone_num":
+						$column_name = "u.phone_no";
+						$search_type = "part_string";
+						break;
 					case "donation_category":
-						$column_name = "scheme_name";
+						$column_name = "u.scheme_name";
 						break;
 					case "active_member":
-						$column_name = "is_active";
+						$column_name = "u.is_active";
 						break;
 					case "payment_due":
 						$column_name = "ud.is_due";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
-						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder";
-						$from_clause = "Users u, User_Due ud";
-						$where_clause = "u.user_id=ud.user_id";
+						."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
+						."u.connected_to, u.scheme_name, u.corresponder, "
+						."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+						."  END last_payment_date, "
+						."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+						." END last_btg_sent_date, "
+						."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+						." END last_gift_sent_date, "
+						."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+						." END last_prasadam_sent_date, "
+						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+						." END last_followup_date";
+						$from_clause .= ", User_Due ud";
+						$where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "current_payment_done":
 						$column_name = "ud.cp";
 						$columns_to_send = "u.user_id, u.title, u.first_name, u.last_name, "
-						."u.phone_no, u.email_id, u.start_date, u.user_lang, "
-						."u.connected_to, u.scheme_name, u.corresponder";
-						$from_clause = "Users u, User_Due ud";
-						$where_clause = "u.user_id=ud.user_id";
+						."u.phone_no, u.email_id, DATE_FORMAT(u.start_date, '%d/%m/%Y') AS start_date, u.user_lang, "
+						."u.connected_to, u.scheme_name, u.corresponder, "
+						."CASE WHEN ldv.last_payment_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_payment_date, '%d/%m/%Y')"
+						."  END last_payment_date, "
+						."CASE WHEN ldv.last_btg_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_btg_sent_date, '%d/%m/%Y')"
+						." END last_btg_sent_date, "
+						."CASE WHEN ldv.last_gift_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_gift_sent_date, '%d/%m/%Y')"
+						." END last_gift_sent_date, "
+						."CASE WHEN ldv.last_prasadam_sent_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_prasadam_sent_date, '%d/%m/%Y')"
+						." END last_prasadam_sent_date, "
+						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
+						." END last_followup_date";
+						$from_clause .= ", User_Due ud";
+						$where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "corresponder_name":
-						$column_name = "corresponder";
+						$column_name = "u.corresponder";
 						break;
 					case "connected_to":
-						$column_name = "connected_to";
+						$column_name = "u.connected_to";
 						break;
 				}
 
-				if(!is_null($members)){
-					$result = array('success'=>1, "msg"=>"Members Found", "code"=>'200', "members"=>$members);
-				} else if($column_name !== ""){
-					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause." WHERE ".$column_name."='".$column_value."'";
+				if(empty($result) && $column_name !== ""){
+					$query = 'SELECT'." ".$columns_to_send." FROM ".$from_clause;
+					$inside_if = false;
+					if($column_name === "member_name"){
+						$inside_if = true;
+						$query .= " WHERE "."LOWER(u.title) LIKE '%".strtolower($column_value)."%'";
+						$query .= " OR LOWER(u.first_name) LIKE '%".strtolower($column_value)."%'";
+						$query .= " OR LOWER(u.last_name) LIKE '%".strtolower($column_value)."%'";
+					} else if($column_name !== "All Members"){
+						$inside_if = true;
+						if($search_type === "full_string") {
+							$query .= " WHERE ".$column_name."='".$column_value."'";
+						} elseif ($search_type === "part_string") {
+							$query .= " WHERE ".$column_name." LIKE '%".$column_value."%'";
+						}
+					}
 					if($where_clause !== ""){
-						$query .= " AND ".$where_clause;
+						if($inside_if){
+							$query .= " AND ".$where_clause;
+						} else {
+							$query .= " WHERE ".$where_clause;
+						}
+
+					}
+					if($group_by_clause !== ""){
+						$query .= " GROUP BY ".$group_by_clause;
+					}
+					if($order_by_clause !== ""){
+						$query .= " ORDER BY ".$order_by_clause;
 					}
 					// echo $query;
 					$dbcontroller = new DBController();
