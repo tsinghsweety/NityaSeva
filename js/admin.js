@@ -30,12 +30,10 @@ var ADMIN = {
                 $("[name=username]").val(userData['username']);
                 $("[name=password]").attr("disabled","disabled");
                 // $("[name=password]").val(userData['pwd']);
-                $("input").attr("disabled","disabled");
-                $("button").attr("disabled","disabled");
+                $("input, button, select").attr("disabled","disabled");
 
                 $("#editAdmin").off("click").on("click", function(){
-                  $("input").prop("disabled", false);
-                  $("button").prop("disabled", false);
+                  $("input, button, select").prop("disabled", false);
                   $("[name=password]").val(userData['pwd']);
                   $("#editAdminBtn").show();
                   $("#cancelEditBtn").show();

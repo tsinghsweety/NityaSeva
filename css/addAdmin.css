@@ -1,58 +1,12 @@
-body {
-/*  height: 200px;*/
-  height: 100%;
-  display: block;
-/*  position: relative;*/
+section {
+  padding: 20px;
 }
-
-body::after {
-  content: "";
-  /* background: url(../img/krsna.jpg); */
-    background-size: cover;
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
-}
-h2,#add-admin{
-  text-align: center;
+header {
+  margin-bottom: 20px;
+  border-bottom: 2px dotted black;
 }
 h2{
-  margin-top: -20px;
-  margin-bottom: 45px;
-}
-#logoutbtn{
-  float: right;
-  margin: -86px 15px 0px 0px;
-/*  padding: 1px 12px!important; */
-  color:black;
-  font-size: 25px;
-}
-#add-admin div{
-/*  width: 22%;*/
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto2
-  font-weight: 700;
-}
-#add-admin div input[type=text]{
-/*  width: 65%;*/
-  margin-bottom: 10px;
-}
-#dateinput{
-/*  margin-left: 376px;*/
-}
-#date{
-/*  margin-left: 73px;*/
-}
-.glyphicon.glyphicon-home {
-  font-size: 25px;
-  padding-left: 21px;
-  margin-top: 11px;
-  color: black;
+  text-align: center;
 }
 #addbtn{
   background-color: #7FFFD4;

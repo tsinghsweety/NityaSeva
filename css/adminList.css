@@ -1,4 +1,4 @@
-#history {
+#adminList {
   margin: 20px 400px;
   height: 500px;
   width: 600px;
@@ -7,6 +7,6 @@
   border: 2px solid black;
 }
 
-#history th, #history td {
+#adminList th, #adminList td {
   padding: 5px;
 }
