@@ -9,11 +9,33 @@
         <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
         <!-- App CSS -->
         <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/adminList.css">
         <title>Admins List</title>
     </head>
     <body>
-      <h2>List of Admins</h2>
-      <div id="adminList"></div>
+      <div class="modal fade" id="logoutModal" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h2 class="modal-title" id="myModalLabel">Attention</h2>
+                      <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Do you want to logout?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="logout.php" class="btn btn-danger">Logout</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div>
+        <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+        <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
+        <h2>List of Admins</h2>
+        <div id="adminList"></div>
+      </div>
       <!-- Lib Scripts -->
       <script src="lib/jquery.min.js"></script>
       <script src="lib/bootstrap/js/bootstrap.min.js"></script>

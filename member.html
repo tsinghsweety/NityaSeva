@@ -12,18 +12,35 @@
         <title>Consolidated Details</title>
     </head>
     <body>
-      <div class="modal fade" id="myModal" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Attention</h4>
-                    <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
-                </div>
-                <div class="modal-body">
+        <div class="modal fade" id="myModal" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h2 class="modal-title" id="myModalLabel">Attention</h2>
+                      <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                  </div>
+                  <div class="modal-body">
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal fade" id="logoutModal" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="myModalLabel">Attention</h2>
+                        <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you want to logout?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="logout.php" class="btn btn-danger">Logout</a>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
         <section id="member-section">
             <header class="clearfix">
                 <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
@@ -67,8 +84,8 @@
                </div>
               </div>
               <div class="row form-group">
-                  <div class="col-md-1">Active:</div>
-                  <div class="col-md-1">
+                  <div class="col-md-2">Active:</div>
+                  <div class="col-md-2">
                     <div class="radio-inline"><label for="ay"><input type="radio" name="is_active" id="ay" required="required" value="Y"/>Yes</label></div>
                     <div class="radio-inline"><label for="an"><input type="radio" name="is_active" id="an" required="required" value="N"/>No</label></div>
                   </div>
@@ -113,9 +130,11 @@
                 <div class="col-md-2">Remarks: </div>
                 <div class="col-md-2"><input type="text" name="remarks" class="form-control"/></div>
               </div>
-               <button id="addMemberBtn" class="btn btn-primary">Add Member</button>
-               <button id="editMemberBtn" class="btn btn-primary">Save</button>
-               <button id="cancelEditBtn" class="btn btn-primary">Cancel</button>
+               <div class="pull-right">
+                 <button id="addMemberBtn" class="btn btn-primary">Add Member</button>
+                 <button id="editMemberBtn" class="btn btn-primary">Save</button>
+                 <button id="cancelEditBtn" class="btn btn-primary">Cancel</button>
+               </div>
             </div>
         </section>
 
@@ -158,8 +177,8 @@
                    </div>
                 </div>
                 <div class="pull-right">
-                 <button id="addpayment" class="btn btn-primary">Add Payment</button>
-               </div>
+                   <button id="addpayment" class="btn btn-primary">Add Payment</button>
+                 </div>
             </div>
         </section>
         <section id="btg-section">

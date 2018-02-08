@@ -9,6 +9,9 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
+    $(".glyphicon-log-out").off("click").on("click", function(){
+      COMMON.showModal("logoutModal");
+    });
     $("#addAdminBtn").off("click").on("click", ADMIN.addAdmin);
     $("#editAdminBtn").off("click").on("click", ADMIN.editAdmin);
     $("#cancelEditBtn").off("click").on("click", function(){

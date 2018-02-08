@@ -9,9 +9,9 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
-    // $("#dob").datepicker({
-    //    // orientation: 'left'
-    // });
+    $(".glyphicon-log-out").off("click").on("click", function(){
+      COMMON.showModal("logoutModal");
+    });
     $("#addMemberBtn").off("click").on("click", MEMBER.addMember);
     $("#editMemberBtn").off("click").on("click", MEMBER.editMember);
     $("#addpayment").off("click").on("click", MEMBER.addPayment);

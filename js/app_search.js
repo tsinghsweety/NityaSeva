@@ -9,6 +9,9 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
+    $(".glyphicon-log-out").off("click").on("click", function(){
+      COMMON.showModal("logoutModal");
+    });
     $("#category").off("change").on("change", SEARCH.showSubCategory);
     $("#search_btn").off("click").on("click", SEARCH.search);
 

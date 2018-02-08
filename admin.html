@@ -25,13 +25,31 @@
                 </div>
             </div>
         </div>
-        <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a>
-        <div id="editAdmin"><a href="javascript:void(0)">Edit Details</a></div>
+        <div class="modal fade" id="logoutModal" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="myModalLabel">Attention</h2>
+                        <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you want to logout?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="logout.php" class="btn btn-danger">Logout</a>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <section id="add-admin">
             <header class="clearfix">
+                <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+                <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
                 <h2>Add New Admin</h2>
             </header>
             <div class="content">
+              <a id="editAdmin" href="javascript:void(0)" class="glyphicon glyphicon-edit" title="Edit Details"></a>
               <div class="container-fluid">
                   <div class="row">
                       <div class="col-md-2">Title:</div>
@@ -45,28 +63,30 @@
                         </select>
                       </div>
                       <div class="col-md-2">First Name:</div>
-                      <div class="col-md-2"><input type="text" name="first_name" required="required" /></div>
+                      <div class="col-md-2"><input type="text" name="first_name" required="required" class="form-control" /></div>
                       <div class="col-md-2">Last Name:</div>
-                      <div class="col-md-2"><input type="text" name="last_name" required="required" /></div>
+                      <div class="col-md-2"><input type="text" name="last_name" required="required" class="form-control" /></div>
                   </div>
                   <div class="row">
                       <div class="col-md-2">Phone No.:</div>
-                      <div class="col-md-2"><input type="integer" name="phone_no" required="required" /></div>
+                      <div class="col-md-2"><input type="integer" name="phone_no" required="required" class="form-control" /></div>
                       <div class="col-md-2">Email Id:</div>
-                      <div class="col-md-2"><input type="email" name="email_id" required="required" /></div>
+                      <div class="col-md-2"><input type="email" name="email_id" required="required" class="form-control" /></div>
                       <div class="col-md-2"><label class="control-label" for="date">Start Date:</label></div>
-                      <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text"/></div>
+                      <div class="col-md-2"><input id="date" name="start_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                   </div>
                   <div class="row">
                       <div class="col-md-2">Username:</div>
-                      <div class="col-md-2"><input type="text" name="username" required="required" /></div>
+                      <div class="col-md-2"><input type="text" name="username" required="required" class="form-control" /></div>
                       <div class="col-md-2">Password:</div>
-                      <div class="col-md-2"><input type="text" name="password" required="required" /></div>
+                      <div class="col-md-2"><input type="text" name="password" required="required" class="form-control" /></div>
                   </div>
               </div>
-               <button id="addAdminBtn">Add Admin</button>
-               <button id="editAdminBtn">Save</button>
-               <button id="cancelEditBtn">Cancel</button>
+              <div class="pull-right">
+                 <button id="addAdminBtn" class="btn btn-primary">Add Admin</button>
+                 <button id="editAdminBtn" class="btn btn-primary">Save</button>
+                 <button id="cancelEditBtn" class="btn btn-primary">Cancel</button>
+               </div>
              </div>
              <div id="editbtn"></div>
         </section>
