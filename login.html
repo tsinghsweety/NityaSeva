@@ -3,14 +3,27 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/login.css">
         <title>Admin login Page</title>
     </head>
     <body>
         <h2>Admin login</h2>
         <form action="checklogin.php" method="POST">
-           Username: <input type="text" name="username" required="required" /> <br/>
-           Password: <input type="password" name="password" required="required" /> <br/>
-           <input type="submit" id ="loginbtn" value="Login"/>
+          <div class="imgcontainer">
+            <img src="img/krsna.jpg" alt="Avatar" class="avatar">
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <label for="username"><b>Username</b></label>
+              <input type="text" placeholder="Enter Username" name="username" required="required">
+            </div>
+            <div class="row">
+              <label for="password"><b>Password</b></label>
+              <input type="password" placeholder="Enter Password" name="password" required="required">
+            </div>
+            <button type="submit" id="loginbtn">Login</button>
+          </div>
         </form>
     </body>
 </html>

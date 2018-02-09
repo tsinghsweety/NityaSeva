@@ -46,12 +46,12 @@ h2{
 h2,form{
   text-align: center;
 }
-#loginbtn{
+/* #loginbtn{
   margin: 10px 45PX 0px 310px;
   font: initial;
   background-color: antiquewhite;
   border-radius: 7px;
-}
+} */
 #implinks{
   text-align: center;
   padding-top: 25px;
