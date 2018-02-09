@@ -10,13 +10,13 @@ Class Followup {
 			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'DATE_FORMAT(f.followup_date, "%d/%m/%Y") as followup_date, f.followup_remark, DATE_FORMAT(f.nxt_followup_date, "%d/%m/%Y") as nxt_followup_date'
-			.' FROM Users u, Follow_Up f WHERE u.user_id=f.user_id and '.
+			.' FROM users u, follow_up f WHERE u.user_id=f.user_id and '.
 			' f.user_id="' .$user_id
 			. '" ORDER BY f.followup_date DESC';
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'DATE_FORMAT(f.followup_date, "%d/%m/%Y") as followup_date, f.followup_remark, DATE_FORMAT(f.nxt_followup_date, "%d/%m/%Y") as nxt_followup_date'
-			.' FROM Users u, Follow_Up f WHERE u.user_id=f.user_id '
+			.' FROM users u, follow_up f WHERE u.user_id=f.user_id '
 			. ' ORDER BY f.followup_date DESC';
 		}
 		$dbcontroller = new DBController();
@@ -47,9 +47,9 @@ Class Followup {
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 			$nxt_formatted_date = date_format($nxtDateTime, 'Y-m-d');
 
-			$insert_followup_query = "INSERT INTO Follow_Up(user_id,followup_date,followup_remark,nxt_followup_date) VALUES('$user_id','$formatted_date','$followup_remark','$nxt_formatted_date');";
+			$insert_followup_query = "INSERT INTO follow_up(user_id,followup_date,followup_remark,nxt_followup_date) VALUES('$user_id','$formatted_date','$followup_remark','$nxt_formatted_date');";
 
-			//insert user into Follow_Up table
+			//insert user into follow_up table
 			$insertFollowupResult = $dbcontroller->executeQuery($insert_followup_query);
 			if($insertFollowupResult > 0){
 				$result = array('success'=>1, 'msg'=>'Followup added successfully', "code"=>'200', 'userData'=>$data);

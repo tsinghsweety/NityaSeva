@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
         <!-- App CSS -->
         <link rel="stylesheet" href="css/common.css">
-        <link rel="stylesheet" href="css/addMember.css">
+        <link rel="stylesheet" href="css/member.css">
         <title>Consolidated Details</title>
     </head>
     <body>
@@ -44,7 +44,7 @@
         <section id="member-section">
             <header class="clearfix">
                 <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
-                <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
+                <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon" data-toggle="modal" data-target="#logoutModal"></span></div>
                 <h2>Member Details</h2>
             </header>
             <div class="content">
@@ -165,8 +165,9 @@
                        <div class="col-md-2">Reference No.: </div>
                        <div class="col-md-2"><input type="text" name="ref_num" required="required"  class="form-control"/></div>
                        <div class="col-md-2">Amount Paid:</div>
-                       <div class="col-md-2"><input type="text" name="amount_paid" required="required"  class="form-control"/></div>   <div class="col-md-2">Total Due:</div>
-                       <div class="col-md-2"><input type="text" name="due_amt" value="" disabled class="form-control"/></div>
+                       <div class="col-md-2"><input type="text" name="amount_paid" required="required"  class="form-control"/></div>
+                       <!-- <div class="col-md-2">Total Due:</div>
+                       <div class="col-md-2"><input type="text" name="due_amt" value="" disabled class="form-control"/></div> -->
                    </div>
                    <div class="row">
                        <div class="col-md-2"><label class="control-label" for="date">Date of Payment:</label></div>

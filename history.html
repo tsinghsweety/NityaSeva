@@ -29,14 +29,20 @@
               </div>
           </div>
       </div>
-      <div>
-        <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
-        <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
-        <h2>History of</h2>
-      </div>
-      <div class="text-center"><label>User Id :</label><label id="userId"></label></div>
-      <div class="text-center"><label>Name :</label><label id="userName"></label></div>
-      <div id="history"></div>
+      <section>
+        <header class="clearfix">
+          <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+          <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon" data-toggle="modal" data-target="#logoutModal"></span></div>
+          <h2>History</h2>
+        </header>
+        <div class="content">
+          <div class="container-fluid text-center" style="margin: 0 30%;">
+            <div class="col-md-3"><label>User Id:</label><label id="userId">3000</label></div>
+            <div class="col-md-9"><label>Name:</label><label id="userName">Mr Vikas Gourav</label></div>
+          </div>
+          <div id="history"></div>
+        </div>
+      </section>
       <!-- Lib Scripts -->
       <script src="lib/jquery.min.js"></script>
       <script src="lib/bootstrap/js/bootstrap.min.js"></script>

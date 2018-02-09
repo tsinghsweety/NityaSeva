@@ -11,15 +11,17 @@ Class Member {
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, DATE_FORMAT(u.dob, "%d/%m/%Y") AS dob, u.company_name, u.email_id, '
+			.'DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
-			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id '
+			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id '
 			.'and u.user_id=' .$id;
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, DATE_FORMAT(u.dob, "%d/%m/%Y") AS dob, u.company_name, u.email_id, '
+			.'DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
-			.' FROM Users u, Scheme s WHERE s.scheme_id=u.scheme_id';
+			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id';
 		}
 		// echo $query;
 		$dbcontroller = new DBController();
@@ -29,7 +31,7 @@ Class Member {
 
 	public function getAllCorresponder(){
 
-		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM Users WHERE corresponder != ""';
+		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM users WHERE corresponder != ""';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
@@ -38,7 +40,7 @@ Class Member {
 
 	public function getAllConnectedTo(){
 
-		$query = 'SELECT DISTINCT connected_to FROM Users WHERE connected_to != ""';
+		$query = 'SELECT DISTINCT connected_to FROM users WHERE connected_to != ""';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->connectedTo = $dbcontroller->executeSelectQuery($query);
@@ -69,7 +71,7 @@ Class Member {
 				." END last_prasadam_sent_date, "
 				."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
 				." END last_followup_date";
-				$from_clause = "Users u, last_details_view ldv";
+				$from_clause = "users u, last_details_view ldv";
 				$where_clause = "u.user_id=ldv.user_id";
 				$group_by_clause = "";
 				$order_by_clause = "u.user_id ASC";
@@ -218,14 +220,14 @@ Class Member {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_start_date = date_format($dateTime, 'Y-m-d');
 
-			// $query = mysqli_query($con,"Select * from Users");
+			// $query = mysqli_query($con,"Select * from users");
 	    // $query2 = mysqli_query($con,"Select * from User_Donation");
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM Users WHERE phone_no = '$phone_no';";
+			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM users WHERE phone_no = '$phone_no';";
 
-			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
+			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM scheme WHERE scheme_name = '$scheme_name';";
 
-			// $insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
+			// $insert_user_query = "INSERT INTO users(title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$email_id','$formatted_date','$is_active','$connected_to','$user_lang');";
 
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
@@ -240,9 +242,9 @@ Class Member {
 					$scheme_id = $scheme_data["scheme_id"];
 					$scheme_value = $scheme_data["scheme_value"];
 
-					$insert_user_query = "INSERT INTO Users(title,first_name,last_name,address,phone_no,whatsapp,dob,email_id,company_name,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$formatted_dob_date','$email_id','$company_name','$formatted_start_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
+					$insert_user_query = "INSERT INTO users(title,first_name,last_name,address,phone_no,whatsapp,dob,email_id,company_name,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks) VALUES('$title','$first_name','$last_name','$address','$phone_no','$whatsapp','$formatted_dob_date','$email_id','$company_name','$formatted_start_date','$is_active','$connected_to','$user_lang','$scheme_id','$scheme_name','$corresponder','$remarks');";
 
-					//insert user into Users table
+					//insert user into users table
 					$insertUserResult = $dbcontroller->executeQuery($insert_user_query);
 					if($insertUserResult > 0){
 						$newUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
@@ -297,7 +299,8 @@ Class Member {
 		// print_r($data);
 		if(isset($_GET['id']) && isset($data['title']) && isset($data['first_name'])
 		&& isset($data['last_name']) && isset($data['address']) && isset($data['phone_no'])
-		&& isset($data['whatsapp']) && isset($data['email_id']) && isset($data['start_date'])
+		&& isset($data['whatsapp']) && isset($data['birth_date']) && isset($data['company_name'])
+		&& isset($data['email_id']) && isset($data['start_date'])
 		&& isset($data['is_active']) && isset($data['connected_to']) && isset($data['scheme_name'])
 		&& isset($data['corresponder']) && isset($data['user_lang'])
 		&& isset($data['remarks'])){
@@ -311,6 +314,8 @@ Class Member {
 			$address = mysqli_real_escape_string($con,$data['address']);
 			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
 			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
+			$dob = mysqli_real_escape_string($con,$data['birth_date']);
+			$company_name = mysqli_real_escape_string($con,$data['company_name']);
 			$email_id = mysqli_real_escape_string($con,$data['email_id']);
 			$start_date = mysqli_real_escape_string($con,$data['start_date']);
 			$is_active = mysqli_real_escape_string($con,$data['is_active']);
@@ -323,9 +328,17 @@ Class Member {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM Users WHERE phone_no = '$phone_no';";
+			$dateTime_dob = date_create_from_format('d/m/Y',$dob);
+			$formatted_date_dob = date_format($dateTime_dob, 'Y-m-d');
 
-			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM Scheme WHERE scheme_name = '$scheme_name';";
+			$user_already_ex_q = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
+			.'u.address, u.phone_no, u.whatsapp, DATE_FORMAT(u.dob, "%d/%m/%Y") AS dob, u.company_name, u.email_id, '
+			.'DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date, u.is_active, '
+			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
+			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id '
+			.'and u.user_id=' .$user_id;
+
+			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM scheme WHERE scheme_name = '$scheme_name';";
 
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
@@ -338,24 +351,30 @@ Class Member {
 						$scheme_id = $scheme_data["scheme_id"];
 						$scheme_value = $scheme_data["scheme_value"];
 
-						$update_user_query = "UPDATE Users SET title='$title', first_name='$first_name',"
-						." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
-						."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+						$update_user_query = "UPDATE users SET title='$title', first_name='$first_name',"
+						."last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
+						."dob='$formatted_date_dob', company_name='$company_name',"
+						."email_id='$email_id',start_date='$formatted_date',is_active='$is_active',"
 						."connected_to='$connected_to',user_lang='$user_lang',scheme_id='$scheme_id',"
 						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 					}
 				} else {
-					$update_user_query = "UPDATE Users SET title='$title', first_name='$first_name',"
+					$update_user_query = "UPDATE users SET title='$title', first_name='$first_name',"
 					." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
-					."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+					."dob='$formatted_date_dob', company_name='$company_name',"
+					."email_id='$email_id',start_date='$formatted_date',is_active='$is_active',"
 					."connected_to='$connected_to',user_lang='$user_lang',"
 					."corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 				}
 
-				//update user into Users table
+				//update user into users table
 				$updateUserResult = $dbcontroller->executeQuery($update_user_query);
 				if($updateUserResult > 0){
-					$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$userData);
+					$updatedUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+					if(count($updatedUserRes) > 0){
+						$updatedData = $updatedUserRes[0];
+						$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$updatedData);
+					}
 				} else {
 					$result = array('success'=>0, "msg"=>"Member details aready upto-date", "code"=>'924');
 				}

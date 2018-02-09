@@ -1,5 +1,6 @@
 <?php
 require 'dbConnect.php';
+ob_start();
 session_start(); //starts the session
 ?>
 <html>
@@ -19,24 +20,46 @@ session_start(); //starts the session
             }
             else{
                 mysqli_close($con);
-                header("location:login.php"); // redirects if user is not logged in
+                header("location:login.html"); // redirects if user is not logged in
             }
             $user = $_SESSION['user']; //assigns user value
 
-            $query = mysqli_query($con,"SELECT is_superAdmin FROM Admin WHERE username='$user';");
+            $query = mysqli_query($con,"SELECT is_superAdmin FROM admin WHERE username='$user';");
             $fetched_row = mysqli_fetch_row($query);
             $is_superAdmin = $fetched_row[0];
             mysqli_close($con);
         ?>
+        <div class="modal fade" id="logoutModal" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="myModalLabel">Attention</h2>
+                        <button data-dismiss="modal" class="close1 sprite" title="close popup button" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you want to logout?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="logout.php" class="btn btn-danger">Logout</a>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+        </script>
         <div id="implinks">
             <a id="addadmin" href="admin.html" onclick="sessionStorage.clear();">Add Admin</a>
             <a id="showadmins" href="adminsList.html">Show Admin List</a>
             <a href="member.html" onclick="sessionStorage.clear();">Add member</a>
             <a href="search.html">Search Members</a>
+            <div class="pull-right">
+              <span class="glyphicon glyphicon-log-out logout-icon" data-toggle="modal" data-target="#logoutModal" style="margin-right: 20px;"></span>
+            </div>
 <!--            <a href="logout.php">Click here to logout</a><br/><br/>    -->
         </div>
-        <?php require 'logout_modal.php';
-        ?>
+
         <!-- Logout modal -->
 <!--
         <button type="button" class="btn btn-default btn-sm" id="logoutbtn" data-toggle="modal" data-target=".bs-example-modal-sm">

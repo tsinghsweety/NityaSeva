@@ -10,11 +10,11 @@ Class Admin {
 			$id = $_GET['id'];
 			$query = 'SELECT admin_id, title, first_name, last_name, '
 			.'username, pwd, phone_no, email_id, DATE_FORMAT(start_date, "%d/%m/%Y") as start_date, is_superAdmin '
-			.' FROM Admin WHERE admin_id='.$id;
+			.' FROM admin WHERE admin_id='.$id;
 		} else {
 			$query = 'SELECT admin_id, title, first_name, last_name, '
 			.'username, pwd, phone_no, email_id, DATE_FORMAT(start_date, "%d/%m/%Y") as start_date, is_superAdmin '
-			.' FROM Admin';
+			.' FROM admin';
 		}
 		// echo $query;
 		$dbcontroller = new DBController();
@@ -45,10 +45,10 @@ Class Admin {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$admin_already_ex_q = "SELECT admin_id FROM Admin WHERE phone_no = '$phone_no';";
-			$username_already_ex_q = "SELECT admin_id FROM Admin WHERE username = '$username';";
+			$admin_already_ex_q = "SELECT admin_id FROM admin WHERE phone_no = '$phone_no';";
+			$username_already_ex_q = "SELECT admin_id FROM admin WHERE username = '$username';";
 			$is_superAdmin = "N";
-			$insert_admin_query = "INSERT INTO Admin(title,first_name,last_name,username,pwd,phone_no,email_id,start_date,is_superAdmin) VALUES('$title','$first_name','$last_name','$username','$password','$phone_no','$email_id','$formatted_date','c');";
+			$insert_admin_query = "INSERT INTO admin(title,first_name,last_name,username,pwd,phone_no,email_id,start_date,is_superAdmin) VALUES('$title','$first_name','$last_name','$username','$password','$phone_no','$email_id','$formatted_date','c');";
 
 			//check if phone no already exists
 			$alreadyExistingUserRes = $dbcontroller->executeSelectQuery($admin_already_ex_q);
@@ -62,7 +62,7 @@ Class Admin {
 					//If yes then send already existing message
 					$result = array('success'=>0, "msg"=>"Username already exists", "code"=>'504');
 				}else{
-					//insert admin details into Admin table
+					//insert admin details into admin table
 					$insertAdminResult = $dbcontroller->executeQuery($insert_admin_query);
 					if($insertAdminResult > 0){
 						$result = array('success'=>1, 'msg'=>'Admin added successfully', "code"=>'200');
@@ -115,7 +115,7 @@ Class Admin {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$update_admin_query = "UPDATE Admin SET title='$title',first_name='$first_name',last_name='$last_name',username='$username',pwd='$password',phone_no='$phone_no',email_id='$email_id',start_date='$formatted_date' WHERE admin_id='$admin_id';";
+			$update_admin_query = "UPDATE admin SET title='$title',first_name='$first_name',last_name='$last_name',username='$username',pwd='$password',phone_no='$phone_no',email_id='$email_id',start_date='$formatted_date' WHERE admin_id='$admin_id';";
 
 			$updateAdminResult = $dbcontroller->executeQuery($update_admin_query);
 			// echo $updateAdminResult;

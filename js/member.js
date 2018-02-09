@@ -24,6 +24,11 @@ var MEMBER = {
                   $('[name=btg_lang]').val(userData['user_lang']);
                   $('[name=due_amt]').val(userData['scheme_value']);
 
+                  //set sessionStorage
+                  sessionStorage.setItem("title", userData['title']);
+                  sessionStorage.setItem("first_name", userData['first_name']);
+                  sessionStorage.setItem("last_name", userData['last_name']);
+
                   $("[name=title]").val(userData['title']);
                   $("[name=first_name]").val(userData['first_name']);
                   $("[name=last_name]").val(userData['last_name']);
@@ -42,8 +47,7 @@ var MEMBER = {
                   $("[name=remarks]").val(userData['remarks']);
 
                   $("#editMember").off("click").on("click", function(){
-                    $("input, button, textarea, select, input").prop("disabled", false);
-                    $("[name=password]").val(userData['pwd']);
+                    $("#member-section").find("input, button, textarea, select, input").prop("disabled", false);
                     $("#editMemberBtn").show();
                     $("#cancelEditBtn").show();
                   });
@@ -112,6 +116,11 @@ var MEMBER = {
         $("section#member-section").show();
       }
     },
+    resizeHistoryHeight: function(){
+      if($("#history table").outerHeight() > 450){
+        $("#history").css("height", "450px");
+      }
+    },
     addMember: function(){
         var data = COMMON.createFormDataJson("#member-section");
         // console.log("data");
@@ -165,6 +174,31 @@ var MEMBER = {
             success: function(data, statusTxt){
               console.log(data, statusTxt);
               if(data.success === 1){
+                var userData = data.userData;
+                var userActive = userData['is_active'];
+
+                //Fill Various Field Values
+                $('[name=payment_scheme_name]').val(userData['scheme_name']);
+                $('[name=payment_scheme_value]').val(userData['scheme_value']);
+                $('[name=btg_lang]').val(userData['user_lang']);
+                $('[name=due_amt]').val(userData['scheme_value']);
+
+                $("[name=title]").val(userData['title']);
+                $("[name=first_name]").val(userData['first_name']);
+                $("[name=last_name]").val(userData['last_name']);
+                $("[name=address]").val(userData['address']);
+                $("[name=phone_no]").val(userData['phone_no']);
+                $("[name=whatsapp]").val(userData['whatsapp']);
+                $("[name=birth_date]").val(userData['dob']);
+                $("[name=email_id]").val(userData['email_id']);
+                $("[name=company_name]").val(userData['company_name']);
+                $("[name=start_date]").datepicker('update', userData['start_date']);
+                $("[name=is_active][value="+userActive+"]").prop("checked", "true");
+                $("[name=connected_to]").val(userData['connected_to']);
+                $("[name=scheme_name]").val(userData['scheme_name']);
+                $("[name=payment_type]").val(userData['payment_type']);
+                $("[name=user_lang]").val(userData['user_lang']);
+                $("[name=remarks]").val(userData['remarks']);
                 COMMON.showModal("myModal", "Hari Bol!", data.msg, "#member-section", true);
               } else if(data.success === 0) {
                 if(data.msg === "API issue"){
@@ -293,6 +327,14 @@ var MEMBER = {
     },
     showPaymentHistory: function(){
       var memberId = sessionStorage.getItem('member_id');
+      var title = sessionStorage.getItem('title');
+      var firstName = sessionStorage.getItem('first_name');
+      var lastName = sessionStorage.getItem('last_name');
+
+      $('title, h2').text('Payment History');
+      $('#userId').text(memberId);
+      $('#userName').text(title + ' ' + firstName + ' ' + lastName);
+
       console.log("memberId", memberId);
       console.log("CONSTANTS", CONSTANTS);
       var url = CONSTANTS.API_PATH +"payment/list/"+memberId;
@@ -323,19 +365,34 @@ var MEMBER = {
 
               tableEl += "</tbody></table>";
 
-              $('title, h2').text('Payment History');
-              $('#userId').text(payment['user_id']);
-              $('#userName').text(payment['title'] + ' ' + payment['first_name'] + ' ' + payment['last_name']);
               $("#history").html(tableEl);
+              MEMBER.resizeHistoryHeight();
             }
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
+              $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
+            }
           }
       });
     },
     showGiftPrasadamHistory: function(type){
       var memberId = sessionStorage.getItem('member_id');
+      var title = sessionStorage.getItem('title');
+      var firstName = sessionStorage.getItem('first_name');
+      var lastName = sessionStorage.getItem('last_name');
+
+      var fullName = title + ' ' + firstName + ' ' + lastName;
+      var title = "Gift History";
+      if(type === "prasadam"){
+        title = "Prasadam History";
+      }
+
+      $('title, h2').text(title);
+      $('#userId').text(memberId);
+      $('#userName').text(fullName);
+
       console.log("memberId", memberId);
       console.log("CONSTANTS", CONSTANTS);
       var url = CONSTANTS.API_PATH + type + "/list/"+memberId;
@@ -365,25 +422,30 @@ var MEMBER = {
 
               tableEl += "</tbody></table>";
 
-              var fullName = gift['title'] + ' ' + gift['first_name'] + ' ' + gift['last_name'];
-              var title = "Gift History";
-              if(type === "prasadam"){
-                title = "Prasadam History";
-              }
-
-              $('title, h2').text(title);
-              $('#userId').text(gift['user_id']);
-              $('#userName').text(fullName);
               $("#history").html(tableEl);
+              MEMBER.resizeHistoryHeight();
             }
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
+              $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
+            }
           }
       });
     },
     showBTGHistory: function(){
       var memberId = sessionStorage.getItem('member_id');
+      var title = sessionStorage.getItem('title');
+      var firstName = sessionStorage.getItem('first_name');
+      var lastName = sessionStorage.getItem('last_name');
+
+      var fullName = title + ' ' + firstName + ' ' + lastName;
+      var title = "Back To Godhead History";
+
+      $('title, h2').text(title);
+      $('#userId').text(memberId);
+      $('#userName').text(fullName);
       console.log("memberId", memberId);
       console.log("CONSTANTS", CONSTANTS);
       var url = CONSTANTS.API_PATH + "btg/list/"+memberId;
@@ -414,22 +476,31 @@ var MEMBER = {
 
               tableEl += "</tbody></table>";
 
-              var fullName = btg['title'] + ' ' + btg['first_name'] + ' ' + btg['last_name'];
-              var title = "Back To Godhead History";
-
-              $('title, h2').text(title);
-              $('#userId').text(btg['user_id']);
-              $('#userName').text(fullName);
               $("#history").html(tableEl);
+              MEMBER.resizeHistoryHeight();
             }
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
+              $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
+            }
           }
       });
     },
     showFollowupHistory: function(){
       var memberId = sessionStorage.getItem('member_id');
+      var title = sessionStorage.getItem('title');
+      var firstName = sessionStorage.getItem('first_name');
+      var lastName = sessionStorage.getItem('last_name');
+
+      var fullName = title + ' ' + firstName + ' ' + lastName;
+      var title = "Followup History";
+
+      $('title, h2').text(title);
+      $('#userId').text(memberId);
+      $('#userName').text(fullName);
+
       console.log("memberId", memberId);
       console.log("CONSTANTS", CONSTANTS);
       var url = CONSTANTS.API_PATH + "followup/list/"+memberId;
@@ -458,17 +529,15 @@ var MEMBER = {
 
               tableEl += "</tbody></table>";
 
-              var fullName = followup['title'] + ' ' + followup['first_name'] + ' ' + followup['last_name'];
-              var title = "Back To Godhead History";
-
-              $('title, h2').text(title);
-              $('#userId').text(followup['user_id']);
-              $('#userName').text(fullName);
               $("#history").html(tableEl);
+              MEMBER.resizeHistoryHeight();
             }
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
+              $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
+            }
           }
       });
     }

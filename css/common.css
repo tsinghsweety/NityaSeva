@@ -23,6 +23,16 @@ body::after {
   position: absolute;
   z-index: -1;
 }
+section {
+  padding: 20px;
+}
+header {
+  margin-bottom: 20px;
+  border-bottom: 2px dotted black;
+}
+h2{
+  text-align: center;
+}
 .content {
   clear: both;
 }
@@ -36,12 +46,12 @@ body::after {
 h2,form{
   text-align: center;
 }
-#loginbtn{
+/* #loginbtn{
   margin: 10px 45PX 0px 310px;
   font: initial;
   background-color: antiquewhite;
   border-radius: 7px;
-}
+} */
 #implinks{
   text-align: center;
   padding-top: 25px;
