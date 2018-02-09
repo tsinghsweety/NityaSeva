@@ -299,7 +299,8 @@ Class Member {
 		// print_r($data);
 		if(isset($_GET['id']) && isset($data['title']) && isset($data['first_name'])
 		&& isset($data['last_name']) && isset($data['address']) && isset($data['phone_no'])
-		&& isset($data['whatsapp']) && isset($data['email_id']) && isset($data['start_date'])
+		&& isset($data['whatsapp']) && isset($data['birth_date']) && isset($data['company_name'])
+		&& isset($data['email_id']) && isset($data['start_date'])
 		&& isset($data['is_active']) && isset($data['connected_to']) && isset($data['scheme_name'])
 		&& isset($data['corresponder']) && isset($data['user_lang'])
 		&& isset($data['remarks'])){
@@ -327,7 +328,15 @@ Class Member {
 			$dateTime = date_create_from_format('d/m/Y',$start_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$user_already_ex_q = "SELECT user_id,title,first_name,last_name,address,phone_no,whatsapp,email_id,start_date,is_active,connected_to,user_lang,scheme_id,scheme_name,corresponder,remarks FROM users WHERE phone_no = '$phone_no';";
+			$dateTime_dob = date_create_from_format('d/m/Y',$dob);
+			$formatted_date_dob = date_format($dateTime_dob, 'Y-m-d');
+
+			$user_already_ex_q = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
+			.'u.address, u.phone_no, u.whatsapp, DATE_FORMAT(u.dob, "%d/%m/%Y") AS dob, u.company_name, u.email_id, '
+			.'DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date, u.is_active, '
+			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
+			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id '
+			.'and u.user_id=' .$user_id;
 
 			$searchSchemeId_query = "SELECT scheme_id,scheme_value FROM scheme WHERE scheme_name = '$scheme_name';";
 
@@ -344,15 +353,16 @@ Class Member {
 
 						$update_user_query = "UPDATE users SET title='$title', first_name='$first_name',"
 						."last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
-						."dob='$dob', company_name='$company_name',"
-						."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+						."dob='$formatted_date_dob', company_name='$company_name',"
+						."email_id='$email_id',start_date='$formatted_date',is_active='$is_active',"
 						."connected_to='$connected_to',user_lang='$user_lang',scheme_id='$scheme_id',"
 						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 					}
 				} else {
 					$update_user_query = "UPDATE users SET title='$title', first_name='$first_name',"
 					." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
-					."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
+					."dob='$formatted_date_dob', company_name='$company_name',"
+					."email_id='$email_id',start_date='$formatted_date',is_active='$is_active',"
 					."connected_to='$connected_to',user_lang='$user_lang',"
 					."corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
 				}
@@ -360,7 +370,11 @@ Class Member {
 				//update user into users table
 				$updateUserResult = $dbcontroller->executeQuery($update_user_query);
 				if($updateUserResult > 0){
-					$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$userData);
+					$updatedUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);
+					if(count($updatedUserRes) > 0){
+						$updatedData = $updatedUserRes[0];
+						$result = array('success'=>1, 'msg'=>'Member details updated successfully', "code"=>'200', 'userData'=>$updatedData);
+					}
 				} else {
 					$result = array('success'=>0, "msg"=>"Member details aready upto-date", "code"=>'924');
 				}

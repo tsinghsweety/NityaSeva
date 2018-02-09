@@ -47,8 +47,7 @@ var MEMBER = {
                   $("[name=remarks]").val(userData['remarks']);
 
                   $("#editMember").off("click").on("click", function(){
-                    $("input, button, textarea, select, input").prop("disabled", false);
-                    $("[name=password]").val(userData['pwd']);
+                    $("#member-section").find("input, button, textarea, select, input").prop("disabled", false);
                     $("#editMemberBtn").show();
                     $("#cancelEditBtn").show();
                   });
@@ -175,6 +174,31 @@ var MEMBER = {
             success: function(data, statusTxt){
               console.log(data, statusTxt);
               if(data.success === 1){
+                var userData = data.userData;
+                var userActive = userData['is_active'];
+
+                //Fill Various Field Values
+                $('[name=payment_scheme_name]').val(userData['scheme_name']);
+                $('[name=payment_scheme_value]').val(userData['scheme_value']);
+                $('[name=btg_lang]').val(userData['user_lang']);
+                $('[name=due_amt]').val(userData['scheme_value']);
+
+                $("[name=title]").val(userData['title']);
+                $("[name=first_name]").val(userData['first_name']);
+                $("[name=last_name]").val(userData['last_name']);
+                $("[name=address]").val(userData['address']);
+                $("[name=phone_no]").val(userData['phone_no']);
+                $("[name=whatsapp]").val(userData['whatsapp']);
+                $("[name=birth_date]").val(userData['dob']);
+                $("[name=email_id]").val(userData['email_id']);
+                $("[name=company_name]").val(userData['company_name']);
+                $("[name=start_date]").datepicker('update', userData['start_date']);
+                $("[name=is_active][value="+userActive+"]").prop("checked", "true");
+                $("[name=connected_to]").val(userData['connected_to']);
+                $("[name=scheme_name]").val(userData['scheme_name']);
+                $("[name=payment_type]").val(userData['payment_type']);
+                $("[name=user_lang]").val(userData['user_lang']);
+                $("[name=remarks]").val(userData['remarks']);
                 COMMON.showModal("myModal", "Hari Bol!", data.msg, "#member-section", true);
               } else if(data.success === 0) {
                 if(data.msg === "API issue"){
