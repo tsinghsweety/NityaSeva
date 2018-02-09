@@ -46,27 +46,32 @@ session_start(); //starts the session
               </div>
           </div>
       </div>
-      <a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a><br/><br/>
-      <h2>Member List</h2>
-      <div id="search_criteria">
-       <div class="container-fluid">
-        <div class="form-group">
-            <div class="col-md-2"><label for="sel1_pt">Search By:</label></div>
-        <div class="col-md-2">
-          <select id="category" class="form-control">
-
-          </select>
-        </div>
-        <div class="col-md-2">
-          <select id="sub_category_select" class="form-control">
-          </select>
-          <input id="sub_category_input_text" style="display: none;" class="form-control" type="text"/>
-        </div>
-        </div>
+      <section>
+        <header class="clearfix">
+          <div class="pull-left"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span></a></div>
+          <div class="pull-right"><span class="glyphicon glyphicon-log-out logout-icon"></span></div>
+          <h2>Member List</h2>
+        </header>
+        <div id="search_criteria" class="content">
+         <div class="container-fluid">
+          <div class="form-group">
+            <div class="col-md-2"><label for="sel1_pt">Category:</label></div>
+            <div class="col-md-4">
+              <select id="category" class="form-control"></select>
+            </div>
+            <div class="col-md-2"><label for="sel1_pt">Sub Category:</label></div>
+            <div class="col-md-4">
+              <select id="sub_category_select" class="form-control"></select>
+              <input id="sub_category_input_text" style="display: none;" class="form-control" type="text"/>
+            </div>
+          </div>
+         </div>
+         <div class="pull-right">
+           <button id="search_btn" class="btn btn-primary">Search</button>
+         </div>
        </div>
-       <button id="search_btn" class="btn btn-primary">Search</button>
-     </div>
-     <div id="search_result"></div>
+       <div id="search_result"></div>
+     </section>
       <!-- Lib Scripts -->
       <script src="lib/jquery.min.js"></script>
       <script src="lib/bootstrap/js/bootstrap.min.js"></script>
