@@ -11,13 +11,13 @@ Class Member {
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.dob, u.company_name, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id '
 			.'and u.user_id=' .$id;
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
-			.'u.address, u.phone_no, u.whatsapp, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
+			.'u.address, u.phone_no, u.whatsapp, u.dob, u.company_name, u.email_id, DATE_FORMAT(u.start_date, "%d/%m/%Y") as start_date, u.is_active, '
 			.'u.connected_to, u.user_lang, u.scheme_name, u.corresponder, u.remarks, s.scheme_value '
 			.' FROM users u, scheme s WHERE s.scheme_id=u.scheme_id';
 		}
@@ -311,6 +311,8 @@ Class Member {
 			$address = mysqli_real_escape_string($con,$data['address']);
 			$phone_no = mysqli_real_escape_string($con,$data['phone_no']);
 			$whatsapp = mysqli_real_escape_string($con,$data['whatsapp']);
+			$dob = mysqli_real_escape_string($con,$data['birth_date']);
+			$company_name = mysqli_real_escape_string($con,$data['company_name']);
 			$email_id = mysqli_real_escape_string($con,$data['email_id']);
 			$start_date = mysqli_real_escape_string($con,$data['start_date']);
 			$is_active = mysqli_real_escape_string($con,$data['is_active']);
@@ -339,7 +341,8 @@ Class Member {
 						$scheme_value = $scheme_data["scheme_value"];
 
 						$update_user_query = "UPDATE users SET title='$title', first_name='$first_name',"
-						." last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
+						."last_name='$last_name',address='$address',phone_no='$phone_no',whatsapp='$whatsapp',"
+						."dob='$dob', company_name='$company_name',"
 						."email_id='$email_id',start_date='$start_date',is_active='$is_active',"
 						."connected_to='$connected_to',user_lang='$user_lang',scheme_id='$scheme_id',"
 						."scheme_name='$scheme_name',corresponder='$corresponder',remarks='$remarks' WHERE user_id='$user_id';";
