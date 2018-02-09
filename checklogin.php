@@ -7,7 +7,7 @@
 
 //    mysqli_connect("localhost", "root", "") or die (mysqli_error()); //Connect to server
 //    mysqli_select_db("Admin_db") or die ("Cannot connect to database"); //Connect to database
-    $query = mysqli_query($con,"Select * from Admin WHERE username='$username'"); // Query the Admin table
+    $query = mysqli_query($con,"Select * from admin WHERE username='$username'"); // Query the Admin table
     $exists = mysqli_num_rows($query); //Checks if username exists
     $table_users = "";
     $table_password = "";
@@ -33,13 +33,13 @@
        else
        {
         Print '<script>alert("Incorrect Password!");</script>'; // Prompts the user
-        Print '<script>window.location.assign("login.php");</script>'; // redirects to login.php
+        Print '<script>window.location.assign("login.html");</script>'; // redirects to login.html
        }
     }
     else
     {
         Print '<script>alert("Incorrect username!");</script>'; // Prompts the user
         mysqli_close($con);
-        Print '<script>window.location.assign("login.php");</script>'; // redirects to login.php
+        Print '<script>window.location.assign("login.html");</script>'; // redirects to login.html
     }
 ?>

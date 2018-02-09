@@ -1,7 +1,4 @@
 $(document).ready(function() {
-  $(".glyphicon-log-out").off("click").on("click", function(){
-    COMMON.showModal("logoutModal");
-  });
   COMMON.initCommonVars();
   var type = sessionStorage.getItem("historyType");
   if(type === "payment"){
