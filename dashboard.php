@@ -55,7 +55,7 @@ session_start(); //starts the session
             <a href="member.html" onclick="sessionStorage.clear();">Add member</a>
             <a href="search.html">Search Members</a>
             <div class="pull-right">
-              <span class="glyphicon glyphicon-log-out logout-icon" data-toggle="modal" data-target="#logoutModal"></span>
+              <span class="glyphicon glyphicon-log-out logout-icon" data-toggle="modal" data-target="#logoutModal" style="margin-right: 20px;"></span>
             </div>
 <!--            <a href="logout.php">Click here to logout</a><br/><br/>    -->
         </div>

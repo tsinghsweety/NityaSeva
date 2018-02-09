@@ -10,12 +10,12 @@ Class BTG {
 			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
 			.' ub.description, ub.is_dispatched, DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date, ub.remarks'
-			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id and ub.user_id=' .$user_id
+			.' FROM users u, user_btg ub WHERE u.user_id=ub.user_id and ub.user_id=' .$user_id
 			.' ORDER BY ub.dispatch_date DESC';
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, ub.btg_lang, '
 			.' ub.description, ub.is_dispatched, DATE_FORMAT(ub.dispatch_date, "%d/%m/%Y") as dispatch_date, ub.remarks'
-			.' FROM Users u, User_BTG ub WHERE u.user_id=ub.user_id '
+			.' FROM users u, user_btg ub WHERE u.user_id=ub.user_id '
 			.' ORDER BY ub.dispatch_date DESC';
 		}
 
@@ -49,9 +49,9 @@ Class BTG {
 			$dateTime = date_create_from_format('d/m/Y',$btg_dispatch_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$insert_user_btg_query = "INSERT INTO User_BTG(user_id,btg_lang,description,is_dispatched,dispatch_date,remarks) VALUES('$user_id','$sent_btg_lang','$btg_desc','$btg_is_dispatched','$formatted_date','$btg_remarks');";
+			$insert_user_btg_query = "INSERT INTO user_btg(user_id,btg_lang,description,is_dispatched,dispatch_date,remarks) VALUES('$user_id','$sent_btg_lang','$btg_desc','$btg_is_dispatched','$formatted_date','$btg_remarks');";
 
-			//insert user into User_BTG table
+			//insert user into user_btg table
 			$insertUserBTGResult = $dbcontroller->executeQuery($insert_user_btg_query);
 			if($insertUserBTGResult > 0){
 				$result = array('success'=>1, 'msg'=>'BTG added successfully', "code"=>'200', 'userData'=>$data);

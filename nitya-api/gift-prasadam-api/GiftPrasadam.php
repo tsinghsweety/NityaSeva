@@ -11,20 +11,20 @@ Class GiftPrasadam {
 			$type = $_GET['type'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
-			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id and '.
+			.' FROM users u, user_gift_prasadam ugp WHERE u.user_id=ugp.user_id and '.
 			' ugp.user_id=' .$user_id. ' and ugp.type="'.$type
 			. '" ORDER BY ugp.dispatch_date DESC';
 		} else if(isset($_GET['type'])){
 			$type = $_GET['type'];
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
-			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id and '.
+			.' FROM users u, user_gift_prasadam ugp WHERE u.user_id=ugp.user_id and '.
 			'  ugp.type="'.$type
 			. '" ORDER BY ugp.dispatch_date DESC';
 		} else {
 			$query = 'SELECT u.user_id, u.title, u.first_name, u.last_name, '
 			.'ugp.description, ugp.is_dispatched, DATE_FORMAT(ugp.dispatch_date, "%d/%m/%Y") as dispatch_date, ugp.remarks'
-			.' FROM Users u, User_Gift_Prasadam ugp WHERE u.user_id=ugp.user_id '
+			.' FROM users u, user_gift_prasadam ugp WHERE u.user_id=ugp.user_id '
 			. ' ORDER BY ugp.dispatch_date DESC';
 		}
 		$dbcontroller = new DBController();
@@ -55,7 +55,7 @@ Class GiftPrasadam {
 			$dateTime = date_create_from_format('d/m/Y',$gp_dispatch_date);
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 
-			$insert_user_gp_query = "INSERT INTO User_Gift_Prasadam(user_id,type,description,is_dispatched,dispatch_date,remarks) VALUES('$user_id','$type','$gp_desc','$gp_is_dispatched','$formatted_date','$gp_remarks');";
+			$insert_user_gp_query = "INSERT INTO user_gift_prasadam(user_id,type,description,is_dispatched,dispatch_date,remarks) VALUES('$user_id','$type','$gp_desc','$gp_is_dispatched','$formatted_date','$gp_remarks');";
 
 			//insert user into User_BTG table
 			$insertUserGPResult = $dbcontroller->executeQuery($insert_user_gp_query);

@@ -12,13 +12,13 @@ Class Payment {
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
 			.' up.amt_paid, up.payment_details, up.payment_remarks '
-			.'FROM Users u, User_Payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
+			.'FROM users u, user_payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
 			. ' ORDER BY up.payment_date DESC';
 		} else {
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
 			.' up.amt_paid, up.payment_details, up.payment_remarks '
-			.'FROM Users u, User_Payment up WHERE u.user_id=up.user_id'
+			.'FROM users u, user_payment up WHERE u.user_id=up.user_id'
 			. ' ORDER BY up.payment_date DESC';
 		}
 		$dbcontroller = new DBController();
@@ -51,9 +51,9 @@ Class Payment {
 			$month_of_pmt = date_format($dateTime, 'F');
 
 
-			$insert_user_pmt_query = "INSERT INTO User_Payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) "
+			$insert_user_pmt_query = "INSERT INTO user_payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) "
 			."VALUES('$user_id','$payment_type','$formatted_date','$amount_paid','$ref_num','$payment_remarks');";
-			//insert payment details into User_Payment table
+			//insert payment details into user_payment table
 			$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
 
 			if($insertUserPmtResult > 0){
@@ -61,13 +61,13 @@ Class Payment {
 				$current_year = date('Y');
 				$current_month = date('F');
 
-				$fetch_user_startDate_query = "SELECT start_date FROM Users WHERE user_id='$user_id';";
+				$fetch_user_startDate_query = "SELECT start_date FROM users WHERE user_id='$user_id';";
 				$user_start_date_res = $dbcontroller->executeSelectQuery($fetch_user_startDate_query);
 				$start_date = $user_start_date_res[0]["start_date"];
 				$total_mnths = CommonUtils::getMonthDiff($start_date,$current_date);
 				//FETCH TOTAL DUE INFO
 				$net_amt_paid = 0;
-				$user_pmt_total_query = "SELECT SUM(amt_paid) AS total_paid FROM User_Payment WHERE user_id=".$user_id;
+				$user_pmt_total_query = "SELECT SUM(amt_paid) AS total_paid FROM user_payment WHERE user_id=".$user_id;
 				$user_pmt_total_res = $dbcontroller->executeSelectQuery($user_pmt_total_query);
 				$net_amt_paid = $user_pmt_total_res[0]["total_paid"];
 				$total_amt_tobepaid = $total_mnths * $payment_scheme_value ;
@@ -87,14 +87,14 @@ Class Payment {
             $cp = "N"; //current monthly payment flag is set to "N" for no payment done during current month
         }
 
-				$count_user_due_query = "SELECT user_id FROM User_Due WHERE user_id='$user_id';";
+				$count_user_due_query = "SELECT user_id FROM user_due WHERE user_id='$user_id';";
 				$count_user_due_query_res = $dbcontroller->executeSelectQuery($count_user_due_query);
 				if(count($count_user_due_query_res)>0)
         {
-           $query_due ="UPDATE User_Due SET is_due='$is_due',cp='$cp' WHERE user_id='$user_id';";
+           $query_due ="UPDATE user_due SET is_due='$is_due',cp='$cp' WHERE user_id='$user_id';";
         }
         else{
-           $query_due ="INSERT INTO User_Due(user_id,is_due,cp) VALUES('$user_id','$is_due','$cp');";
+           $query_due ="INSERT INTO user_due(user_id,is_due,cp) VALUES('$user_id','$is_due','$cp');";
         }
 				$query_due_exc = $dbcontroller->executeQuery($query_due);
 				if($query_due_exc > 0){
