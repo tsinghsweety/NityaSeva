@@ -1,6 +1,7 @@
 #search_result {
   margin-top: 20px;
   margin-left: 20px;
+  clear: both;
 }
 
 #search_result th, #search_result td {
