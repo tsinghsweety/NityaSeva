@@ -20,6 +20,12 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty(
 						$result = $paymentRestHandler->getAllPayments();
 						break;
 
+					case "report":
+						// to handle REST Url /mobile/list/
+						$paymentRestHandler = new PaymentRestHandler();
+						$result = $paymentRestHandler->getPaymentReport();
+						break;
+
 					case "create":
 						// to handle REST Url /mobile/create/
 						$paymentRestHandler = new PaymentRestHandler();

@@ -29,6 +29,31 @@ class PaymentRestHandler extends SimpleRest {
 		}
 	}
 
+	function getPaymentReport() {
+
+		$payment = new Payment();
+		$rawData = $payment->getPaymentReport();
+        //var_dump($rawData);
+
+		if(empty($rawData)) {
+			$statusCode = 404;
+			$rawData = array('success' => 0);
+		} else {
+			$statusCode = 200;
+		}
+
+//		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$requestContentType = 'application/json';
+		$this ->setHttpHeaders($requestContentType, $statusCode);
+
+		$result["output"] = $rawData;
+
+		if(strpos($requestContentType,'application/json') !== false){
+			$response = $this->encodeJson($result);
+			echo $response;
+		}
+	}
+
 	function add() {
 		$payment = new Payment();
 		$rawData = $payment->addPayment();
