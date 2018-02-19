@@ -7,8 +7,8 @@ A domain Class to demonstrate RESTful web services
 Class Payment {
 	private $payments = array();
 	public function getAllPayment(){
-		if(isset($_GET['user_id'])){
-			$user_id = $_GET['user_id'];
+		if(isset($_GET['member_id'])){
+			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
 			.' up.amt_paid, up.payment_details, up.payment_remarks '
@@ -22,6 +22,29 @@ Class Payment {
 			. ' ORDER BY up.payment_date DESC';
 		}
 		$dbcontroller = new DBController();
+		$this->payments = $dbcontroller->executeSelectQuery($query);
+		return $this->payments;
+	}
+
+	public function getPaymentReport(){
+		if(isset($_GET['member_id'])){
+			$user_id = $_GET['member_id'];
+			$query = 'SELECT u.title, u.first_name,'
+			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
+			.' up.amt_paid, up.payment_details, up.payment_remarks '
+			.'FROM users u, user_payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
+			. ' ORDER BY up.payment_date DESC';
+		} else {
+			$query = 'SELECT u.user_id, sql_months.selected_date AS paid_for_month, up.payment_date, '
+			.'up.amt_paid, up.payment_type, up.payment_details, up.payment_remarks'
+			.' FROM all_possible_sql_months sql_months'
+			.' LEFT JOIN user_payment up ON(up.related_month=sql_months.selected_date)'
+			.' LEFT JOIN users u '
+			.' ON up.user_id=u.user_id AND sql_months.selected_date BETWEEN ADDDATE(u.start_date, INTERVAL -1 MONTH) AND CURDATE()'
+			.' WHERE sql_months.selected_date >= "2017-03-01" AND sql_months.selected_date  <= "2018-03-01";';
+		}
+		$dbcontroller = new DBController();
+		// echo $query;
 		$this->payments = $dbcontroller->executeSelectQuery($query);
 		return $this->payments;
 	}
@@ -55,6 +78,7 @@ Class Payment {
 			."VALUES('$user_id','$payment_type','$formatted_date','$amount_paid','$ref_num','$payment_remarks');";
 			//insert payment details into user_payment table
 			$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
+			// echo $insertUserPmtResult;
 
 			if($insertUserPmtResult > 0){
 				$current_date = date("Y-m-d");

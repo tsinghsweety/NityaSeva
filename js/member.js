@@ -42,7 +42,7 @@ var MEMBER = {
                   $("[name=is_active][value="+userActive+"]").prop("checked", "true");
                   $("[name=connected_to]").val(userData['connected_to']);
                   $("[name=scheme_name]").val(userData['scheme_name']);
-                  $("[name=payment_type]").val(userData['payment_type']);
+                  // $("[name=payment_type]").val(userData['payment_type']);
                   $("[name=user_lang]").val(userData['user_lang']);
                   $("[name=remarks]").val(userData['remarks']);
 
@@ -196,7 +196,7 @@ var MEMBER = {
                 $("[name=is_active][value="+userActive+"]").prop("checked", "true");
                 $("[name=connected_to]").val(userData['connected_to']);
                 $("[name=scheme_name]").val(userData['scheme_name']);
-                $("[name=payment_type]").val(userData['payment_type']);
+                // $("[name=payment_type]").val(userData['payment_type']);
                 $("[name=user_lang]").val(userData['user_lang']);
                 $("[name=remarks]").val(userData['remarks']);
                 COMMON.showModal("myModal", "Hari Bol!", data.msg, "#member-section", true);
