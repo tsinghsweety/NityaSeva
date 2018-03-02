@@ -28,7 +28,28 @@ class MemberRestHandler extends SimpleRest {
 			echo $response;
 		}
 	}
+	function getAllSchemes() {
 
+		$member = new Member();
+		$rawData = $member->getAllSchemes();
+        // var_dump($rawData);
+
+		if(empty($rawData)) {
+			$statusCode = 404;
+			$rawData = array('success' => 0);
+		} else {
+			$statusCode = 200;
+		}
+		$requestContentType = 'application/json';
+		$this ->setHttpHeaders($requestContentType, $statusCode);
+
+		$result["output"] = $rawData;
+
+		if(strpos($requestContentType,'application/json') !== false){
+			$response = $this->encodeJson($result);
+			echo $response;
+		}
+	}
 	function getAllCorresponders() {
 
 		$member = new Member();

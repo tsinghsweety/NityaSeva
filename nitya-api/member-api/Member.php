@@ -28,10 +28,18 @@ Class Member {
 		$this->members = $dbcontroller->executeSelectQuery($query);
 		return $this->members;
 	}
+	public function getAllSchemes(){
+		$query = 'SELECT  scheme_name,scheme_value FROM scheme';
+		// echo $query;
+		$dbcontroller = new DBController();
+		$this->schemes = $dbcontroller->executeSelectQuery($query);
+		// print_r($this->schemes);
+		return $this->schemes;
+	}
 
 	public function getAllCorresponder(){
 
-		$query = 'SELECT DISTINCT corresponder as corresponder_name FROM users WHERE corresponder != ""';
+		$query = 'SELECT title,first_name,last_name FROM admin';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
@@ -40,7 +48,7 @@ Class Member {
 
 	public function getAllConnectedTo(){
 
-		$query = 'SELECT DISTINCT connected_to FROM users WHERE connected_to != ""';
+		$query = 'SELECT connection_name AS connected_to FROM user_connection';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->connectedTo = $dbcontroller->executeSelectQuery($query);

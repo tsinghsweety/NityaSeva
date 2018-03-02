@@ -90,25 +90,11 @@
                     <div class="radio-inline"><label for="an"><input type="radio" name="is_active" id="an" required="required" value="N"/>No</label></div>
                   </div>
                   <div class="col-md-2"><label for="sel1_bg">Bhakti Vriksha:</label></div>
-                  <div class="col-md-2"><select class="form-control" id="sel1_bg"  name="connected_to">
-                    <option>None</option>
-                    <option>BV1</option>
-                    <option>BV2</option>
-                    <option>BV3</option>
-                    <option>BV4</option>
-                    <option>BV5</option>
-                    <option>BV6</option>
-                    <option>BV7</option>
-                    <option>BV8</option>
-                    <option>Nitai</option>
+                  <div class="col-md-2"><select class="form-control" id="connected_to"  name="connected_to">
                       </select>
                   </div>
                   <div class="col-md-2"><label for="sel1_bg">Scheme name:</label></div>
-                  <div class="col-md-2"><select class="form-control" id="sel1_sn"  name="scheme_name">
-                    <option>None</option>
-                    <option>Prabhupada Sevak</option>
-                    <option>Jagannath Sevak</option>
-                    <option>Govind Sevak</option>
+                  <div class="col-md-2"><select class="form-control" name="scheme_name" id="scheme_list">
                   </select>
                   </div>
 
@@ -158,7 +144,7 @@
                             <option>Card</option>
                             <option>Online payment</option>
                             </select>
-                            </div>
+                           </div>
                        </div>
                    </div>
                    <div class="row">
@@ -166,15 +152,33 @@
                        <div class="col-md-2"><input type="text" name="ref_num" required="required"  class="form-control"/></div>
                        <div class="col-md-2">Amount Paid:</div>
                        <div class="col-md-2"><input type="text" name="amount_paid" required="required"  class="form-control"/></div>
+                       <div class="col-md-2"><label class="control-label" for="date">Date of Payment:</label></div>
+                       <div class="col-md-2"><input id="date" name="payment_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
                        <!-- <div class="col-md-2">Total Due:</div>
                        <div class="col-md-2"><input type="text" name="due_amt" value="" disabled class="form-control"/></div> -->
                    </div>
                    <div class="row">
-                       <div class="col-md-2"><label class="control-label" for="date">Date of Payment:</label></div>
-                       <div class="col-md-2"><input id="date" name="payment_date" required="required" placeholder="DD/MM/YYYY" type="text" class="form-control"/></div>
-
-                   <div class="col-md-2">Remarks:</div>
-                   <div class="col-md-2"><input type="text" name="payment_remarks" required="required"  class="form-control"/></div>
+                       <div class="col-md-2">Paid For - Month:</div>
+                       <div class="col-md-2">
+                        <select id="paid_for_mnth" name="paid_for_mnth" class="multiselect-ui form-control" multiple="multiple">
+                            <option value="january">January</option>
+                            <option value="february">February</option>
+                            <option value="march">March</option>
+                            <option value="april">April</option>
+                            <option value="may">May</option>
+                            <option value="june">June</option>
+                            <option value="july">July</option>
+                            <option value="august">August</option>
+                            <option value="september">September</option>
+                            <option value="october">October</option>
+                            <option value="november">November</option>
+                            <option value="december">December</option>
+                        </select>
+                       </div>
+                       <div class="col-md-2">Year:</div>
+                       <div class="col-md-2"><input type="text" name="paid_for_yr" required="required"  class="form-control"/></div>
+                       <div class="col-md-2">Remarks:</div>
+                       <div class="col-md-2"><input type="text" name="payment_remarks" required="required"  class="form-control"/></div>
                    </div>
                 </div>
                 <div class="pull-right">

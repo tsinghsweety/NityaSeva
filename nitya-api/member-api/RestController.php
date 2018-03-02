@@ -45,14 +45,24 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty(
 					break;
 
 					case "connectedlist":
-						// to handle REST Url /mobile/update/<row_id>
+						// to handle REST Url /member/connectedlist
 						$memberRestHandler = new MemberRestHandler();
 						$memberRestHandler->getAllConnectedTo();
 					break;
 					case "categorySearch":
-						// to handle REST Url /mobile/update/<row_id>
+						// to handle REST Url /member/categorySearch
 						$memberRestHandler = new MemberRestHandler();
 						$memberRestHandler->getAllByCategory();
+					break;
+					case "schemelist":
+						// to handle REST Url /member/schemelist
+						$memberRestHandler = new MemberRestHandler();
+						$memberRestHandler->getAllSchemes();
+					break;
+					case "connectedTolist":
+						// to handle REST Url /member/schemelist
+						$memberRestHandler = new MemberRestHandler();
+						$memberRestHandler->getAllConnectedTo();
 					break;
 			}
 	}

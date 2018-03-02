@@ -52,12 +52,15 @@ Class Payment {
 	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'API401');
-		// print_r($data);
+		print_r($data);
 		// print_r($_SESSION);
 		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
 		&& isset($_GET['member_id']) && isset($data['payment_type'])
 		&& isset($data['ref_num']) && isset($data['amount_paid'])
-	  && isset($data['payment_date']) && isset($data['payment_remarks'])){
+	  && isset($data['payment_date'])
+		&& isset($data['paid_for_mnth'])
+		&& isset($data['paid_for_yr'])
+		&& isset($data['payment_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
 
@@ -66,6 +69,8 @@ Class Payment {
 	    $ref_num = mysqli_real_escape_string($con,$data['ref_num']);
 	    $amount_paid = mysqli_real_escape_string($con,$data['amount_paid']);
 	    $payment_date = mysqli_real_escape_string($con,$data['payment_date']);
+	    // $paid_for_mnth = mysqli_real_escape_string($con,$data['paid_for_mnth']);
+	    $paid_for_yr = mysqli_real_escape_string($con,$data['paid_for_yr']);
 	    $payment_remarks = mysqli_real_escape_string($con,$data['payment_remarks']);
 	    $payment_scheme_value = mysqli_real_escape_string($con,$data['payment_scheme_value']);
 
@@ -73,9 +78,21 @@ Class Payment {
 			$formatted_date = date_format($dateTime, 'Y-m-d');
 			$month_of_pmt = date_format($dateTime, 'F');
 
+			$val_query ="";
+			foreach($data['paid_for_mnth'] as $mnth){
+				// echo date('m', strtotime("$mnth"));
+				$month_num = date('m', strtotime("$mnth"));
+				$related_month = $paid_for_yr."-".$month_num."-01";
+				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$amount_paid."','".$ref_num."','".$payment_remarks."','".$related_month."','".$mnth."','".$paid_for_yr."')";
+			}
+			$val_query=ltrim($val_query, ',');
+			echo $val_query;
 
-			$insert_user_pmt_query = "INSERT INTO user_payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks) "
-			."VALUES('$user_id','$payment_type','$formatted_date','$amount_paid','$ref_num','$payment_remarks');";
+			$insert_user_pmt_query = "INSERT INTO user_payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks,related_month,paid_for_mnth,paid_for_yr) "
+			."VALUES".$val_query;
+
+			echo $insert_user_pmt_query;
+
 			//insert payment details into user_payment table
 			$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
 			// echo $insertUserPmtResult;

@@ -46,6 +46,13 @@ var MEMBER = {
                   $("[name=user_lang]").val(userData['user_lang']);
                   $("[name=remarks]").val(userData['remarks']);
 
+                  //Update payment, btg, gift, prasadam and followup start and end dates
+                  var forRange = $("[name=payment_date], [name=btg_dispatch_date], [name=gp_dispatch_date], [name=followup_date]");
+                  forRange.datepicker('setStartDate', userData['start_date']);
+
+                  $('[name=nxt_followup_date]').datepicker('setStartDate', '0d');
+                  $('[name=nxt_followup_date]').datepicker('setEndDate', false);
+
                   $("#editMember").off("click").on("click", function(){
                     $("#member-section").find("input, button, textarea, select, input").prop("disabled", false);
                     $("#editMemberBtn").show();
@@ -62,18 +69,65 @@ var MEMBER = {
                       if(data.output.length > 0){
                         var list = data.output;
                         for(var i=0; i<list.length;i++){
-                          optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+                          optionList += "<option>"+list[i]['title']+" "+list[i]['first_name']+" "+list[i]['last_name']+"</option>";
                         }
                       }
 
-                      optionList += "<option>New</option>";
+                      // optionList += "<option>New</option>";
                       $("#corresponder_name").html(optionList);
                       $("[name=corresponder]").val(userData['corresponder'].trim());
                     },
                     error: function(xhr, status) {
                       console.log(xhr, status);
-                      optionList += "<option>New</option>";
+                      // optionList += "<option>New</option>";
                       $("#corresponder_name").html(optionList);
+                    }
+                  });
+
+                  var scheme_optionList = "<option>Select</option>";
+                  $.ajax({
+                    url: CONSTANTS.API_PATH + "member/schemelist",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data, statusTxt) {
+                      console.log(data, statusTxt);
+                      if(data.output.length > 0){
+                        var list = data.output;
+                        for(var i=0; i<list.length;i++){
+                          scheme_optionList += "<option>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
+                        }
+                      }
+
+                      // scheme_optionList += "<option>New</option>";
+                      $("#scheme_list").html(scheme_optionList);
+                      $("[name=scheme_name]").val(userData['scheme_name'].trim());
+                    },
+                    error: function(xhr, status) {
+                      console.log(xhr, status);
+                      // scheme_optionList += "<option>New</option>";
+                      $("#scheme_list").html(optionList);
+                    }
+                  });
+                  var connectedTo_optionList = "<option>Select</option>";
+                  $.ajax({
+                    url: CONSTANTS.API_PATH + "member/connectedTolist",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data, statusTxt) {
+                      console.log(data, statusTxt);
+                      if(data.output.length > 0){
+                        var list = data.output;
+                        for(var i=0; i<list.length;i++){
+                          connectedTo_optionList += "<option>"+list[i]['connected_to']+"</option>";
+                        }
+                      }
+
+                      $("#connected_to").html(connectedTo_optionList);
+                      $("[name=connected_to]").val(userData['connected_to'].trim());
+                    },
+                    error: function(xhr, status) {
+                      console.log(xhr, status);
+                      $("#connected_to").html(connectedTo_optionList);
                     }
                   });
 
@@ -100,17 +154,62 @@ var MEMBER = {
             if(data.output.length > 0){
               var list = data.output;
               for(var i=0; i<list.length;i++){
-                optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+                optionList += "<option>"+list[i]['title']+" "+list[i]['first_name']+" "+list[i]['last_name']+"</option>";
               }
             }
 
-            optionList += "<option>New</option>";
+            // optionList += "<option>New</option>";
             $("#corresponder_name").html(optionList);
           },
           error: function(xhr, status) {
             console.log(xhr, status);
-            optionList += "<option>New</option>";
+            // optionList += "<option>New</option>";
             $("#corresponder_name").html(optionList);
+          }
+        });
+        var scheme_optionList = "<option>Select</option>";
+        $.ajax({
+          url: CONSTANTS.API_PATH + "member/schemelist",
+          type: "GET",
+          dataType: "json",
+          success: function(data, statusTxt) {
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var list = data.output;
+              for(var i=0; i<list.length;i++){
+                scheme_optionList += "<option>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
+              }
+            }
+
+            // scheme_optionList += "<option>New</option>";
+            $("#scheme_list").html(scheme_optionList);
+            // $("[name=scheme_name]").val(userData['scheme_name'].trim());
+          },
+          error: function(xhr, status) {
+            console.log(xhr, status);
+            // scheme_optionList += "<option>New</option>";
+            $("#scheme_list").html(optionList);
+          }
+        });
+        var connectedTo_optionList = "<option>Select</option>";
+        $.ajax({
+          url: CONSTANTS.API_PATH + "member/connectedTolist",
+          type: "GET",
+          dataType: "json",
+          success: function(data, statusTxt) {
+            console.log(data, statusTxt);
+            if(data.output.length > 0){
+              var list = data.output;
+              for(var i=0; i<list.length;i++){
+                connectedTo_optionList += "<option>"+list[i]['connected_to']+"</option>";
+              }
+            }
+
+            $("#connected_to").html(connectedTo_optionList);
+          },
+          error: function(xhr, status) {
+            console.log(xhr, status);
+            $("#connected_to").html(connectedTo_optionList);
           }
         });
         $("section#member-section").show();
