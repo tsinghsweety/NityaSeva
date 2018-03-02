@@ -34,7 +34,7 @@ var COMMON = {
     var jsonData = {};
     els.each(function(idx, item){
       var name = $(item).attr("name");
-      jsonData[name] = $("[name="+name+"]").val();
+      jsonData[name] = $(item).val();
     });
 
     return jsonData;
