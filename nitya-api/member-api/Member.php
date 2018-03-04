@@ -39,7 +39,7 @@ Class Member {
 
 	public function getAllCorresponder(){
 
-		$query = 'SELECT title,first_name,last_name FROM admin';
+		$query = 'SELECT CONCAT(title, " ", first_name, " ", last_name) AS corresponder_name FROM admin';
 		// echo $query;
 		$dbcontroller = new DBController();
 		$this->corresponders = $dbcontroller->executeSelectQuery($query);
@@ -120,8 +120,8 @@ Class Member {
 						." END last_prasadam_sent_date, "
 						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
 						." END last_followup_date";
-						$from_clause .= ", User_Due ud";
-						$where_clause .= " u.user_id=ud.user_id";
+						$from_clause .= ", user_due ud";
+						// $where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "current_payment_done":
 						$column_name = "ud.cp";
@@ -138,8 +138,8 @@ Class Member {
 						." END last_prasadam_sent_date, "
 						."CASE WHEN ldv.last_followup_date IS NULL THEN 'None' ELSE DATE_FORMAT(ldv.last_followup_date, '%d/%m/%Y')"
 						." END last_followup_date";
-						$from_clause .= ", User_Due ud";
-						$where_clause .= " u.user_id=ud.user_id";
+						$from_clause .= ", user_due ud";
+						// $where_clause .= " u.user_id=ud.user_id";
 						break;
 					case "corresponder_name":
 						$column_name = "u.corresponder";

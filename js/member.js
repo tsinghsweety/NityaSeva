@@ -69,7 +69,7 @@ var MEMBER = {
                       if(data.output.length > 0){
                         var list = data.output;
                         for(var i=0; i<list.length;i++){
-                          optionList += "<option>"+list[i]['title']+" "+list[i]['first_name']+" "+list[i]['last_name']+"</option>";
+                          optionList += "<option>"+list[i]['corresponder_name']+"</option>";
                         }
                       }
 
@@ -94,7 +94,7 @@ var MEMBER = {
                       if(data.output.length > 0){
                         var list = data.output;
                         for(var i=0; i<list.length;i++){
-                          scheme_optionList += "<option>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
+                          scheme_optionList += "<option value='"+list[i]['scheme_name']+"'>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
                         }
                       }
 
@@ -154,7 +154,7 @@ var MEMBER = {
             if(data.output.length > 0){
               var list = data.output;
               for(var i=0; i<list.length;i++){
-                optionList += "<option>"+list[i]['title']+" "+list[i]['first_name']+" "+list[i]['last_name']+"</option>";
+                optionList += "<option>"+list[i]['corresponder_name']+"</option>";
               }
             }
 
@@ -177,7 +177,7 @@ var MEMBER = {
             if(data.output.length > 0){
               var list = data.output;
               for(var i=0; i<list.length;i++){
-                scheme_optionList += "<option>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
+                scheme_optionList += "<option value='"+list[i]['scheme_name']+"'>"+list[i]['scheme_name']+" - "+list[i]['scheme_value']+"</option>";
               }
             }
 
