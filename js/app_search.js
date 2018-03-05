@@ -14,6 +14,7 @@ $(document).ready(function(){
     $("#search_btn").off("click").on("click", SEARCH.search);
 
     COMMON.initCommonVars();
+    COMMON.checkUserLoggedin();
 
     SEARCH.init();
 });

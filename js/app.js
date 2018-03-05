@@ -42,6 +42,7 @@ $(document).ready(function(){
     // sessionStorage.setItem("member_id", 55);
 
     COMMON.initCommonVars();
+    COMMON.checkUserLoggedin();
 
     MEMBER.initMember();
 });

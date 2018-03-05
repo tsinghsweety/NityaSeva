@@ -19,6 +19,8 @@ $(document).ready(function(){
     });
 
     COMMON.initCommonVars();
-
+    COMMON.checkUserLoggedin();
+    COMMON.checkSuperAdmin();
+    
     ADMIN.init();
 });

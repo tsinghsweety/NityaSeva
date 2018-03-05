@@ -1,5 +1,7 @@
 $(document).ready(function() {
   COMMON.initCommonVars();
+  COMMON.checkUserLoggedin();
+  
   var type = sessionStorage.getItem("historyType");
   if(type === "payment"){
     MEMBER.showPaymentHistory();
