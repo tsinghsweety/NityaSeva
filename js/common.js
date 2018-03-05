@@ -38,5 +38,46 @@ var COMMON = {
     });
 
     return jsonData;
+  },
+  logoutRedirect: function(xhr){
+    var resp = xhr.responseJSON;
+    if(xhr.status === 403 && resp.success === 0 && resp.status === "Access Denied" && resp.msg === "user not logged in"){
+      location.href = "logout.php";
+    }
+  },
+  accessDeniedRedirect: function(xhr){
+    var resp = xhr.responseJSON;
+    if(xhr.status === 403 && resp.success === 0 && resp.status === "Access Denied" && resp.msg === "secure content"){
+      location.href = "access-denied.html";
+    }
+  },
+  checkUserLoggedin: function(){
+    $.ajax({
+      url: CONSTANTS.API_PATH + "login/check/loggedin",
+      method: "GET",
+      dataType: "json",
+      success: function(data, statusTxt){
+        console.log(data, statusTxt);
+      },
+      error: function(xhr, status){
+        console.log(xhr, status);
+        COMMON.logoutRedirect(xhr);
+      }
+    });
+  },
+  checkSuperAdmin: function(){
+    $.ajax({
+      url: CONSTANTS.API_PATH + "login/check/superadmin",
+      method: "GET",
+      dataType: "json",
+      success: function(data, statusTxt){
+        console.log(data, statusTxt);
+      },
+      error: function(xhr, status){
+        console.log(xhr, status);
+        COMMON.accessDeniedRedirect(xhr);
+        COMMON.logoutRedirect(xhr);
+      }
+    });
   }
 };

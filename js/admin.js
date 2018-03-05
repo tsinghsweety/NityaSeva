@@ -45,6 +45,7 @@ var ADMIN = {
           },
           error: function(xhr, status){
               console.log(xhr, status);
+              COMMON.logoutRedirect(xhr);
           }
       });
     } else {
@@ -77,6 +78,7 @@ var ADMIN = {
         },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
         }
     });
   },
@@ -105,6 +107,7 @@ var ADMIN = {
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            COMMON.logoutRedirect(xhr);
           }
       });
     }
@@ -153,6 +156,7 @@ var ADMIN = {
         },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
         }
     });
   }

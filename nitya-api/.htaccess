@@ -2,6 +2,13 @@
 Options +FollowSymlinks
 RewriteEngine on
 
+#Login APIs
+RewriteRule ^login/check/loggedin/$   login-api/RestController.php?page_key=checkloggedin [nc,qsa]
+RewriteRule ^login/check/loggedin$    login/check/loggedin/ [L]
+
+RewriteRule ^login/check/superadmin/$   login-api/RestController.php?page_key=checksuperadmin [nc,qsa]
+RewriteRule ^login/check/superadmin$    login/check/superadmin/ [L]
+
 #Member APIs
 # map neat URL to internal URL
 RewriteRule ^member/list/([0-9]+)$   member-api/RestController.php?page_key=list&id=$1 [nc,qsa]

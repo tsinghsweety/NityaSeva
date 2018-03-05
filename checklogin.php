@@ -17,6 +17,7 @@
        {
           $table_users = $row['username']; // the first username row is passed on to $table_users, and so on until the query is finished
           $table_password = $row['pwd']; // the first password row is passed on to $table_password, and so on until the query is finished
+          $table_is_super_admin = $row['is_superAdmin']; // the first password row is passed on to $table_password, and so on until the query is finished
        }
        mysqli_close($con);
        if(($username == $table_users) && ($password == $table_password))// checks if there are any matching fields
@@ -26,6 +27,7 @@
              $_SESSION['user'] = $username; //set the username in a session. This serves as a global variable
               $_SESSION['logged_in'] = true;
               $_SESSION['logged_in_user'] = $username;
+              $_SESSION['is_super_admin'] = ($table_is_super_admin === "Y");
              header("location: dashboard.php"); // redirects the user to the authenticated dashboard page
           }
 
