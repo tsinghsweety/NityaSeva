@@ -38,5 +38,11 @@ var COMMON = {
     });
 
     return jsonData;
+  },
+  logoutRedirect: function(xhr){
+    var resp = xhr.responseJSON;
+    if(xhr.status === 403 && resp.success === 0 && resp.status === "Access Denied" && resp.msg === "user not logged in"){
+      location.href = "logout.php";
+    }
   }
 };

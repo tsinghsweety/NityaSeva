@@ -81,6 +81,7 @@ var MEMBER = {
                       console.log(xhr, status);
                       // optionList += "<option>New</option>";
                       $("#corresponder_name").html(optionList);
+                      COMMON.logoutRedirect(xhr);
                     }
                   });
 
@@ -106,6 +107,7 @@ var MEMBER = {
                       console.log(xhr, status);
                       // scheme_optionList += "<option>New</option>";
                       $("#scheme_list").html(optionList);
+                      COMMON.logoutRedirect(xhr);
                     }
                   });
                   var connectedTo_optionList = "<option>Select</option>";
@@ -128,6 +130,7 @@ var MEMBER = {
                     error: function(xhr, status) {
                       console.log(xhr, status);
                       $("#connected_to").html(connectedTo_optionList);
+                      COMMON.logoutRedirect(xhr);
                     }
                   });
 
@@ -138,6 +141,7 @@ var MEMBER = {
             },
             error: function(xhr, status){
                 console.log(xhr, status);
+                COMMON.logoutRedirect(xhr);
             }
         });
       } else {
@@ -165,6 +169,7 @@ var MEMBER = {
             console.log(xhr, status);
             // optionList += "<option>New</option>";
             $("#corresponder_name").html(optionList);
+            COMMON.logoutRedirect(xhr);
           }
         });
         var scheme_optionList = "<option>Select</option>";
@@ -189,6 +194,7 @@ var MEMBER = {
             console.log(xhr, status);
             // scheme_optionList += "<option>New</option>";
             $("#scheme_list").html(optionList);
+            COMMON.logoutRedirect(xhr);
           }
         });
         var connectedTo_optionList = "<option>Select</option>";
@@ -210,6 +216,7 @@ var MEMBER = {
           error: function(xhr, status) {
             console.log(xhr, status);
             $("#connected_to").html(connectedTo_optionList);
+            COMMON.logoutRedirect(xhr);
           }
         });
         $("section#member-section").show();
@@ -256,6 +263,7 @@ var MEMBER = {
             },
             error: function(xhr, status){
                 console.log(xhr, status);
+                COMMON.logoutRedirect(xhr);
             }
         });
     },
@@ -309,6 +317,7 @@ var MEMBER = {
             },
             error: function(xhr, statusTxt){
               console.log(xhr, status);
+              COMMON.logoutRedirect(xhr);
             }
         });
       }
@@ -337,6 +346,7 @@ var MEMBER = {
           },
           error: function(xhr, statusTxt){
             console.log(xhr, status);
+            COMMON.logoutRedirect(xhr);
           }
         });
     },
@@ -364,6 +374,7 @@ var MEMBER = {
         },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
         }
       });
     },
@@ -394,6 +405,7 @@ var MEMBER = {
         },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
         }
       });
     },
@@ -421,6 +433,7 @@ var MEMBER = {
         },
         error: function(xhr, statusTxt){
           console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
         }
       });
     },
@@ -473,6 +486,7 @@ var MEMBER = {
             if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
               $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
             }
+            COMMON.logoutRedirect(xhr);
           }
       });
     },
@@ -530,6 +544,7 @@ var MEMBER = {
             if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
               $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
             }
+            COMMON.logoutRedirect(xhr);
           }
       });
     },
@@ -584,6 +599,7 @@ var MEMBER = {
             if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
               $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
             }
+            COMMON.logoutRedirect(xhr);
           }
       });
     },
@@ -637,6 +653,7 @@ var MEMBER = {
             if(xhr.responseJSON.output && xhr.responseJSON.output.success === 0 && xhr.status === 404){
               $("#history").html("<p style='margin-top: 10px;'>No history found !</p>").css("height", "50px");
             }
+            COMMON.logoutRedirect(xhr);
           }
       });
     }

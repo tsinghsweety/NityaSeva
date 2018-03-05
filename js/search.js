@@ -5,7 +5,7 @@ var SEARCH = {
       {idx: 1, name: "All members", value:"all_members", subCatType: "select", subCatValues: ["All"]},
       {idx: 2, name: "Member Name", value:"member_name", subCatType: "inputText"},
       {idx: 3, name: "Phone Num", value:"phone_num", subCatType: "inputText"},
-      {idx: 4, name: "Donation Category", value:"donation_category", subCatType: "select", subCatValues: ["Prabhupada Sevak", "Jagannath Sevak", "Govind Sevak"]},
+      {idx: 4, name: "Donation Category", value:"donation_category", subCatType: "select", url: "member/schemelist", ddKey: "scheme_name"},
       {idx: 5, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 6, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 7, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
@@ -57,6 +57,7 @@ var SEARCH = {
           },
           error: function(xhr, status){
             console.log(xhr, status);
+            COMMON.logoutRedirect(xhr);
           }
         });
       } else if (subCatValues) {
@@ -163,6 +164,7 @@ var SEARCH = {
       },
       error: function(xhr, status){
         console.log(xhr, status);
+        COMMON.logoutRedirect(xhr);
       }
     });
   }
