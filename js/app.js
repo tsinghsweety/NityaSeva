@@ -10,6 +10,10 @@ $(document).ready(function(){
     orientation: 'auto top'
     };
     date_input.datepicker(options);
+
+    var multiSelect = $('select[multiple=multiple]');
+    multiSelect.multiselect();
+
     $("#addMemberBtn").off("click").on("click", MEMBER.addMember);
     $("#editMemberBtn").off("click").on("click", MEMBER.editMember);
     $("#addpayment").off("click").on("click", MEMBER.addPayment);
