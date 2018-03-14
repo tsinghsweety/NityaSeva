@@ -7,7 +7,7 @@ $(document).ready(function(){
     container: container,
     todayHighlight: true,
     autoclose: true,
-    orientation: 'auto top'
+    orientation: 'auto'
     };
     date_input.datepicker(options);
     $("#category").off("change").on("change", SEARCH.showSubCategory);

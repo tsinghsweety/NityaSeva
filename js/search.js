@@ -9,8 +9,10 @@ var SEARCH = {
       {idx: 5, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 6, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
       {idx: 7, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 8, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
-      {idx: 9, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
+      {idx: 8, name: "Payment Due Report", value:"payment_due_report", subCatType: "dateRange"},
+      {idx: 9, name: "Date of Payment", value:"date_of_payment", subCatType: "dateRange"},
+      {idx: 10, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+      {idx: 11, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
     ];
 
     //Create Category Drop Down
@@ -23,6 +25,7 @@ var SEARCH = {
     }
 
     $("#category").html(optionList);
+    $("#date_range").hide();
   },
   showSubCategory: function(event){
     var el = event.target;
@@ -52,6 +55,8 @@ var SEARCH = {
 
                 $("#sub_category_select").html(optionList);
                 $("#sub_category_input_text").hide();
+                $("#date_range").hide();
+                $("#sub_cat").show();
                 $("#sub_category_select").show();
               }
           },
@@ -69,10 +74,14 @@ var SEARCH = {
 
         $("#sub_category_select").html(optionList);
         $("#sub_category_input_text").hide();
+        $("#date_range").hide();
+        $("#sub_cat").show();
         $("#sub_category_select").show();
       } else if (subCategoryType === "inputText") {
         inside_conditions = true;
         $("#sub_category_select").hide();
+        $("#date_range").hide();
+        $("#sub_cat").show();
         $("#sub_category_input_text").val("");
         $("#sub_category_input_text").show();
         $("#sub_category_input_text").off("keydown").on("keydown", function(event){
@@ -81,7 +90,15 @@ var SEARCH = {
             $("#search_btn").click();
           }
         });
-      }
+      }else if (subCategoryType === "dateRange") {
+        inside_conditions = true;
+        $("#sub_cat").hide();
+        $("#sub_category_select").hide();
+        $("#sub_category_input_text").hide();
+        $("#date_range").show();
+        $("[name=from_date]").datepicker('setEndDate', '0d');
+        $("[name=to_date]").datepicker('setEndDate', '0d');
+       }
 
       if(inside_conditions){
         $("#search_result").empty();
