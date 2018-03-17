@@ -3,8 +3,8 @@ require_once("MemberRestHandler.php");
 $method = $_SERVER['REQUEST_METHOD'];
 $view = "";
 session_start();
-// print_r($_SESSION)
-// var_dump($_GET)
+// print_r($_SESSION);
+// var_dump($_GET);
 if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty($_SESSION["logged_in_user"])){
 	if(isset($_GET["page_key"])){
 			$page_key = $_GET["page_key"];
@@ -53,6 +53,10 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty(
 						// to handle REST Url /member/categorySearch
 						$memberRestHandler = new MemberRestHandler();
 						$memberRestHandler->getAllByCategory();
+					break;
+					case "dueReport":
+						$memberRestHandler = new MemberRestHandler();
+						$memberRestHandler->getDueReport();
 					break;
 					case "schemelist":
 						// to handle REST Url /member/schemelist

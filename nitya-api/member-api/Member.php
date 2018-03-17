@@ -55,6 +55,86 @@ Class Member {
 		return $this->connectedTo;
 	}
 
+	public function getDueReport(){
+		$data = json_decode(file_get_contents('php://input'), true);
+
+		if(isset($data["category"])){
+			$dbcontroller = new DBController();
+			$con = $dbcontroller->connectDB();
+			$from_date = mysqli_real_escape_string($con,$data['from_date']);
+
+			$dateTime_from_date = date_create_from_format('d/m/Y',$from_date);
+			$formatted_from_date = date_format($dateTime_from_date, 'Y-m-d');
+
+			$to_date = mysqli_real_escape_string($con,$data['to_date']);
+
+			$dateTime_to_date = date_create_from_format('d/m/Y',$to_date);
+			$formatted_to_date = date_format($dateTime_to_date, 'Y-m-d');
+
+			$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+								.' FROM users u, user_payment up'
+								.' WHERE u.user_id=up.user_id'
+								.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
+								.'" ORDER BY u.user_id,up.related_month ASC';
+			// echo $query;
+			$date_range = array();
+			$start    = (new DateTime($formatted_from_date))->modify('first day of this month');
+			$end      = (new DateTime($formatted_to_date))->modify('first day of next month');
+			$interval = DateInterval::createFromDateString('1 month');
+			$period   = new DatePeriod($start, $interval, $end);
+
+			foreach ($period as $dt) {
+			    // echo $dt->format("Y-m") . "<br>\n";
+					$formatted_dt = $dt->format("F, Y");
+					if($date_range!== null){
+						array_push($date_range,$formatted_dt);
+					}else{
+						$date_range = array($formatted_dt);
+					}
+			}
+			// var_dump($date_range);
+			$id = null;
+			$due_report_data = $dbcontroller->executeSelectQuery($query);
+			if(count($due_report_data) === 0) {
+				$result = array("success"=>0, "msg"=>"No payment records found for the given date range");
+			} else {
+				$obj = null;
+				$main_obj = array();
+				for($i=0; $i<count($due_report_data); $i++){
+					$row = $due_report_data[$i];
+					// var_dump($row);
+					if($id === $row["user_id"]){
+						array_push($obj["payment_done_months"],$row["related_month"]);
+					} else  {
+						if($obj !== null){
+								array_push($main_obj,$obj);
+						}
+						$id = $row["user_id"];
+						$obj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"]);
+						$obj["payment_done_months"] = array($row["related_month"]);
+					}
+				}
+				if($obj !== null){
+						array_push($main_obj,$obj);
+				}
+				// $result = $main_obj;
+				if(count($main_obj) > 0){
+					$result = array("success"=>1, "member_data"=>$main_obj, "date_range"=>$date_range);
+				} else {
+					$result = array("success"=>0, "msg"=>"API Issue", "code"=> "1002");
+				}
+			}
+		}
+
+		// print_r($due_report_data);
+		return $result;
+	}
+
+	public function getPaymentReport(){
+		echo "getPaymentReport";
+		$data = json_decode(file_get_contents('php://input'), true);
+	}
+
 	public function getAllByCategory(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		// print_r($data);

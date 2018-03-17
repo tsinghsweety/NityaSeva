@@ -107,6 +107,80 @@ var SEARCH = {
   },
   search: function(){
     var category = $("#category").val();
+
+    if(category === "payment_due_report"){
+			SEARCH.getDueReport(category);
+		} else if(category === "date_of_payment"){
+			SEARCH.getPaymentReport(category);
+		} else {
+      SEARCH.generalSearch(category);
+    }
+  },
+  getDueReport: function(category){
+    var from_date = $("[name=from_date]").val();
+    var to_date = $("[name=to_date]").val();
+    var url = CONSTANTS.API_PATH + "member/dueReport";
+    var data = {
+      category: category,
+      from_date: from_date,
+      to_date: to_date
+    };
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: JSON.stringify(data),
+      dataType: "json",
+      success: function(data, statusTxt){
+        console.log(data, statusTxt);
+        if(data.output.success === 1){
+          var membersArr = data.output.member_data;
+          var monthArr = data.output.date_range;
+          if(membersArr){
+            var tableEl = "<table border='2'>"
+            +"<thead>"
+            +"<th>Sl No</th><th>User ID</th>";
+
+            for (var i = 0; i < monthArr.length; i++) {
+              var month = monthArr[i];
+              tableEl += "<th>" + month + "</th>";
+            }
+
+            tableEl += "</thead><tbody>";
+
+            for (var i = 0; i < membersArr.length; i++) {
+              var member = membersArr[i];
+              tableEl += "<tr><td>"+(i+1)+"</td><td>"+member["user_id"]+"</td>";
+              var payment_done_months = member.payment_done_months;
+              for (var j = 0; j < monthArr.length; j++) {
+                var month = monthArr[j];
+                if(payment_done_months.indexOf(month) > -1){
+                  tableEl += "<td style='color: green; font-weight: bold;'>Paid</td>";
+                } else {
+                  tableEl += "<td style='color: red; font-weight: bold;'>Due</td>";
+                }
+              }
+
+              tableEl += "</tr>";
+            }
+
+            tableEl += "</tbody></table>";
+            $("#search_result").html(tableEl);
+          }
+        } else if (data.output.success === 0) {
+          if(data.output.msg === "API issue"){
+            COMMON.showModal("myModal", "Sorry", data.output.msg + ", Code: " + data.output.code);
+          } else {
+            COMMON.showModal("myModal", "Sorry", data.output.msg);
+          }
+        }
+      },
+      error: function(xhr, status){
+        console.log(xhr, status);
+        COMMON.logoutRedirect(xhr);
+      }
+    });
+  },
+  generalSearch: function(category){
     var sub_cat_type = $("#category").find("option:selected").data("subtype");
     var sub_category = sub_cat_type === "select" ? $("#sub_category_select").val() : $("#sub_category_input_text").val();
     var url = CONSTANTS.API_PATH + "member/categorySearch";
