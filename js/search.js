@@ -96,6 +96,8 @@ var SEARCH = {
         $("#sub_category_select").hide();
         $("#sub_category_input_text").hide();
         $("#date_range").show();
+        $("[name=from_date]").val("");
+        $("[name=to_date]").val("");
         $("[name=from_date]").datepicker('setEndDate', '0d');
         $("[name=to_date]").datepicker('setEndDate', '0d');
        }
@@ -138,7 +140,7 @@ var SEARCH = {
           if(membersArr){
             var tableEl = "<table border='2'>"
             +"<thead>"
-            +"<th>Sl No</th><th>User ID</th>";
+            +"<th>Sl No</th><th>User ID</th><th>Name</th>";
 
             for (var i = 0; i < monthArr.length; i++) {
               var month = monthArr[i];
@@ -149,7 +151,8 @@ var SEARCH = {
 
             for (var i = 0; i < membersArr.length; i++) {
               var member = membersArr[i];
-              tableEl += "<tr><td>"+(i+1)+"</td><td>"+member["user_id"]+"</td>";
+              tableEl += "<tr><td>"+(i+1)+"</td><td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
+              tableEl += "<td>"+member["title"]+" "+member["first_name"]+" "+member["last_name"]+"</td>";
               var payment_done_months = member.payment_done_months;
               for (var j = 0; j < monthArr.length; j++) {
                 var month = monthArr[j];
@@ -165,6 +168,10 @@ var SEARCH = {
 
             tableEl += "</tbody></table>";
             $("#search_result").html(tableEl);
+            $("#search_result .user_id").off("click").on("click", function(){
+              var id = $(this).text();
+              sessionStorage.setItem("member_id", id);
+            });
           }
         } else if (data.output.success === 0) {
           if(data.output.msg === "API issue"){
