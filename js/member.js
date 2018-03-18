@@ -53,6 +53,18 @@ var MEMBER = {
                   $('[name=nxt_followup_date]').datepicker('setStartDate', '0d');
                   $('[name=nxt_followup_date]').datepicker('setEndDate', false);
 
+                  $("[name=amount_paid]").attr("disabled", "disabled");
+                  $("[name=paid_for_mnth]").multiselect("setOptions", {
+                    onChange: function(option, checked, select) {
+                        console.log(option, checked, select, this);
+                        var months = $(option).parent().val();
+                        var monthlyAmt = parseInt($("[name=payment_scheme_value]").val());
+                        var totalAmt = monthlyAmt * months.length;
+                        $("[name=amount_paid]").val(totalAmt);
+                        // alert('Changed option ' + $(option).val() + '.');
+                    }
+                  });
+
                   $("#editMember").off("click").on("click", function(){
                     $("#member-section").find("input, button, textarea, select, input").prop("disabled", false);
                     $("#editMemberBtn").show();
