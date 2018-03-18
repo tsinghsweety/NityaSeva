@@ -118,6 +118,71 @@ var SEARCH = {
       SEARCH.generalSearch(category);
     }
   },
+  getPaymentReport: function(category){
+      var from_date = $("[name=from_date]").val();
+      var to_date = $("[name=to_date]").val();
+      var url = CONSTANTS.API_PATH + "payment/paymentDateWise";
+      var data = {
+        category: category,
+        from_date: from_date,
+        to_date: to_date
+      };
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function(data, statusTxt){
+          console.log(data, statusTxt);
+          if(data.output.success === 1){
+            var membersArr = data.output.member_data;
+
+            if(membersArr){
+              var tableEl = "<table border='2'>"
+              +"<thead>"
+              +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Date of Payment</th><th>Paid for Months</th></tr></thead><tbody>";
+
+              for (var i = 0; i < membersArr.length; i++) {
+                var member = membersArr[i];
+                var id = member["user_id"];
+                var name = member["title"]+" "+member["first_name"]+" "+member["last_name"];
+                var payments = member.payments;
+                var userIdRowSpan = payments.length;
+                for (var j = 0; j < payments.length; j++) {
+                  var payment = payments[j];
+                  var paymentDateRowSpan = payment.paid_for_months.length;
+
+                  tableEl += "<tr><td>"+(i+j+1)+"</td>";
+                  tableEl += "<td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
+                  tableEl += "<td>"+name+"</td>";
+                  tableEl += "<td>"+payment["payment_date"]+"</td>";
+                  tableEl += "<td>"+payment["paid_for_months"].join("<br>")+"</td></tr>";
+                }
+              }
+
+              tableEl += "</tbody></table>";
+
+              $("#search_result").html(tableEl);
+              $("#search_result .user_id").off("click").on("click", function(){
+                var id = $(this).text();
+                sessionStorage.setItem("member_id", id);
+              });
+            }
+          } else if (data.output.success === 0) {
+            if(data.output.msg === "API issue"){
+              COMMON.showModal("myModal", "Sorry", data.output.msg + ", Code: " + data.output.code);
+            } else {
+              COMMON.showModal("myModal", "Sorry", data.output.msg);
+            }
+          }
+        },
+        error: function(xhr, status){
+          console.log(xhr, status);
+          COMMON.logoutRedirect(xhr);
+        }
+      });
+
+  },
   getDueReport: function(category){
     var from_date = $("[name=from_date]").val();
     var to_date = $("[name=to_date]").val();

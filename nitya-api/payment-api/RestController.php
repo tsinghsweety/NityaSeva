@@ -15,33 +15,33 @@ if(isset($_SESSION["logged_in"]) && ($_SESSION["logged_in"] === true) && !empty(
 			switch($page_key){
 
 					case "list":
-						// to handle REST Url /mobile/list/
 						$paymentRestHandler = new PaymentRestHandler();
 						$result = $paymentRestHandler->getAllPayments();
 						break;
 
 					case "report":
-						// to handle REST Url /mobile/list/
 						$paymentRestHandler = new PaymentRestHandler();
 						$result = $paymentRestHandler->getPaymentReport();
 						break;
 
 					case "create":
-						// to handle REST Url /mobile/create/
 						$paymentRestHandler = new PaymentRestHandler();
 						$paymentRestHandler->add();
 					break;
 
 					case "delete":
-						// to handle REST Url /mobile/delete/<row_id>
 						$paymentRestHandler = new PaymentRestHandler();
 						$result = $paymentRestHandler->deletePaymentById();
 					break;
 
 					case "update":
-						// to handle REST Url /mobile/update/<row_id>
 						$paymentRestHandler = new PaymentRestHandler();
 						$paymentRestHandler->editPaymentById();
+					break;
+
+					case "paymentDateWise":
+						$paymentRestHandler = new PaymentRestHandler();
+						$paymentRestHandler->paymentDateWise();
 					break;
 			}
 	}

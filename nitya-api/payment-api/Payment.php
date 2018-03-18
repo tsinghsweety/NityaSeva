@@ -25,29 +25,140 @@ Class Payment {
 		$this->payments = $dbcontroller->executeSelectQuery($query);
 		return $this->payments;
 	}
-
 	public function getPaymentReport(){
-		if(isset($_GET['member_id'])){
-			$user_id = $_GET['member_id'];
-			$query = 'SELECT u.title, u.first_name,'
-			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
-			.' up.amt_paid, up.payment_details, up.payment_remarks '
-			.'FROM users u, user_payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
-			. ' ORDER BY up.payment_date DESC';
-		} else {
-			$query = 'SELECT u.user_id, sql_months.selected_date AS paid_for_month, up.payment_date, '
-			.'up.amt_paid, up.payment_type, up.payment_details, up.payment_remarks'
-			.' FROM all_possible_sql_months sql_months'
-			.' LEFT JOIN user_payment up ON(up.related_month=sql_months.selected_date)'
-			.' LEFT JOIN users u '
-			.' ON up.user_id=u.user_id AND sql_months.selected_date BETWEEN ADDDATE(u.start_date, INTERVAL -1 MONTH) AND CURDATE()'
-			.' WHERE sql_months.selected_date >= "2017-03-01" AND sql_months.selected_date  <= "2018-03-01";';
-		}
-		$dbcontroller = new DBController();
-		// echo $query;
-		$this->payments = $dbcontroller->executeSelectQuery($query);
-		return $this->payments;
+
+			$data = json_decode(file_get_contents('php://input'), true);
+			if(isset($data["category"])){
+				$dbcontroller = new DBController();
+				$con = $dbcontroller->connectDB();
+				$from_date = mysqli_real_escape_string($con,$data['from_date']);
+
+				$dateTime_from_date = date_create_from_format('d/m/Y',$from_date);
+				$formatted_from_date = date_format($dateTime_from_date, 'Y-m-d');
+
+				$to_date = mysqli_real_escape_string($con,$data['to_date']);
+
+				$dateTime_to_date = date_create_from_format('d/m/Y',$to_date);
+				$formatted_to_date = date_format($dateTime_to_date, 'Y-m-d');
+
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(up.payment_date, "%d/%m/%Y") AS payment_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+									.' FROM users u, user_payment up'
+									.' WHERE u.user_id=up.user_id'
+									.' AND up.payment_date BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
+									.'" ORDER BY u.user_id ASC,up.payment_date ASC';
+				// echo $query;
+
+				// var_dump($date_range);
+				$id = null;
+				$pmt_date = null;
+				$due_report_data = $dbcontroller->executeSelectQuery($query);
+				if(count($due_report_data) === 0) {
+					$result = array("success"=>0, "msg"=>"No payment records found for the given date range");
+				} else {
+					$paymentObj = null;
+					$memberObj = null;
+					$memberArr = array();
+					for($i=0; $i<count($due_report_data); $i++){
+						$row = $due_report_data[$i];
+						// echo "  check";
+						// echo "id:    ";
+						// echo $id;
+						// echo "row:    ";
+						// echo $row["user_id"];
+						if($id === $row["user_id"]){
+							//populate same member object
+							if($pmt_date === $row["payment_date"]){
+								array_push($paymentObj["paid_for_months"],$row["related_month"]);
+								// print_r($paymentObj["paid_for_months"]);
+								// array_push($memberObj["payments"],$paymentObj);
+							}else{
+								if($paymentObj!== null){
+									array_push($memberObj["payments"],$paymentObj);
+								}
+								$pmt_date = $row["payment_date"];
+								$paymentObj = array("payment_date"=>$row["payment_date"]);
+								// array_push($paymentObj["paid_for_months"],$row["related_month"]);
+								$paymentObj["paid_for_months"] = array($row["related_month"]);
+								// $memberObj["payments"] = $paymentObj;
+
+							}
+							// array_push($memberArr,$memberObj);
+						} else {
+								if($paymentObj!== null){
+									array_push($memberObj["payments"],$paymentObj);
+									$paymentObj = null;
+									$pmt_date = null;
+								}
+								if($memberObj!== null){
+									// echo " else :: ".$row["user_id"];
+									array_push($memberArr,$memberObj);
+									$memberObj = null;
+									$paymentObj= null;
+									$pmt_date = null;
+								}
+								//create new  member object
+								$id = $row["user_id"];
+								$memberObj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"]);
+								$memberObj["payments"] = array();
+								if($pmt_date === $row["payment_date"]){
+									array_push($paymentObj["paid_for_months"],$row["related_month"]);
+									// array_push($memberObj["payments"],$paymentObj);
+								}else{
+									if($paymentObj!== null){
+										array_push($memberObj["payments"],$paymentObj);
+									}
+									$pmt_date = $row["payment_date"];
+									$paymentObj = array("payment_date"=>$row["payment_date"]);
+									$paymentObj["paid_for_months"] = array($row["related_month"]);
+									// $memberObj["payments"] = $paymentObj;
+								}
+								// $memberArr = $memberObj;
+						}
+					}
+					if($paymentObj !== null){
+						array_push($memberObj['payments'], $paymentObj);
+					}
+					if($memberObj!== null){
+						array_push($memberArr,$memberObj);
+					}
+					// if($obj !== null){
+					// 		array_push($main_obj,$obj);
+					// }
+					// $result = $main_obj;
+					if(count($memberArr) > 0){
+						$result = array("success"=>1, "member_data"=>$memberArr);
+					} else {
+						$result = array("success"=>0, "msg"=>"API Issue", "code"=> "1002");
+					}
+				}
+			}
+
+			// print_r($due_report_data);
+			return $result;
+
 	}
+	// public function getPaymentReport(){
+	// 	if(isset($_GET['member_id'])){
+	// 		$user_id = $_GET['member_id'];
+	// 		$query = 'SELECT u.title, u.first_name,'
+	// 		.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
+	// 		.' up.amt_paid, up.payment_details, up.payment_remarks '
+	// 		.'FROM users u, user_payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
+	// 		. ' ORDER BY up.payment_date DESC';
+	// 	} else {
+	// 		$query = 'SELECT u.user_id, sql_months.selected_date AS paid_for_month, up.payment_date, '
+	// 		.'up.amt_paid, up.payment_type, up.payment_details, up.payment_remarks'
+	// 		.' FROM all_possible_sql_months sql_months'
+	// 		.' LEFT JOIN user_payment up ON(up.related_month=sql_months.selected_date)'
+	// 		.' LEFT JOIN users u '
+	// 		.' ON up.user_id=u.user_id AND sql_months.selected_date BETWEEN ADDDATE(u.start_date, INTERVAL -1 MONTH) AND CURDATE()'
+	// 		.' WHERE sql_months.selected_date >= "2017-03-01" AND sql_months.selected_date  <= "2018-03-01";';
+	// 	}
+	// 	$dbcontroller = new DBController();
+	// 	// echo $query;
+	// 	$this->payments = $dbcontroller->executeSelectQuery($query);
+	// 	return $this->payments;
+	// }
 
 	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);

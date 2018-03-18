@@ -50,6 +50,8 @@ RewriteRule ^payment/list$   payment-api/RestController.php?page_key=list [nc,qs
 RewriteRule ^payment/report/([0-9]+)$   payment-api/RestController.php?page_key=report&member_id=$1 [nc,qsa]
 RewriteRule ^payment/report$   payment-api/RestController.php?page_key=report [nc,qsa]
 
+RewriteRule ^payment/paymentDateWise$   payment-api/RestController.php?page_key=paymentDateWise [nc,qsa]
+
 RewriteRule ^payment/create/([0-9]+)/$   payment-api/RestController.php?page_key=create&member_id=$1 [L]
 RewriteRule ^payment/create/([0-9]+)$    payment/create/$1/ [L]
 
