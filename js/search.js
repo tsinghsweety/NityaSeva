@@ -7,12 +7,10 @@ var SEARCH = {
       {idx: 3, name: "Phone Num", value:"phone_num", subCatType: "inputText"},
       {idx: 4, name: "Donation Category", value:"donation_category", subCatType: "select", url: "member/schemelist", ddKey: "scheme_name"},
       {idx: 5, name: "Active Member", value:"active_member", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 6, name: "Payment Due", value:"payment_due", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 7, name: "Current Payment Done", value:"current_payment_done", subCatType: "select", subCatValues: ["Y", "N"]},
-      {idx: 8, name: "Payment Due Report", value:"payment_due_report", subCatType: "dateRange"},
-      {idx: 9, name: "Date of Payment", value:"date_of_payment", subCatType: "dateRange"},
-      {idx: 10, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
-      {idx: 11, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
+      {idx: 6, name: "Payment Due Report", value:"payment_due_report", subCatType: "dateRange"},
+      {idx: 7, name: "Date of Payment", value:"date_of_payment", subCatType: "dateRange"},
+      {idx: 8, name: "Corresponder", value:"corresponder_name", subCatType: "select", url: "member/corresponderlist", ddKey: "corresponder_name"},
+      {idx: 9, name: "Connected To", value:"connected_to", subCatType: "select", url: "member/connectedlist", ddKey: "connected_to"}
     ];
 
     //Create Category Drop Down
@@ -136,25 +134,35 @@ var SEARCH = {
           console.log(data, statusTxt);
           if(data.output.success === 1){
             var membersArr = data.output.member_data;
-
+            console.log(membersArr);
             if(membersArr){
               var tableEl = "<table border='2'>"
               +"<thead>"
-              +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Date of Payment</th><th>Paid for Months</th></tr></thead><tbody>";
+              +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Bhakti Vriksh</th><th>Date of Payment</th><th>Paid for Months</th></tr></thead><tbody>";
 
               for (var i = 0; i < membersArr.length; i++) {
                 var member = membersArr[i];
                 var id = member["user_id"];
                 var name = member["title"]+" "+member["first_name"]+" "+member["last_name"];
+                var connected_to = member["connected_to"];
                 var payments = member.payments;
                 var userIdRowSpan = payments.length;
+                var prevUserId = "";
+                var newUserId = " ";
                 for (var j = 0; j < payments.length; j++) {
                   var payment = payments[j];
+                  newUserId = member["user_id"];
                   var paymentDateRowSpan = payment.paid_for_months.length;
-
                   tableEl += "<tr><td>"+(i+j+1)+"</td>";
-                  tableEl += "<td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
-                  tableEl += "<td>"+name+"</td>";
+
+                  if(prevUserId!== newUserId){
+
+                    tableEl += "<td rowspan = "+userIdRowSpan+">"+newUserId+"</td>";
+                    tableEl += "<td rowspan = "+userIdRowSpan+">"+name+"</td>";
+                    tableEl += "<td rowspan = "+userIdRowSpan+">"+connected_to+"</td>";
+                    prevUserId = newUserId;
+
+                  }
                   tableEl += "<td>"+payment["payment_date"]+"</td>";
                   tableEl += "<td>"+payment["paid_for_months"].join("<br>")+"</td></tr>";
                 }

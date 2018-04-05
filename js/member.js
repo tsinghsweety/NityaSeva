@@ -473,7 +473,7 @@ var MEMBER = {
             console.log(data, statusTxt);
             if(data.output.length > 0){
               var payments = data.output;
-              var tableEl = "<table border='1'><thead><th>Payment Date</th><th>Payment Type</th><th>Amt Paid</th><th>Payment Details</th><th>Remarks</th></thead>";
+              var tableEl = "<table border='1'><thead><th>Payment Date</th><th>Payment Type</th><th>Amt Paid</th><th>Paid For Month</th><th>Payment Details</th><th>Remarks</th></thead>";
               tableEl += "<tbody>";
 
               for(var i=0; i<payments.length; i++){
@@ -482,6 +482,7 @@ var MEMBER = {
                 tableEl += "<td>"+payment['payment_date']+"</td>";
                 tableEl += "<td>"+payment['payment_type']+"</td>";
                 tableEl += "<td>"+payment['amt_paid']+"</td>";
+                tableEl += "<td>"+payment['related_month']+"</td>";
                 tableEl += "<td>"+payment['payment_details']+"</td>";
                 tableEl += "<td>"+payment['payment_remarks']+"</td>";
                 tableEl += "</tr>";

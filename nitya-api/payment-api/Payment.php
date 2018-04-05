@@ -11,13 +11,13 @@ Class Payment {
 			$user_id = $_GET['member_id'];
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
-			.' up.amt_paid, up.payment_details, up.payment_remarks '
+			.' up.amt_paid, up.payment_details, up.payment_remarks, DATE_FORMAT(up.related_month, "%M, %Y") as related_month '
 			.'FROM users u, user_payment up WHERE u.user_id=up.user_id and up.user_id=' .$user_id
 			. ' ORDER BY up.payment_date DESC';
 		} else {
 			$query = 'SELECT u.title, u.first_name,'
 			.' u.last_name, u.user_id, up.payment_type, DATE_FORMAT(up.payment_date, "%d/%m/%Y") as payment_date,'
-			.' up.amt_paid, up.payment_details, up.payment_remarks '
+			.' up.amt_paid, up.payment_details, up.payment_remarks, DATE_FORMAT(up.related_month, "%M, %Y") as related_month '
 			.'FROM users u, user_payment up WHERE u.user_id=up.user_id'
 			. ' ORDER BY up.payment_date DESC';
 		}
@@ -41,7 +41,7 @@ Class Payment {
 				$dateTime_to_date = date_create_from_format('d/m/Y',$to_date);
 				$formatted_to_date = date_format($dateTime_to_date, 'Y-m-d');
 
-				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(up.payment_date, "%d/%m/%Y") AS payment_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,u.connected_to,DATE_FORMAT(up.payment_date, "%d/%m/%Y") AS payment_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
 									.' FROM users u, user_payment up'
 									.' WHERE u.user_id=up.user_id'
 									.' AND up.payment_date BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
@@ -98,7 +98,7 @@ Class Payment {
 								}
 								//create new  member object
 								$id = $row["user_id"];
-								$memberObj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"]);
+								$memberObj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"], "connected_to"=>$row["connected_to"]);
 								$memberObj["payments"] = array();
 								if($pmt_date === $row["payment_date"]){
 									array_push($paymentObj["paid_for_months"],$row["related_month"]);
@@ -163,7 +163,7 @@ Class Payment {
 	public function addPayment(){
 		$data = json_decode(file_get_contents('php://input'), true);
 		$result = array('success'=>0, "msg"=>"API issue", "code"=>'API401');
-		print_r($data);
+		// print_r($data);
 		// print_r($_SESSION);
 		if(isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] === true)
 		&& isset($_GET['member_id']) && isset($data['payment_type'])
@@ -194,15 +194,15 @@ Class Payment {
 				// echo date('m', strtotime("$mnth"));
 				$month_num = date('m', strtotime("$mnth"));
 				$related_month = $paid_for_yr."-".$month_num."-01";
-				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$amount_paid."','".$ref_num."','".$payment_remarks."','".$related_month."','".$mnth."','".$paid_for_yr."')";
+				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$payment_scheme_value."','".$ref_num."','".$payment_remarks."','".$related_month."','".$mnth."','".$paid_for_yr."')";
 			}
 			$val_query=ltrim($val_query, ',');
-			echo $val_query;
+			// echo $val_query;
 
 			$insert_user_pmt_query = "INSERT INTO user_payment(user_id,payment_type,payment_date,amt_paid,payment_details,payment_remarks,related_month,paid_for_mnth,paid_for_yr) "
 			."VALUES".$val_query;
 
-			echo $insert_user_pmt_query;
+			// echo $insert_user_pmt_query;
 
 			//insert payment details into user_payment table
 			$insertUserPmtResult = $dbcontroller->executeQuery($insert_user_pmt_query);
