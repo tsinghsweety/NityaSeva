@@ -25,6 +25,7 @@ Class Payment {
 		$this->payments = $dbcontroller->executeSelectQuery($query);
 		return $this->payments;
 	}
+	// FOR DATEWISE PAYMENT REPORT
 	public function getPaymentReport(){
 
 			$data = json_decode(file_get_contents('php://input'), true);

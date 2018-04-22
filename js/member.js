@@ -54,14 +54,46 @@ var MEMBER = {
                   $('[name=nxt_followup_date]').datepicker('setEndDate', false);
 
                   $("[name=amount_paid]").attr("disabled", "disabled");
-                  $("[name=paid_for_mnth]").multiselect("setOptions", {
-                    onChange: function(option, checked, select) {
-                        console.log(option, checked, select, this);
-                        var months = $(option).parent().val();
-                        var monthlyAmt = parseInt($("[name=payment_scheme_value]").val());
-                        var totalAmt = monthlyAmt * months.length;
-                        $("[name=amount_paid]").val(totalAmt);
-                        // alert('Changed option ' + $(option).val() + '.');
+
+                  var data = {
+                    category: "due"
+                  };
+                  var optionList = "<option>Select</option>";
+                  $.ajax({
+                    url: CONSTANTS.API_PATH + "member/dueReport/"+memberId,
+                    type: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: function(data, statusTxt) {
+                      console.log(data, statusTxt);
+                      if(data.output.length > 0){
+                        var list = data.output;
+                        for(var i=0; i<list.length;i++){
+                          optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+                        }
+                      }
+
+                      // optionList += "<option>New</option>";
+                      $("#corresponder_name").html(optionList);
+                      $("[name=corresponder]").val(userData['corresponder'].trim());
+
+                      //Initialise Multiselect
+                      $("[name=paid_for_mnth]").multiselect("setOptions", {
+                        onChange: function(option, checked, select) {
+                            console.log(option, checked, select, this);
+                            var months = $(option).parent().val();
+                            var monthlyAmt = parseInt($("[name=payment_scheme_value]").val());
+                            var totalAmt = monthlyAmt * months.length;
+                            $("[name=amount_paid]").val(totalAmt);
+                            // alert('Changed option ' + $(option).val() + '.');
+                        }
+                      });
+                    },
+                    error: function(xhr, status) {
+                      console.log(xhr, status);
+                      // optionList += "<option>New</option>";
+                      $("#corresponder_name").html(optionList);
+                      COMMON.logoutRedirect(xhr);
                     }
                   });
 

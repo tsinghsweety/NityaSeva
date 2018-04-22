@@ -54,7 +54,7 @@ Class Member {
 		$this->connectedTo = $dbcontroller->executeSelectQuery($query);
 		return $this->connectedTo;
 	}
-
+// 'DUE & PAID' WISE PAYMENT REPORT
 	public function getDueReport(){
 		$data = json_decode(file_get_contents('php://input'), true);
 
@@ -71,11 +71,24 @@ Class Member {
 			$dateTime_to_date = date_create_from_format('d/m/Y',$to_date);
 			$formatted_to_date = date_format($dateTime_to_date, 'Y-m-d');
 
-			$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
-								.' FROM users u, user_payment up'
-								.' WHERE u.user_id=up.user_id'
-								.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
-								.'" ORDER BY u.user_id,up.related_month ASC';
+			if(isset($_GET["id"])){
+				$for_user_id = mysqli_real_escape_string($con,$_GET["id"]);
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+									.' FROM users u LEFT JOIN user_payment up'
+									.' ON u.user_id=up.user_id'
+									.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
+									.' WHERE u.user_id="'.$for_user_id.'"'
+									.'" ORDER BY u.user_id,up.related_month ASC';
+			} else {
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+									.' FROM users u LEFT JOIN user_payment up'
+									.' ON u.user_id=up.user_id'
+									.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
+									.'" ORDER BY u.user_id,up.related_month ASC';
+
+			}
+
+
 			// echo $query;
 			$date_range = array();
 			$start    = (new DateTime($formatted_from_date))->modify('first day of this month');
@@ -110,7 +123,7 @@ Class Member {
 								array_push($main_obj,$obj);
 						}
 						$id = $row["user_id"];
-						$obj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"]);
+						$obj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"],"start_date"=>$row["start_date"]);
 						$obj["payment_done_months"] = array($row["related_month"]);
 					}
 				}
@@ -456,6 +469,7 @@ Class Member {
 				}
 
 				//update user into users table
+				// echo $update_user_query;
 				$updateUserResult = $dbcontroller->executeQuery($update_user_query);
 				if($updateUserResult > 0){
 					$updatedUserRes = $dbcontroller->executeSelectQuery($user_already_ex_q);

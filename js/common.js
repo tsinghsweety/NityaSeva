@@ -34,7 +34,12 @@ var COMMON = {
     var jsonData = {};
     els.each(function(idx, item){
       var name = $(item).attr("name");
-      jsonData[name] = $(item).val();
+      // jsonData[name] = $("[name="+name+"]").val();
+      if($(item).is(":radio")){
+        jsonData[name] = $("[name="+name+"]:checked").val();
+      }else{
+        jsonData[name] = $("[name="+name+"]").val();
+      }
     });
 
     return jsonData;
@@ -79,5 +84,10 @@ var COMMON = {
         COMMON.logoutRedirect(xhr);
       }
     });
+  },
+  createDateFromString: function(input_date){
+    var date_str =  input_date.split('/');
+    var return_date = new Date(date_str[2],date_str[1],date_str[0]);
+    return return_date;
   }
 };

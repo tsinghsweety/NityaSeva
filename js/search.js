@@ -200,6 +200,7 @@ var SEARCH = {
       from_date: from_date,
       to_date: to_date
     };
+    var from_dateRange = COMMON.createDateFromString(from_date);
     $.ajax({
       url: url,
       type: "POST",
@@ -224,16 +225,26 @@ var SEARCH = {
 
             for (var i = 0; i < membersArr.length; i++) {
               var member = membersArr[i];
+              var mem_start_date_Arr = member["start_date"].split("/");
+              var member_start_month_dt = COMMON.createDateFromString("01/"+mem_start_date_Arr[1]+"/"+mem_start_date_Arr[2]);
               tableEl += "<tr><td>"+(i+1)+"</td><td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
               tableEl += "<td>"+member["title"]+" "+member["first_name"]+" "+member["last_name"]+"</td>";
               var payment_done_months = member.payment_done_months;
               for (var j = 0; j < monthArr.length; j++) {
                 var month = monthArr[j];
-                if(payment_done_months.indexOf(month) > -1){
-                  tableEl += "<td style='color: green; font-weight: bold;'>Paid</td>";
-                } else {
-                  tableEl += "<td style='color: red; font-weight: bold;'>Due</td>";
+                var monthSplitArr = month.split(",");
+                var monthStr = "01/"+(CONSTANTS.MONTHS_VAL.indexOf(monthSplitArr[0].trim())+1)+"/"+monthSplitArr[1].trim();
+                var month_start_dt = COMMON.createDateFromString(monthStr);
+                if(month_start_dt<member_start_month_dt){
+                  tableEl += "<td style='color: black; font-weight: bold;'>NA</td>";
+                }else{
+                  if(payment_done_months.indexOf(month) > -1){
+                    tableEl += "<td style='color: green; font-weight: bold;'>Paid</td>";
+                  } else {
+                    tableEl += "<td style='color: red; font-weight: bold;'>Due</td>";
+                  }
                 }
+
               }
 
               tableEl += "</tr>";

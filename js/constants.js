@@ -1,3 +1,4 @@
 var CONSTANTS = {
-  API_PATH: ''
+  API_PATH: '',
+  MONTHS_VAL: ["January","February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 };
