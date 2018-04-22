@@ -221,10 +221,14 @@ var SEARCH = {
               tableEl += "<th>" + month + "</th>";
             }
 
+            tableEl += "<th>Total Paid</th>";
+
             tableEl += "</thead><tbody>";
 
             for (var i = 0; i < membersArr.length; i++) {
               var member = membersArr[i];
+              var amt_paid = member["amt_paid"];
+              var member_total_amt = 0;
               var mem_start_date_Arr = member["start_date"].split("/");
               var member_start_month_dt = COMMON.createDateFromString("01/"+mem_start_date_Arr[1]+"/"+mem_start_date_Arr[2]);
               tableEl += "<tr><td>"+(i+1)+"</td><td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
@@ -239,13 +243,16 @@ var SEARCH = {
                   tableEl += "<td style='color: black; font-weight: bold;'>NA</td>";
                 }else{
                   if(payment_done_months.indexOf(month) > -1){
-                    tableEl += "<td style='color: green; font-weight: bold;'>Paid</td>";
+                    member_total_amt += parseInt(amt_paid);
+                    tableEl += "<td style='color: green; font-weight: bold;'>"+amt_paid+"</td>";
                   } else {
-                    tableEl += "<td style='color: red; font-weight: bold;'>Due</td>";
+                    tableEl += "<td style='color: red; font-weight: bold;'>0</td>";
                   }
                 }
 
               }
+
+              tableEl += "<td>"+member_total_amt+"</td>"
 
               tableEl += "</tr>";
             }

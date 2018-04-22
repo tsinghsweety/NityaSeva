@@ -73,14 +73,14 @@ Class Member {
 
 			if(isset($_GET["id"])){
 				$for_user_id = mysqli_real_escape_string($con,$_GET["id"]);
-				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, up.amt_paid'
 									.' FROM users u LEFT JOIN user_payment up'
 									.' ON u.user_id=up.user_id'
 									.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
 									.' WHERE u.user_id="'.$for_user_id.'"'
 									.'" ORDER BY u.user_id,up.related_month ASC';
 			} else {
-				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, up.amt_paid'
 									.' FROM users u LEFT JOIN user_payment up'
 									.' ON u.user_id=up.user_id'
 									.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
@@ -123,7 +123,7 @@ Class Member {
 								array_push($main_obj,$obj);
 						}
 						$id = $row["user_id"];
-						$obj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"],"start_date"=>$row["start_date"]);
+						$obj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"],"start_date"=>$row["start_date"],"amt_paid"=>$row["amt_paid"]);
 						$obj["payment_done_months"] = array($row["related_month"]);
 					}
 				}
