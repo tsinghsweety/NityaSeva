@@ -54,31 +54,43 @@ var MEMBER = {
                   $('[name=nxt_followup_date]').datepicker('setEndDate', false);
 
                   $("[name=amount_paid]").attr("disabled", "disabled");
-
+// {"category":"payment_due_report","from_date":"01/07/2016","to_date":"22/04/2018"}:
+                  var today = new Date(Date.now());
+                  var day = today.getDate();
+                  day = day>9?day:"0"+day;
+                  var month = today.getMonth()+1;
+                  month = month>9?month:"0"+month;
+                  var year = today.getFullYear();
                   var data = {
-                    category: "due"
+                    category: "payment_due_report",
+                    from_date: userData['start_date'],
+                    to_date: day+"/"+month+"/"+year
                   };
-                  var optionList = "<option>Select</option>";
+                  var mnthOptList = "";
                   $.ajax({
                     url: CONSTANTS.API_PATH + "member/dueReport/"+memberId,
                     type: "POST",
                     dataType: "json",
-                    data: data,
+                    data: JSON.stringify(data),
                     success: function(data, statusTxt) {
                       console.log(data, statusTxt);
-                      if(data.output.length > 0){
-                        var list = data.output;
-                        for(var i=0; i<list.length;i++){
-                          optionList += "<option>"+list[i]['corresponder_name']+"</option>";
+                      if(data.output['member_data'].length > 0){
+                        // var list = data.output;
+                        var monthArr = data.output['date_range'];
+                        var paidMonthsArr = data.output['member_data'][0]['payment_done_months'];
+                        for(var i=0; i<monthArr.length;i++){
+                          var month = monthArr[i];
+                          if(paidMonthsArr.indexOf(month) === -1){
+                            mnthOptList += "<option>"+month+"</option>";
+                          }
                         }
                       }
 
                       // optionList += "<option>New</option>";
-                      $("#corresponder_name").html(optionList);
-                      $("[name=corresponder]").val(userData['corresponder'].trim());
+                      $("[name=paid_for_mnth]").html(mnthOptList);
+                      // $("[name=corresponder]").val(userData['corresponder'].trim());
 
-                      //Initialise Multiselect
-                      $("[name=paid_for_mnth]").multiselect("setOptions", {
+                      $('#paid_for_mnth').multiselect("setOptions", {
                         onChange: function(option, checked, select) {
                             console.log(option, checked, select, this);
                             var months = $(option).parent().val();
@@ -88,6 +100,8 @@ var MEMBER = {
                             // alert('Changed option ' + $(option).val() + '.');
                         }
                       });
+                      //Initialise Multiselect
+                      $('#paid_for_mnth').multiselect('rebuild');
                     },
                     error: function(xhr, status) {
                       console.log(xhr, status);

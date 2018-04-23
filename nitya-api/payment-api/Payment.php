@@ -171,7 +171,6 @@ Class Payment {
 		&& isset($data['ref_num']) && isset($data['amount_paid'])
 	  && isset($data['payment_date'])
 		&& isset($data['paid_for_mnth'])
-		&& isset($data['paid_for_yr'])
 		&& isset($data['payment_remarks'])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
@@ -193,8 +192,9 @@ Class Payment {
 			$val_query ="";
 			foreach($data['paid_for_mnth'] as $mnth){
 				// echo date('m', strtotime("$mnth"));
-				$month_num = date('m', strtotime("$mnth"));
-				$related_month = $paid_for_yr."-".$month_num."-01";
+				$mnthYrArr = explode(", ", $mnth);
+				$month_num = date('m', strtotime("$mnthYrArr[0]"));
+				$related_month = $mnthYrArr[1]."-".$month_num."-01";
 				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$payment_scheme_value."','".$ref_num."','".$payment_remarks."','".$related_month."','".$mnth."','".$paid_for_yr."')";
 			}
 			$val_query=ltrim($val_query, ',');

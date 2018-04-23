@@ -56,8 +56,9 @@ Class Member {
 	}
 // 'DUE & PAID' WISE PAYMENT REPORT
 	public function getDueReport(){
+		// var_dump(file_get_contents('php://input'));
 		$data = json_decode(file_get_contents('php://input'), true);
-
+		// var_dump($data);
 		if(isset($data["category"])){
 			$dbcontroller = new DBController();
 			$con = $dbcontroller->connectDB();
@@ -73,11 +74,11 @@ Class Member {
 
 			if(isset($_GET["id"])){
 				$for_user_id = mysqli_real_escape_string($con,$_GET["id"]);
-				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, up.amt_paid'
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, up.amt_paid, up.paid_for_mnth, up.paid_for_yr'
 									.' FROM users u LEFT JOIN user_payment up'
 									.' ON u.user_id=up.user_id'
 									.' AND related_month BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
-									.' WHERE u.user_id="'.$for_user_id.'"'
+									.'" WHERE u.user_id="'.$for_user_id
 									.'" ORDER BY u.user_id,up.related_month ASC';
 			} else {
 				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,DATE_FORMAT(u.start_date, "%d/%m/%Y") AS start_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, up.amt_paid'
