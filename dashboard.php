@@ -14,7 +14,7 @@ session_start(); //starts the session
         <link rel="stylesheet" href="css/common.css">
         <title>Dashboard</title>
     </head>
-    <body>
+    <body onload="localStorage.clear();">
         <?php
             if($_SESSION['user']){ //checks if user is logged in
             }

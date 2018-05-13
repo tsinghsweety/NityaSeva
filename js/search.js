@@ -164,7 +164,7 @@ var SEARCH = {
 
                   if(prevUserId!== newUserId){
                     tableEl += "<tr><td rowspan = '"+userIdRowSpan+"'>"+(++userCount)+"</td>";
-                    tableEl += "<td rowspan = "+userIdRowSpan+"><a class='user_id' href='member.html'>"+newUserId+"</a></td>";
+                    tableEl += "<td rowspan = "+userIdRowSpan+"><a class='user_id' target='_blank' href='member.html'>"+newUserId+"</a></td>";
                     tableEl += "<td rowspan = "+userIdRowSpan+">"+name+"</td>";
                     tableEl += "<td rowspan = "+userIdRowSpan+">"+connected_to+"</td>";
                     prevUserId = newUserId;
@@ -235,7 +235,7 @@ var SEARCH = {
               var member_total_amt = 0;
               var mem_start_date_Arr = member["start_date"].split("/");
               var member_start_month_dt = COMMON.createDateFromString("01/"+mem_start_date_Arr[1]+"/"+mem_start_date_Arr[2]);
-              tableEl += "<tr><td>"+(i+1)+"</td><td><a href='member.html' class='user_id'>"+member["user_id"]+"</a></td>";
+              tableEl += "<tr><td>"+(i+1)+"</td><td><a href='member.html' class='user_id' target='_blank'>"+member["user_id"]+"</a></td>";
               tableEl += "<td>"+member["title"]+" "+member["first_name"]+" "+member["last_name"]+"</td>";
               var payment_done_months = member.payment_done_months;
               for (var j = 0; j < monthArr.length; j++) {
@@ -314,7 +314,7 @@ var SEARCH = {
               var memberData = membersArr[i];
               tableEl += "<tr>";
               tableEl += "<td>"+(i+1)+"</td>";
-              tableEl += "<td><a href='member.html' class='user_id'>"+memberData['user_id']+"</a></td>";
+              tableEl += "<td><a href='member.html' class='user_id' target='_blank'>"+memberData['user_id']+"</a></td>";
               tableEl += "<td>"+memberData['title']+" "+memberData['first_name']+" "+memberData["last_name"]+"</td>";
               tableEl += "<td>"+memberData['phone_no']+"</td>";
               tableEl += "<td>"+memberData['email_id']+"</td>";
