@@ -2,7 +2,7 @@ $(document).ready(function() {
   COMMON.initCommonVars();
   COMMON.checkUserLoggedin();
   
-  var type = sessionStorage.getItem("historyType");
+  var type = localStorage.getItem("historyType");
   if(type === "payment"){
     MEMBER.showPaymentHistory();
   } else if(type === "btg"){

@@ -1,6 +1,6 @@
 var ADMIN = {
   init: function () {
-    var adminId = sessionStorage.getItem("admin_id");
+    var adminId = localStorage.getItem("admin_id");
     if(adminId){
       $.ajax({
           url: CONSTANTS.API_PATH + "admin/list/" + adminId,
@@ -85,7 +85,7 @@ var ADMIN = {
   editAdmin: function () {
     var jsonData = COMMON.createFormDataJson("#add-admin");
     console.log(jsonData);
-    var adminId = sessionStorage.getItem("admin_id");
+    var adminId = localStorage.getItem("admin_id");
     if(adminId){
       $.ajax({
           url: CONSTANTS.API_PATH + "admin/update/" + adminId,
@@ -113,7 +113,7 @@ var ADMIN = {
     }
   },
   showAdminList: function(){
-    // var memberId = sessionStorage.getItem('member_id');
+    // var memberId = localStorage.getItem('member_id');
     // console.log("CONSTANTS", CONSTANTS);
     var url = CONSTANTS.API_PATH + "admin/list";
     // console.log("url", url);
@@ -150,7 +150,7 @@ var ADMIN = {
 
             $("#adminList .admin_infoid").off("click").on("click", function(){
               var id = $(this).text();
-              sessionStorage.setItem("admin_id", id);
+              localStorage.setItem("admin_id", id);
             });
           }
         },

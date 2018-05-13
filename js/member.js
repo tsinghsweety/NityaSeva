@@ -1,6 +1,6 @@
 var MEMBER = {
     initMember: function(){
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       if(memberId){
         $.ajax({
             url: CONSTANTS.API_PATH + "member/list/" + memberId,
@@ -24,10 +24,10 @@ var MEMBER = {
                   $('[name=btg_lang]').val(userData['user_lang']);
                   $('[name=due_amt]').val(userData['scheme_value']);
 
-                  //set sessionStorage
-                  sessionStorage.setItem("title", userData['title']);
-                  sessionStorage.setItem("first_name", userData['first_name']);
-                  sessionStorage.setItem("last_name", userData['last_name']);
+                  //set localStorage
+                  localStorage.setItem("title", userData['title']);
+                  localStorage.setItem("first_name", userData['first_name']);
+                  localStorage.setItem("last_name", userData['last_name']);
 
                   $("[name=title]").val(userData['title']);
                   $("[name=first_name]").val(userData['first_name']);
@@ -307,7 +307,7 @@ var MEMBER = {
                   $('[name=btg_lang]').val(userData['user_lang']);
                   $('[name=due_amt]').val(userData['scheme_value']);
 
-                  sessionStorage.setItem("member_id", userData['user_id']);
+                  localStorage.setItem("member_id", userData['user_id']);
 
                   $("section:gt(0)").show();
                   COMMON.showModal("myModal", "Hari Bol!", data.msg);
@@ -328,7 +328,7 @@ var MEMBER = {
     editMember: function () {
       var jsonData = COMMON.createFormDataJson("#member-section");
       console.log(jsonData);
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       if(memberId){
         $.ajax({
             url: CONSTANTS.API_PATH + "member/update/" + memberId,
@@ -382,7 +382,7 @@ var MEMBER = {
     },
     addPayment: function(){
       var jsonData = COMMON.createFormDataJson("#payment-section");
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
           url: CONSTANTS.API_PATH + "payment/create/" + memberId,
@@ -410,7 +410,7 @@ var MEMBER = {
     },
     addBTG: function(){
       var jsonData = COMMON.createFormDataJson("#btg-section");
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
         url: CONSTANTS.API_PATH + "btg/create/" + memberId,
@@ -440,7 +440,7 @@ var MEMBER = {
       var giftType = event.data ? event.data.type : '';
       var section = "#" + giftType + "-section";
       var jsonData = COMMON.createFormDataJson(section);
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       var url = CONSTANTS.API_PATH + giftType + "/create/" + memberId;
       console.log(jsonData);
       $.ajax({
@@ -469,7 +469,7 @@ var MEMBER = {
     },
     addFollowup: function(){
       var jsonData = COMMON.createFormDataJson("#followup-section");
-      var memberId = sessionStorage.getItem("member_id");
+      var memberId = localStorage.getItem("member_id");
       console.log(jsonData);
       $.ajax({
         url: CONSTANTS.API_PATH + "followup/create/" + memberId,
@@ -496,10 +496,10 @@ var MEMBER = {
       });
     },
     showPaymentHistory: function(){
-      var memberId = sessionStorage.getItem('member_id');
-      var title = sessionStorage.getItem('title');
-      var firstName = sessionStorage.getItem('first_name');
-      var lastName = sessionStorage.getItem('last_name');
+      var memberId = localStorage.getItem('member_id');
+      var title = localStorage.getItem('title');
+      var firstName = localStorage.getItem('first_name');
+      var lastName = localStorage.getItem('last_name');
 
       $('title, h2').text('Payment History');
       $('#userId').text(memberId);
@@ -550,10 +550,10 @@ var MEMBER = {
       });
     },
     showGiftPrasadamHistory: function(type){
-      var memberId = sessionStorage.getItem('member_id');
-      var title = sessionStorage.getItem('title');
-      var firstName = sessionStorage.getItem('first_name');
-      var lastName = sessionStorage.getItem('last_name');
+      var memberId = localStorage.getItem('member_id');
+      var title = localStorage.getItem('title');
+      var firstName = localStorage.getItem('first_name');
+      var lastName = localStorage.getItem('last_name');
 
       var fullName = title + ' ' + firstName + ' ' + lastName;
       var title = "Gift History";
@@ -608,10 +608,10 @@ var MEMBER = {
       });
     },
     showBTGHistory: function(){
-      var memberId = sessionStorage.getItem('member_id');
-      var title = sessionStorage.getItem('title');
-      var firstName = sessionStorage.getItem('first_name');
-      var lastName = sessionStorage.getItem('last_name');
+      var memberId = localStorage.getItem('member_id');
+      var title = localStorage.getItem('title');
+      var firstName = localStorage.getItem('first_name');
+      var lastName = localStorage.getItem('last_name');
 
       var fullName = title + ' ' + firstName + ' ' + lastName;
       var title = "Back To Godhead History";
@@ -663,10 +663,10 @@ var MEMBER = {
       });
     },
     showFollowupHistory: function(){
-      var memberId = sessionStorage.getItem('member_id');
-      var title = sessionStorage.getItem('title');
-      var firstName = sessionStorage.getItem('first_name');
-      var lastName = sessionStorage.getItem('last_name');
+      var memberId = localStorage.getItem('member_id');
+      var title = localStorage.getItem('title');
+      var firstName = localStorage.getItem('first_name');
+      var lastName = localStorage.getItem('last_name');
 
       var fullName = title + ' ' + firstName + ' ' + lastName;
       var title = "Followup History";

@@ -25,6 +25,12 @@ var SEARCH = {
     $("#category").html(optionList);
     $("#date_range").hide();
   },
+  bindEvents: function(){
+    $("#search_result .user_id").off("click").on("click", function(){
+      var id = $(this).text();
+      localStorage.setItem("member_id", id);
+    });
+  },
   showSubCategory: function(event){
     var el = event.target;
     var optionIdx = $(el).find("option:selected").data("idx");
@@ -140,6 +146,7 @@ var SEARCH = {
               +"<thead>"
               +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Bhakti Vriksh</th><th>Date of Payment</th><th>Paid for Months</th></tr></thead><tbody>";
 
+              let userCount = 0;
               for (var i = 0; i < membersArr.length; i++) {
                 var member = membersArr[i];
                 var id = member["user_id"];
@@ -153,11 +160,11 @@ var SEARCH = {
                   var payment = payments[j];
                   newUserId = member["user_id"];
                   var paymentDateRowSpan = payment.paid_for_months.length;
-                  tableEl += "<tr><td>"+(i+j+1)+"</td>";
+                  tableEl += "<tr>";
 
                   if(prevUserId!== newUserId){
-
-                    tableEl += "<td rowspan = "+userIdRowSpan+">"+newUserId+"</td>";
+                    tableEl += "<tr><td rowspan = '"+userIdRowSpan+"'>"+(++userCount)+"</td>";
+                    tableEl += "<td rowspan = "+userIdRowSpan+"><a class='user_id' href='member.html'>"+newUserId+"</a></td>";
                     tableEl += "<td rowspan = "+userIdRowSpan+">"+name+"</td>";
                     tableEl += "<td rowspan = "+userIdRowSpan+">"+connected_to+"</td>";
                     prevUserId = newUserId;
@@ -171,10 +178,7 @@ var SEARCH = {
               tableEl += "</tbody></table>";
 
               $("#search_result").html(tableEl);
-              $("#search_result .user_id").off("click").on("click", function(){
-                var id = $(this).text();
-                sessionStorage.setItem("member_id", id);
-              });
+              SEARCH.bindEvents();
             }
           } else if (data.output.success === 0) {
             if(data.output.msg === "API issue"){
@@ -259,10 +263,7 @@ var SEARCH = {
 
             tableEl += "</tbody></table>";
             $("#search_result").html(tableEl);
-            $("#search_result .user_id").off("click").on("click", function(){
-              var id = $(this).text();
-              sessionStorage.setItem("member_id", id);
-            });
+            SEARCH.bindEvents();
           }
         } else if (data.output.success === 0) {
           if(data.output.msg === "API issue"){
@@ -333,11 +334,7 @@ var SEARCH = {
             tableEl += "</tbody></table>";
 
             $("#search_result").html(tableEl);
-
-            $("#search_result .user_id").off("click").on("click", function(){
-              var id = $(this).text();
-              sessionStorage.setItem("member_id", id);
-            });
+            SEARCH.bindEvents();
           } else {
             $("#search_result").empty();
             COMMON.showModal("myModal", "Sorry", "No member found for given criteria");

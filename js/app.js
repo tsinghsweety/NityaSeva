@@ -22,19 +22,19 @@ $(document).ready(function(){
     $("#add_prasadam").off("click").on("click", {type: 'prasadam'}, MEMBER.addGiftPrasadam);
     $("#add_followup").off("click").on("click", MEMBER.addFollowup);
     $("#showPaymentHistory").off("click").on("click", function(){
-      sessionStorage.setItem('historyType', 'payment');
+      localStorage.setItem('historyType', 'payment');
     });
     $("#showBTGHistory").off("click").on("click", function(){
-      sessionStorage.setItem('historyType', 'btg');
+      localStorage.setItem('historyType', 'btg');
     });
     $("#showGiftHistory").off("click").on("click", function(){
-      sessionStorage.setItem('historyType', 'gift');
+      localStorage.setItem('historyType', 'gift');
     });
     $("#showPrasadamHistory").off("click").on("click", function(){
-      sessionStorage.setItem('historyType', 'prasadam');
+      localStorage.setItem('historyType', 'prasadam');
     });
     $("#showFollowupHistory").off("click").on("click", function(){
-      sessionStorage.setItem('historyType', 'followup');
+      localStorage.setItem('historyType', 'followup');
     });
 
     $("#cancelEditBtn").off("click").on("click", function(){
@@ -43,7 +43,7 @@ $(document).ready(function(){
       $("#member-section button").hide();
     });
 
-    // sessionStorage.setItem("member_id", 55);
+    // localStorage.setItem("member_id", 55);
 
     COMMON.initCommonVars();
     COMMON.checkUserLoggedin();
