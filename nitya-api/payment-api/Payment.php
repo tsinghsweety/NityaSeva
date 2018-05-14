@@ -42,7 +42,7 @@ Class Payment {
 				$dateTime_to_date = date_create_from_format('d/m/Y',$to_date);
 				$formatted_to_date = date_format($dateTime_to_date, 'Y-m-d');
 
-				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,u.connected_to,DATE_FORMAT(up.payment_date, "%d/%m/%Y") AS payment_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month'
+				$query = 'SELECT u.user_id,u.title,u.first_name,u.last_name,u.connected_to,DATE_FORMAT(up.payment_date, "%d/%m/%Y") AS payment_date,DATE_FORMAT(up.related_month, "%M, %Y") AS related_month, amt_paid, payment_details, payment_remarks'
 									.' FROM users u, user_payment up'
 									.' WHERE u.user_id=up.user_id'
 									.' AND up.payment_date BETWEEN "'.$formatted_from_date .'" AND "'. $formatted_to_date
@@ -69,7 +69,12 @@ Class Payment {
 						if($id === $row["user_id"]){
 							//populate same member object
 							if($pmt_date === $row["payment_date"]){
-								array_push($paymentObj["paid_for_months"],$row["related_month"]);
+								array_push($paymentObj["paid_for_months"],array(
+									"month"=>$row["related_month"],
+									"amt_paid"=>$row["amt_paid"],
+									"payment_details"=> $row["payment_details"],
+									"payment_remarks"=> $row["payment_remarks"]
+								));
 								// print_r($paymentObj["paid_for_months"]);
 								// array_push($memberObj["payments"],$paymentObj);
 							}else{
@@ -79,7 +84,12 @@ Class Payment {
 								$pmt_date = $row["payment_date"];
 								$paymentObj = array("payment_date"=>$row["payment_date"]);
 								// array_push($paymentObj["paid_for_months"],$row["related_month"]);
-								$paymentObj["paid_for_months"] = array($row["related_month"]);
+								$paymentObj["paid_for_months"] = array(array(
+									"month"=>$row["related_month"],
+									"amt_paid"=>$row["amt_paid"],
+									"payment_details"=> $row["payment_details"],
+									"payment_remarks"=> $row["payment_remarks"]
+								));
 								// $memberObj["payments"] = $paymentObj;
 
 							}
@@ -102,15 +112,26 @@ Class Payment {
 								$memberObj = array("user_id"=>$row["user_id"],"title"=>$row["title"],"first_name"=>$row["first_name"],"last_name"=>$row["last_name"], "connected_to"=>$row["connected_to"]);
 								$memberObj["payments"] = array();
 								if($pmt_date === $row["payment_date"]){
-									array_push($paymentObj["paid_for_months"],$row["related_month"]);
+									array_push($paymentObj["paid_for_months"],array(
+										"month"=>$row["related_month"],
+										"amt_paid"=>$row["amt_paid"],
+										"payment_details"=> $row["payment_details"],
+										"payment_remarks"=> $row["payment_remarks"]
+									));
 									// array_push($memberObj["payments"],$paymentObj);
 								}else{
+									//push before creation of new payment object
 									if($paymentObj!== null){
 										array_push($memberObj["payments"],$paymentObj);
 									}
 									$pmt_date = $row["payment_date"];
 									$paymentObj = array("payment_date"=>$row["payment_date"]);
-									$paymentObj["paid_for_months"] = array($row["related_month"]);
+									$paymentObj["paid_for_months"] = array(array(
+										"month"=>$row["related_month"],
+										"amt_paid"=>$row["amt_paid"],
+										"payment_details"=> $row["payment_details"],
+										"payment_remarks"=> $row["payment_remarks"]
+									));
 									// $memberObj["payments"] = $paymentObj;
 								}
 								// $memberArr = $memberObj;
@@ -181,7 +202,7 @@ Class Payment {
 	    $amount_paid = mysqli_real_escape_string($con,$data['amount_paid']);
 	    $payment_date = mysqli_real_escape_string($con,$data['payment_date']);
 	    // $paid_for_mnth = mysqli_real_escape_string($con,$data['paid_for_mnth']);
-	    $paid_for_yr = mysqli_real_escape_string($con,$data['paid_for_yr']);
+	    // $paid_for_yr = mysqli_real_escape_string($con,$data['paid_for_yr']);
 	    $payment_remarks = mysqli_real_escape_string($con,$data['payment_remarks']);
 	    $payment_scheme_value = mysqli_real_escape_string($con,$data['payment_scheme_value']);
 
@@ -190,12 +211,16 @@ Class Payment {
 			$month_of_pmt = date_format($dateTime, 'F');
 
 			$val_query ="";
+			//here paid for month includes both month and corresponding year
 			foreach($data['paid_for_mnth'] as $mnth){
 				// echo date('m', strtotime("$mnth"));
 				$mnthYrArr = explode(", ", $mnth);
 				$month_num = date('m', strtotime("$mnthYrArr[0]"));
 				$related_month = $mnthYrArr[1]."-".$month_num."-01";
-				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$payment_scheme_value."','".$ref_num."','".$payment_remarks."','".$related_month."','".$mnth."','".$paid_for_yr."')";
+				// echo $mnth;
+				$paidArr = explode(", ",$mnth);
+				// var_dump($paidArr);
+				$val_query = $val_query.",('".$user_id."','".$payment_type."','".$formatted_date."','".$payment_scheme_value."','".$ref_num."','".$payment_remarks."','".$related_month."','".$paidArr[0]."','".$paidArr[1]."')";
 			}
 			$val_query=ltrim($val_query, ',');
 			// echo $val_query;

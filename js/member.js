@@ -61,9 +61,11 @@ var MEMBER = {
                   var month = today.getMonth()+1;
                   month = month>9?month:"0"+month;
                   var year = today.getFullYear();
+                  var start_date_arr = userData['start_date'].split('/');
+                  var start_date_str = "01/"+start_date_arr[1]+"/"+start_date_arr[2];
                   var data = {
                     category: "payment_due_report",
-                    from_date: userData['start_date'],
+                    from_date: start_date_str,
                     to_date: day+"/"+month+"/"+year
                   };
                   var mnthOptList = "";
@@ -364,6 +366,8 @@ var MEMBER = {
                 // $("[name=payment_type]").val(userData['payment_type']);
                 $("[name=user_lang]").val(userData['user_lang']);
                 $("[name=remarks]").val(userData['remarks']);
+
+                $("#editMemberBtn, #cancelEditBtn").hide();
                 COMMON.showModal("myModal", "Hari Bol!", data.msg, "#member-section", true);
               } else if(data.success === 0) {
                 if(data.msg === "API issue"){

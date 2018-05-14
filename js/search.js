@@ -144,40 +144,80 @@ var SEARCH = {
             if(membersArr){
               var tableEl = "<table border='2'>"
               +"<thead>"
-              +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Bhakti Vriksh</th><th>Date of Payment</th><th>Paid for Months</th></tr></thead><tbody>";
+              +"<tr><th>Sl No</th><th>User ID</th><th>Name</th><th>Bhakti Vriksh</th><th>Date of Payment</th><th>Paid for Months</th>"
+              +"<th>Amt Paid</th><th>Payment Details</th><th>Payment Remarks</th></tr></thead><tbody>";
 
-              let userCount = 0;
+              var userCount = 0;
+              var userRowSpanArr = [];
+              var userIdRowSpan = 0;
+              var prevUserId = "";
+              var newUserId = "";
+              var prevPaymentDate = "";
+              var newPaymentDate = "";
               for (var i = 0; i < membersArr.length; i++) {
+                userIdRowSpan = 0;
                 var member = membersArr[i];
                 var id = member["user_id"];
+                newUserId = id;
                 var name = member["title"]+" "+member["first_name"]+" "+member["last_name"];
                 var connected_to = member["connected_to"];
                 var payments = member.payments;
-                var userIdRowSpan = payments.length;
-                var prevUserId = "";
-                var newUserId = " ";
+
+                //Add new row for user
+                ++userCount;
+                tableEl += "<tr class='userrow'><td>"+(userCount)+"</td>";
+                tableEl += "<td><a class='user_id' target='_blank' href='member.html'>"+newUserId+"</a></td>";
+                tableEl += "<td>"+name+"</td>";
+                tableEl += "<td>"+connected_to+"</td>";
+
+                var new_payment_first_time = true;
+
                 for (var j = 0; j < payments.length; j++) {
                   var payment = payments[j];
-                  newUserId = member["user_id"];
+                  newPaymentDate = payment["payment_date"];
                   var paymentDateRowSpan = payment.paid_for_months.length;
-                  tableEl += "<tr>";
+                  userIdRowSpan += paymentDateRowSpan;
 
-                  if(prevUserId!== newUserId){
-                    tableEl += "<tr><td rowspan = '"+userIdRowSpan+"'>"+(++userCount)+"</td>";
-                    tableEl += "<td rowspan = "+userIdRowSpan+"><a class='user_id' target='_blank' href='member.html'>"+newUserId+"</a></td>";
-                    tableEl += "<td rowspan = "+userIdRowSpan+">"+name+"</td>";
-                    tableEl += "<td rowspan = "+userIdRowSpan+">"+connected_to+"</td>";
-                    prevUserId = newUserId;
-
+                  if(new_payment_first_time){
+                    //To Prev Row: Add newPaymentDate only if it is new
+                    tableEl += "<td rowspan="+ paymentDateRowSpan +">"+ newPaymentDate +"</td>";
+                    new_payment_first_time = false;
+                  } else {
+                    //To New Row: Add newPaymentDate only if it is new
+                    tableEl += "<tr><td rowspan="+ paymentDateRowSpan +">"+ newPaymentDate +"</td>";
                   }
-                  tableEl += "<td>"+payment["payment_date"]+"</td>";
-                  tableEl += "<td>"+payment["paid_for_months"].join("<br>")+"</td></tr>";
-                }
-              }
 
+                  var paid_month_first_time = true;
+
+                  for (paid_month_data of payment["paid_for_months"]) {
+                      if(paid_month_first_time){
+                        //To Prev Row: Add each of the paid_month_data attributes, e.g., month, amount, details and remarks
+                        tableEl += "<td>"+paid_month_data['month']+"</td>";
+                        tableEl += "<td>"+paid_month_data['amt_paid']+"</td>";
+                        tableEl += "<td>"+paid_month_data['payment_details']+"</td>";
+                        tableEl += "<td>"+paid_month_data['payment_remarks']+"</td></tr>";
+                        paid_month_first_time = false;
+                      } else {
+                        //To New Row: Add each of the paid_month_data attributes, e.g., month, amount, details and remarks
+                        tableEl += "<tr><td>"+paid_month_data['month']+"</td>";
+                        tableEl += "<td>"+paid_month_data['amt_paid']+"</td>";
+                        tableEl += "<td>"+paid_month_data['payment_details']+"</td>";
+                        tableEl += "<td>"+paid_month_data['payment_remarks']+"</td></tr>";
+                      }
+                  }
+                  prevPaymentDate = newPaymentDate;
+                }
+                userRowSpanArr.push(userIdRowSpan);
+                prevUserId = newUserId;
+              }
               tableEl += "</tbody></table>";
 
               $("#search_result").html(tableEl);
+
+              $("#search_result tbody tr.userrow").each(function(idx, item){
+                $(item).find("td:lt(4)").attr("rowspan", userRowSpanArr[idx]);
+              });
+
               SEARCH.bindEvents();
             }
           } else if (data.output.success === 0) {
