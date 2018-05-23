@@ -62,7 +62,7 @@ var MEMBER = {
                   // month = month>9?month:"0"+month;
                   //Always december of this year
                   month = 12;
-                  var year = today.getFullYear();
+                  var year = today.getFullYear()+2;
                   var start_date_arr = userData['start_date'].split('/');
                   var start_date_str = "01/"+start_date_arr[1]+"/"+start_date_arr[2];
                   var data = {

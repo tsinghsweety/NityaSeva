@@ -21,3 +21,9 @@ input[type="radio"]{
   float: right;
   margin: 15px 25px 0px 0px;
 }
+
+.multiselect-container.dropdown-menu {
+  padding-bottom: 20px;
+  height: 300px;
+  overflow-y: auto;
+}
